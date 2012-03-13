@@ -1,0 +1,83 @@
+/*####################################################################################################################################
+
+  DEFAULT USHAHIDI WEB APP THEME
+
+####################################################################################################################################*/
+
+.ui-bar-a {  
+    font-family: 'BebasNeueRegular';
+    font-size: 36px;
+    font-weight: normal;
+    letter-spacing: 0.05em;	
+}
+ 
+.ui-btn-up-a {
+  border: 0;
+  background:             #ccc;
+  color:                  #fff;
+  background-image: none;
+
+}
+.ui-btn-up-a a.ui-link-inherit {
+  color:                  #fff;
+}
+.ui-btn-hover-a {
+  border: 0;
+  background:             #ccc;
+  color:                  #fff;
+  background-image: none;
+}
+.ui-btn-hover-a a.ui-link-inherit {
+  color:                  #fff;
+}
+.ui-btn-down-a {
+  border: 0;
+  background:             #ccc;
+  color:                  #fff;
+  background-image: none;
+}
+.ui-btn-up-a,
+.ui-btn-hover-a,
+.ui-btn-down-a {
+  cursor: pointer;
+  font-weight: bold; 
+  text-decoration: none;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.ui-bar-a, 
+.ui-bar-a input, 
+.ui-bar-a select, 
+.ui-bar-a textarea, 
+.ui-bar-a button { 
+  /*font-family: Helvetica, Arial, sans-serif;*/
+}
+.ui-bar-a .ui-link-inherit { 
+  color:                  #fff;
+}
+.ui-bar-a .ui-link { 
+  color:                  #7cc4e7;
+  font-weight: bold;
+}
+.ui-body-a,
+.ui-dialog.ui-overlay-a {
+  font-weight: normal;
+  border: 1px solid       #222;
+  border: 0;
+  background:             #ccc;
+  color:                  #fff;
+  background-image: none;
+}
+.ui-body-a, 
+.ui-body-a input, 
+.ui-body-a select, 
+.ui-body-a textarea, 
+.ui-body-a button { 
+  font-family: Helvetica, Arial, sans-serif; 
+}
+.ui-body-a .ui-link-inherit { 
+  color:                  #fff; 
+}
+.ui-body-a .ui-link { 
+  color:                  #e98a15; 
+  font-weight: bold; 
+}
