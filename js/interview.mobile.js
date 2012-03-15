@@ -26,8 +26,7 @@ function ushahidiDate(date)
 	}
 	var incident_minute = date.getMinutes()
 
-	return
-	{
+	return {
 		'curr_date' : curr_date,
 		'curr_month' : curr_month,
 		'curr_year' : curr_year,
@@ -98,13 +97,7 @@ var interviews_app =
 
 	context.addAnswer = function(interview, query, response)
 	{
-		var answer = new interviews_db.Answer(
-		{
-			query : query,
-			value : response
-		});
-		persistence.add(answer);
-		interview.answers.add(answer);
+		interview[query] = response;
 	};
 
 	context.newInterview = function()
@@ -126,12 +119,10 @@ var interviews_app =
 		longitude = position.coords.longitude;
 		console.log('lat=' + latitude + ';lon=' + longitude);
 
-		var interview = new interviews_db.Interview(
-		{
+		var interview = {
 			title : $("#incident_title").val().toString(),
 			posted : false
-		});
-		persistence.add(interview);
+		};
 		ushahidi_date = ushahidiDate(new Date());
 
 		// incident_title
@@ -157,19 +148,14 @@ var interviews_app =
 		// incident_photo
 		context.addAnswer(interview, 'incident_photo', $("#incident_photo_preview img").attr('src'));
 
-		persistence.flush();
-		//context.updateStatus('done');
-
-		interviews_db.postInterview(interview)
+		context.updateStatus('done');
+		interviews_db.Interviews.append(interview);
+		interviews_db.postInterview(interview);
 	};
 
 	context.listingUpdate = function(event, ui)
 	{
-		var allInterviews = interviews_db.Interview.all();
-		allInterviews.list(null, function(results)
-		{
-			results.forEach(context.showInterview)
-		});
+		//jQuery(interviews_db.Interviews).each(context.showInterview)
 	};
 
 	context.showInterview = function(interview)
@@ -341,4 +327,4 @@ $(document).bind("mobileinit", function()
 $(document).ready(function()
 {
 	interviews_app.initUI();
-})
+});

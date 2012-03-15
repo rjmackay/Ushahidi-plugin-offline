@@ -14,13 +14,15 @@
     <script src="/plugins/offline/js/geo.js" type="text/javascript" charset="utf-8"></script>
     <!-- -->
 
-    <script src="/plugins/offline/js/jquery-1.6.4.min.js"></script>
-
+    <script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
+    
+    <script src="/plugins/offline/js/realStorage-2.0.1-min.js"></script>
+<!--
     <script src="/plugins/offline/js/gears_init.js"></script>
     <script src="/plugins/offline/js/persistence.js"></script>
     <script src="/plugins/offline/js/persistence.store.sql.js"></script>
     <script src="/plugins/offline/js/persistence.store.websql.js"></script>
-
+-->
     <script src="/plugins/offline/js/interview.db.js"></script>
     <script src="/plugins/offline/js/interview.mobile.js"></script>
 

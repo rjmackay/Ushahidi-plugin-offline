@@ -9,23 +9,20 @@ var interviews_db =
 
 	context.initDB = function()
 	{
-		persistence.store.websql.config(persistence, "Interviews", 'database', 10 * 1024 * 1024);
-
-		context.Interview = persistence.define('Interview',
+		// load persistent store after the DOM has loaded
+		
+		interviews_db.Interviews = window.realStorage.getItem('interviews');
+		if (interviews_db.Interviews == null)
 		{
-			title : "TEXT",
-			posted : "BOOL"
-		});
-
-		context.Answer = persistence.define('Answer',
+			interviews_db.Interviews = {};
+			window.realStorage.setItem('interviews', interviews_db.Interviews);
+		}
+		
+		/*context.Interview = 
 		{
-			query : "TEXT",
-			value : "TEXT"
-		});
-
-		context.Interview.hasMany('answers', context.Answer, 'interview');
-
-		persistence.schemaSync();
+			title : "",
+			posted : ""
+		};*/
 
 	};
 
@@ -50,8 +47,7 @@ var interviews_db =
 
 	context.resetDB = function()
 	{
-		persistence.reset();
-		persistence.schemaSync();
+		window.realStorage.clear();
 		console.log("DB reset");
 	};
 
@@ -64,11 +60,7 @@ var interviews_db =
 		//                console.log(dump);
 		//            });
 
-		var allInterviews = interviews_db.Interview.all();
-		allInterviews.list(null, function(results)
-		{
-			results.forEach(context.postInterview)
-		});
+		$(interviews_db.Interviews).each(context.postInterview);
 		$.mobile.changePage("#empty", "none");
 
 	};
@@ -101,105 +93,100 @@ var interviews_db =
 	{
 		if(interview.posted == false)
 		{
-			interview.answers.list(function(answers)
+			$('.status').ajaxError(context.uploadedFailed);
+			// Check for the various File API support.
+			if(window.File && window.FileReader && window.FileList && window.Blob)
 			{
-				$('.status').ajaxError(context.uploadedFailed);
-				// Check for the various File API support.
-				if(window.File && window.FileReader && window.FileList && window.Blob)
+				// Great success! All the File APIs are supported.
+				var formData = new FormData();
+				formData.append('task', 'report');
+				for(idx in interview)
 				{
-					// Great success! All the File APIs are supported.
-					var formData = new FormData();
-					formData.append('task', 'report');
-					for(var idx in answers)
+					
+					if(idx == 'incident_photo')
 					{
-						answers_idx = answers[idx];
-						if(answers[idx].query == 'incident_photo')
+						var photo_data = interview.incident_photo;
+						if(photo_data != null)
 						{
-							var photo_data = answers[idx].value;
-							if(photo_data != null)
-							{
-								//blob
-								blob = context.dataURItoBlob(photo_data);
-								formData.append("incident_photo[]", blob);
-							}
-						}
-						else
-						{
-							formData.append(answers[idx].query, answers[idx].value.toString());
+							//blob
+							blob = context.dataURItoBlob(photo_data);
+							formData.append("incident_photo[]", blob);
 						}
 					}
-
-					// add personal informations from the settings
-					var settings_data = interviews_conf.getPersonalInfo()
-					if(settings_data.person_first != undefined)
+					else
 					{
-						formData.append('person_first', settings_data.person_first);
+						formData.append(idx, interview[idx].toString());
 					}
-					if(settings_data.person_last != undefined)
-					{
-						formData.append('person_last', settings_data.person_last);
-					}
-					if(settings_data.person_email != undefined)
-					{
-						formData.append('person_email', settings_data.person_email);
-					}
-
-					$.ajax(
-					{
-						url : api_url,
-						data : formData,
-						cache : false,
-						contentType : false,
-						processData : false,
-						type : 'POST',
-						success : function(data, textStatus, jqXHRres)
-						{
-							context.uploadedInterview(data, textStatus, jqXHRres);
-							interview.posted = true;
-							persistence.flush();
-						}
-					});
-
 				}
-				else
+
+				// add personal informations from the settings
+				var settings_data = interviews_conf.getPersonalInfo()
+				if(settings_data.person_first != undefined)
 				{
-					var data =
-					{
-						'task' : 'report'
-					};
+					formData.append('person_first', settings_data.person_first);
+				}
+				if(settings_data.person_last != undefined)
+				{
+					formData.append('person_last', settings_data.person_last);
+				}
+				if(settings_data.person_email != undefined)
+				{
+					formData.append('person_email', settings_data.person_email);
+				}
 
-					for(var idx in answers)
-					{
-						value = answers[idx].value
-						if(value != undefined)
-						{
-							data[answers[idx].query] = value.toString();
-						}
-					}
-
-					// add personal informations from the settings
-					var settings_data = interviews_conf.getPersonalInfo();
-					if(settings_data.person_first != undefined)
-					{
-						data.person_first = settings_data.person_first;
-					}
-					if(settings_data.person_last != undefined)
-					{
-						data.person_last = settings_data.person_last;
-					}
-					if(settings_data.person_email != undefined)
-					{
-						data.person_email = settings_data.person_email;
-					}
-
-					$.post(api_url, data, function(data, textStatus, jqXHRres)
+				$.ajax(
+				{
+					url : api_url,
+					data : formData,
+					cache : false,
+					contentType : false,
+					processData : false,
+					type : 'POST',
+					success : function(data, textStatus, jqXHRres)
 					{
 						context.uploadedInterview(data, textStatus, jqXHRres);
 						interview.posted = true;
-						persistence.flush();
-					}, 'json');
+					}
+				});
+
+			}
+			else
+			{
+				var data =
+				{
+					'task' : 'report'
+				};
+
+				for(var idx in interview)
+				{
+					value = interview[idx].value
+					if(value != undefined)
+					{
+						data[idx] = interview[idx].toString();
+					}
 				}
-			});
+
+				// add personal informations from the settings
+				var settings_data = interviews_conf.getPersonalInfo();
+				if(settings_data.person_first != undefined)
+				{
+					data.person_first = settings_data.person_first;
+				}
+				if(settings_data.person_last != undefined)
+				{
+					data.person_last = settings_data.person_last;
+				}
+				if(settings_data.person_email != undefined)
+				{
+					data.person_email = settings_data.person_email;
+				}
+
+				$.post(api_url, data, function(data, textStatus, jqXHRres)
+				{
+					context.uploadedInterview(data, textStatus, jqXHRres);
+					interview.posted = true;
+				}, 'json');
+			}
 		};
 	};
 
