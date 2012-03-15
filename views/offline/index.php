@@ -5,27 +5,12 @@
   <head>
 
     <title>Ushahidi Report Tool</title>
-    <link rel="stylesheet" href="/plugins/offline/css/jquery.mobile-1.0a3.min.css" />
-    <link rel="stylesheet" href="/plugins/offline/css/interview.css" />
-    <link rel="stylesheet" href="/plugins/offline/css/font.css" />
-
     <!-- geo location -->
     <script src="http://code.google.com/apis/gears/gears_init.js" type="text/javascript" charset="utf-8"></script>
     <script src="/plugins/offline/js/geo.js" type="text/javascript" charset="utf-8"></script>
     <!-- -->
 
-    <script src="/plugins/offline/js/jquery-1.6.4.min.js"></script>
-
-    <script src="/plugins/offline/js/gears_init.js"></script>
-    <script src="/plugins/offline/js/persistence.js"></script>
-    <script src="/plugins/offline/js/persistence.store.sql.js"></script>
-    <script src="/plugins/offline/js/persistence.store.websql.js"></script>
-
-    <script src="/plugins/offline/js/interview.db.js"></script>
-    <script src="/plugins/offline/js/interview.mobile.js"></script>
-
-    <script src="/plugins/offline/js/jquery.mobile-1.0a3.min.js"></script>
-
+    <script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
 
 	<!-- iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
