@@ -10,7 +10,7 @@
 		<script src="/plugins/offline/js/json2.js"></script>
 		<script src="/plugins/offline/js/underscore-min.js"></script>
 		<script src="/plugins/offline/js/backbone-min.js"></script>
-		<script src="/plugins/offline/js/backbone.localStorage-min.js"></script>
+		<script src="/plugins/offline/js/backbone.localStorage.js"></script>
 		
 		<script type="text/template" id="app-template">
 			<h1>Report App</h1>
@@ -19,7 +19,7 @@
 		</script>
 		
 		<script type="text/template" id="report-template">
-			<li id="report_<%= cid %>"><span class="title"><%= title %></span> <span><%= format %></span> <a href="#reports/remove/<%= cid %>">x</a></li>
+			<li id="report_<%= cid %>"><span class="title"><%= incident.incidenttitle %></span> <a href="#reports/remove/<%= cid %>">x</a></li>
 		</script>
 		
 		<script src="/plugins/offline/js/ushahidi.app.js" defer></script>
