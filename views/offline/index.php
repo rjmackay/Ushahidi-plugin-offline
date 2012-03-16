@@ -19,7 +19,7 @@
 		</script>
 		
 		<script type="text/template" id="report-template">
-			<li id="report_<%= cid %>"><span class="title"><%= incident.incidenttitle %></span> <a href="#reports/remove/<%= cid %>">x</a></li>
+			<li id="report_<%= cid %>"><span class="title"><%= incident_title %></span> <a href="#reports/remove/<%= cid %>">x</a></li>
 		</script>
 		
 		<script src="/plugins/offline/js/ushahidi.app.js" defer></script>
