@@ -227,3 +227,4 @@ $(function() {
 	window.app = reportApp;
 	Backbone.history.start();
 });
+
