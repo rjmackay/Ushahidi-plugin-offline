@@ -39,55 +39,58 @@
 			</div>
 		</script>
 		
-		<script type="text/template" id="report-template">
+		
+		<script type="text/template" id="report-page-template">
+			<%- incident_title %>
+			<%- id %>
+			<a href="#reports" class="more">
+				&lt;- Back
+			</a>
+		</script>
+		
+		<script type="text/template" id="report-li-template">
 				<td class="col-1">
-					<input name="incident_id[]" id="incident" value="<%= id %>" type="checkbox" class="check-box"/>
+					<input name="incident_id[]" id="incident" value="<%- id %>" type="checkbox" class="check-box"/>
 				</td>
 				<td class="col-2">
 					<div class="post">
 						<h4>
-							<a href="" class="more">
-								<%= incident_title %>
+							<a href="#reports/view/<%- cid %>" class="more">
+								<%- incident_title %>
 							</a>
 						</h4>
-						<p><%= incident_description %>... 
-							<a href="" class="more">
+						<p><%- _(incident_description).escape().substr(0,150) %>... 
+							<a href="#reports/view/<%- cid %>" class="more">
 								<?php echo Kohana::lang('ui_main.more');?>
 							</a>
 						</p>
 					</div>
 					<ul class="info">
 						<li class="none-separator"><?php echo Kohana::lang('ui_main.location');?>: 
-							<strong><%= location_name %></strong>, <strong><?php echo Kohana::config('settings.default_country'); ?></strong>
-						</li>
-						<li><?php echo Kohana::lang('ui_main.submitted_by');?> 
-							<strong><?php //echo $submit_by; ?></strong> via <strong><?php //echo $submit_mode; ?></strong>
+							<strong><%- location_name %></strong>
 						</li>
 					</ul>
 					<ul class="links">
 						<li class="none-separator"><?php echo Kohana::lang('ui_main.categories');?>:
-							<strong><?php //echo $incident_category;?></strong>
+							<strong><%- categories %></strong>
 						</li>
 					</ul>
 					<?php
 					//echo $edit_log;
 					?>
 				</td>
-				<td class="col-3"><%= incident_date %></td>
+				<td class="col-3"><%- incident_date %></td>
 				<td class="col-4">
-					<ul><?php /*
-						<li class="none-separator">
-							<?php if ($incident_approved) {?>
-							<a href="#" class="status_yes" onclick="reportAction('u','UNAPPROVE', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.approve');?></a>
-							<?php } else {?>
-							<a href="#" onclick="reportAction('a','APPROVE', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.approve');?></a>
-							<?php } ?>	
-						</li>
-						<li><a href="#"<?php if ($incident_verified) echo " class=\"status_yes\"" ?> onclick="reportAction('v','VERIFY', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.verify');?></a></li>
-						<li><a href="#" class="del" onclick="reportAction('d','DELETE', '<?php echo $incident_id; ?>');"><?php echo Kohana::lang('ui_main.delete');?></a></li>*/?>
+					<ul>
+						<li class="none-separator"><a href="#reports/approve/<%- cid %>" <% if (incident_active == 1) print(" class=\"status_yes\"") %>><?php echo Kohana::lang('ui_main.approve');?></a></li>
+						<li><a href="#reports/verify/<%- cid %>" <% if (incident_verified == 1) print(" class=\"status_yes\"") %> ><?php echo Kohana::lang('ui_main.verify');?></a></li>
+						<li><a href="#reports/defete/<%- cid %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
 					</ul>
 				</td>
 		</script>
+		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
+		<script src="/plugins/offline/js/ushahidi.models.js"></script>
+		<script src="/plugins/offline/js/ushahidi.views.js"></script>
 		<script src="/plugins/offline/js/ushahidi.app.js"></script>
 	</head>
 	<body>
@@ -102,16 +105,16 @@
 					<!-- main-nav -->
 					<ul class="main-nav">
 						<li>
-							<a href="<?php echo url::site();?>offline#page/reports" class="active"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
+							<a href="<?php echo url::site();?>offline#reports" class="active"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
 						</li>
 						<li>
-							<a href="<?php echo url::site();?>offline#page/messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
+							<a href="<?php echo url::site();?>offline#messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
 						</li>
 					</ul>
 					<!-- sub-nav -->
 					<ul class="sub-nav">
 						<li>
-							<a href="<?php echo url::site();?>offline#page/settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
+							<a href="<?php echo url::site();?>offline#settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
 						</li>
 					</ul>
 				</div>
