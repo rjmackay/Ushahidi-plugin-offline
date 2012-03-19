@@ -108,7 +108,7 @@ $(function() {
 			//data.incident_id = response.incident.incidentid;
 			data.incident_title = response.incident.incidenttitle;
 			data.incident_description = response.incident.incident_description;
-			data.incident_date = response.incident.incidentdate;
+			data.incident_datetime = response.incident.incidentdate;
 			data.incident_mode = response.incident.incidentmode;
 			data.incident_active = response.incident.incident_active;
 			data.incident_verified = response.incident.incidentverified;
@@ -118,6 +118,11 @@ $(function() {
 			data.location_longitude = response.incident.locationlongitude;
 			data.incident_category = response.categories;
 			return data;
+		},
+		incident_date: function (){
+			var date = new Date(this.attributes.incident_datetime);
+			
+			return date.getFullYear()+'/'+date.getMonth()+'/'+date.getDate();
 		}
 	});
 
@@ -135,13 +140,15 @@ $(function() {
 
 	var ReportView = Backbone.View.extend(
 	{
+		tagName: 'tr',
 		template : _.template($("#report-template").html()),
 		initialize : function(args) {
 		},
 		render : function() {
 			var context = _.extend(this.model.toJSON(),
 			{
-				cid : this.model.cid
+				cid : this.model.cid,
+				incident_date : this.model.incident_date()
 			});
 			this.$el.html(this.template(context));
 			return this;
@@ -175,7 +182,8 @@ $(function() {
 		addReport : function(report) {
 			var view = new ReportView(
 			{
-				model : report
+				model : report,
+				id : 'report-'+report.cid
 			});
 			this.reportList.append(view.render().el);
 		},
