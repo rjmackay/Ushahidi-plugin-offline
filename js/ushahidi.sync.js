@@ -22,11 +22,15 @@ Backbone.reportSync =
 		{
 		});
 
+		var settings = model.settings || model.collection.settings;
+
 		// Default JSON-request options.
 		var params =
 		{
 			type : 'POST',
-			dataType : 'json'
+			dataType : 'json',
+			username : settings.get('username'),
+			password : settings.get('password')
 		};
 
 		// Ensure that we have a URL.
@@ -43,7 +47,7 @@ Backbone.reportSync =
 				{
 					params.data =
 					{
-						task : 'incidents',
+						task : 'report',
 						by : 'incidentid',
 						id : model.id
 					};

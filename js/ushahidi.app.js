@@ -5,8 +5,20 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
+			// Settings
+			/*this.settings = new Settings({
+				'username' : 'admin',
+				'password' : 'admin'
+			});
+			this.settings.save();*/
+			this.settings = new Settings();
+			this.settings.fetch();
+			
+			// @todo: Add check for admin / member later
+			
 			this.onlinereports = new OnlineReportCollection();
 			this.reports = new OfflineReportCollection();
+			this.onlinereports.settings = this.settings;
 			
 			this.onlinereports.bind('reset', function(){
 				this.reports.reset(this.onlinereports.models);
@@ -15,14 +27,9 @@ $(function() {
 			, this);
 			this.onlinereports.fetch();
 			this.reports.fetch();
+			
 			// Messages
 			this.messages = new MessagesCollection();
-			
-			// Settings
-			this.settings = new Settings({
-				'username' : 'admin',
-				'password' : 'admin'
-			});
 		}
 	});
 
