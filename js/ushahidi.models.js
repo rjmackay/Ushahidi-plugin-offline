@@ -34,12 +34,12 @@ var Report = Backbone.Model.extend(
 		data.location_latitude = response.incident.locationlongitude;
 		data.location_longitude = response.incident.locationlongitude;
 		data.incident_category = response.categories;
+		
 		return data;
 	},
 	incident_date : function() {
-		var date = new Date(this.attributes.incident_datetime);
-
-		return date.getFullYear() + '/' + date.getMonth() + '/' + date.getDate();
+		var date = new moment(this.attributes.incident_datetime);
+		return date.format('YYYY/MM/DD');
 	},
 	categories : function() {
 		incident_category = [];

@@ -8,6 +8,7 @@
 		<script src="/plugins/offline/js/geo.js" type="text/javascript" charset="utf-8"></script>
 		<!-- -->
 		<script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
+		<script src="/plugins/offline/js/moment.min.js"></script>
 		<script src="/plugins/offline/js/json2.js"></script>
 		<script src="/plugins/offline/js/underscore-min.js"></script>
 		<script src="/plugins/offline/js/networkDetection.js"></script>
