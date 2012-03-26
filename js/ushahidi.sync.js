@@ -1,17 +1,28 @@
 /*
- * Custom Ushahidi Backbone.sync
+* Custom Ushahidi Backbone.sync
+*/
+
+// Reset sync to use ajaxSync, not localStorage
+//Backbone.sync = Backbone.ajaxSync;
+
+/**
+ * OnlineOffline sync 
+ **/
+Backbone.OnlineOffline = function(onlinesync, offlinesync) {
+  this.offlinesync = offlinesync;
+  this.onlinesync = onlinesync;
+};
+
+_.extend(Backbone.OnlineOffline.prototype, {
+	sync: function (method, model, options, error) {
+		Backbone.ajaxSync.apply(this, arguments);
+		return Backbone.LocalStorage.sync.apply(this, arguments);
+	}
+});
+
+/**
+ * Custom Report Sync logic
  */
-
-// Tweak this:
-// Local storage only when offline
-// Both when online, but REST datasource wins
-/*Backbone.sync = function Sync() {
- Backbone.ajaxSync.apply(this, arguments);
- return Backbone.LocalStorage.sync.apply(this, arguments);
- };*/
-Backbone.sync = Backbone.ajaxSync;
-// We also probably want a settings model, but don't want to sync that.
-
 Backbone.reportSync =
 {
 	sync : function(method, model, options) {
