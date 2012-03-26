@@ -3,24 +3,18 @@
  */
 var Report = Backbone.Model.extend(
 {
-	initialize : function(args) {
-		//console.log(this);
-	},
-	validate : function(attrs) {
-		/*if(attrs.title)
-		{
-			if(!_.isString(attrs.title) || attrs.title.length === 0)
-			{
-				return 'Title must be a string with a length';
-			}
-		}*/
-	},
 	parse : function(response) {
-		//console.log(response);
+		// Check if we're dealing with an API response or localstorage
+		if (response.incident == undefined)
+		{
+			return response;
+		}
+		
 		// Parse json data into the format the API expects posted back
 		data =
 		{
 		}
+		
 		data.id = response.incident.incidentid;
 		//data.incident_id = response.incident.incidentid;
 		data.incident_title = response.incident.incidenttitle;
@@ -53,12 +47,22 @@ var Report = Backbone.Model.extend(
 
 var ReportCollection = Backbone.Collection.extend(
 {
-	localStorage : new Backbone.LocalStorage("ReportCollection"), // Unique name within your app.
 	model : Report,
+	localStorage : new Backbone.LocalStorage("ReportCollection")
+});
+
+var OnlineReportCollection = ReportCollection.extend(
+{
 	url : '/api',
 	parse : function(response) {
 		if(response.payload != undefined)
 			return response.payload.incidents;
 	},
 	sync : Backbone.reportSync.sync
+});
+
+var OfflineReportCollection = ReportCollection.extend(
+{
+	localStorage : new Backbone.LocalStorage("ReportCollection"),
+	sync : Backbone.LocalStorage.sync
 });

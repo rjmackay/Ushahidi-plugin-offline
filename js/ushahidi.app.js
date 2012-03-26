@@ -5,7 +5,15 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
-			this.reports = new ReportCollection();
+			this.onlinereports = new OnlineReportCollection();
+			this.reports = new OfflineReportCollection();
+			
+			this.onlinereports.bind('reset', function(){
+				this.reports.reset(this.onlinereports.models);
+				this.reports.each(function(model){model.save();});
+			}
+			, this);
+			this.onlinereports.fetch();
 			this.reports.fetch();
 			// Messages
 			// Settings
