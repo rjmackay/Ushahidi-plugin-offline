@@ -16,7 +16,13 @@ $(function() {
 			this.onlinereports.fetch();
 			this.reports.fetch();
 			// Messages
+			this.messages = new MessagesCollection();
+			
 			// Settings
+			this.settings = new Settings({
+				'username' : 'admin',
+				'password' : 'admin'
+			});
 		}
 	});
 

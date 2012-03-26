@@ -1,6 +1,14 @@
 /**
  * Models and collections
  */
+var Settings = Backbone.Model.extend({
+	localStorage : new Backbone.LocalStorage("UshahidiSettings"),
+	sync : Backbone.LocalStorage.sync,
+});
+
+var Message = Backbone.Model.extend({
+});
+
 var Report = Backbone.Model.extend(
 {
 	parse : function(response) {
@@ -65,4 +73,10 @@ var OfflineReportCollection = ReportCollection.extend(
 {
 	localStorage : new Backbone.LocalStorage("ReportCollection"),
 	sync : Backbone.LocalStorage.sync
+});
+
+var MessagesCollection = Backbone.Collection.extend(
+{
+	model : Message,
+	localStorage : new Backbone.LocalStorage("MessagesCollection")
 });
