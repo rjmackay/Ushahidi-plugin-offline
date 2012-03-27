@@ -58,7 +58,7 @@ Backbone.reportSync =
 				{
 					params.data =
 					{
-						task : 'report',
+						task : 'reports',
 						by : 'incidentid',
 						id : model.id
 					};
@@ -68,9 +68,9 @@ Backbone.reportSync =
 				{
 					params.data =
 					{
-						task : 'incidents',
+						task : 'reports',
 						by : 'all',
-						limit : '10'
+						limit : '300'
 					};
 					console.log(params);
 					return $.ajax(_.extend(params, options));
