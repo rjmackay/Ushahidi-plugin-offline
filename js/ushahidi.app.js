@@ -24,13 +24,13 @@ $(function() {
 			this.onlinereports = new OnlineReportCollection();
 			this.onlinereports.settings = this.settings;
 			this.onlinereports.bind('reset', this.resetOffline);
-			this.onlinereports.fetch();
+			//this.onlinereports.fetch();
 			
 			// Messages
 			//this.messages = new MessagesCollection();
 			
 			// @todo dynamic change delay and start/stop
-			//_.delay(this.poll, this.delay);
+			_.delay(this.poll, this.delay);
 		},
 		resetOffline : function() {
 			this.onlinereports.each(function(model) {
@@ -50,7 +50,7 @@ $(function() {
 			this.onlinereports.fetch();
 			_.delay(this.poll, this.delay, this);
 		},
-		delay : 3000
+		delay : 4000
 	});
 
 	/*

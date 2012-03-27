@@ -70,7 +70,7 @@ Backbone.reportSync =
 					{
 						task : 'reports',
 						by : 'all',
-						limit : '300'
+						limit : '100'
 					};
 					return $.ajax(_.extend(params, options));
 				}

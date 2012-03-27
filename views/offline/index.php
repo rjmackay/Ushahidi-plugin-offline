@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html <?php /*manifest="./index.appcache"*/?>>
+<html manifest="/offline/index.appcache">
 	<head>
 		<title>Ushahidi Report Tool</title>
 		<link rel="stylesheet" type="text/css" href="/media/css/admin/all.css" />
