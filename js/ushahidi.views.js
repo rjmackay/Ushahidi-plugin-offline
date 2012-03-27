@@ -16,6 +16,9 @@ Backbone.View.prototype.close = function(){
 var ReportView = Backbone.View.extend(
 {
 	initialize : function(args) {
+		_.bindAll(this, "update", "remove");
+		this.model.bind('change', this.update);
+		this.model.bind('remove', this.remove)
 	},
 	render : function() {
 		var context = _.extend(this.model.toJSON(),
@@ -28,7 +31,14 @@ var ReportView = Backbone.View.extend(
 		return this;
 	},
 	remove : function() {
-		$(this.el).remove();
+		this.$el.remove();
+	},
+	update : function(report) {
+		this.render();
+	},
+	onClose : function() {
+		this.model.unbind('change', this.update);
+		this.model.unbind('remove', this.remove);
 	}
 });
 var ReportLIView = ReportView.extend(
@@ -48,9 +58,8 @@ var ReportAppView = Backbone.View.extend(
 {
 	template : _.template($("#app-template").html()),
 	initialize : function() {
-		_.bindAll(this, "addReport", "removeReport", "addAll");
+		_.bindAll(this, "addReport", "addAll");
 		this.model.reports.bind('add', this.addReport);
-		this.model.reports.bind('remove', this.removeReport);
 		this.model.reports.bind('reset', this.addAll);
 	},
 	render : function() {
@@ -67,16 +76,17 @@ var ReportAppView = Backbone.View.extend(
 			id : 'report-' + report.cid
 		});
 		this.reportList.append(view.render().el);
-	},
-	removeReport : function(report) {
-		this.$('#report_' + report.cid).remove();
+		report.view = view;
 	},
 	addAll : function() {
+		this.reportList.empty();
 		this.model.reports.each(this.addReport);
 	},
 	onClose : function() {
 		this.model.reports.unbind('add', this.addReport);
 		this.model.reports.unbind('remove', this.removeReport);
 		this.model.reports.unbind('reset', this.addAll);
+		// Destroy report views
+		this.model.reports.each(function(model) { model.view.close() });
 	}
 });
