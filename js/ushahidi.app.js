@@ -5,6 +5,7 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
+			_.bindAll(this, "resetOffline", "poll");
 			// Settings
 			/*this.settings = new Settings({
 				'username' : 'admin',
@@ -16,21 +17,40 @@ $(function() {
 			
 			// @todo: Add check for admin / member later
 			
-			this.onlinereports = new OnlineReportCollection();
+			// Reports setup
 			this.reports = new OfflineReportCollection();
-			this.onlinereports.settings = this.settings;
-			
-			this.onlinereports.bind('reset', function(){
-				this.reports.reset(this.onlinereports.models);
-				this.reports.each(function(model){model.save();});
-			}
-			, this);
-			this.onlinereports.fetch();
 			this.reports.fetch();
 			
+			this.onlinereports = new OnlineReportCollection();
+			this.onlinereports.settings = this.settings;
+			this.onlinereports.bind('reset', this.resetOffline);
+			this.onlinereports.fetch();
+			
 			// Messages
-			this.messages = new MessagesCollection();
-		}
+			//this.messages = new MessagesCollection();
+			
+			// @todo dynamic change delay and start/stop
+			//_.delay(this.poll, this.delay);
+		},
+		resetOffline : function() {
+			this.onlinereports.each(function(model) {
+				offlinemodel = this.reports.get(model.id);
+				if (offlinemodel == undefined) {
+					this.reports.create(model);
+				} else {
+					// @todo make sure we're clearing blank fields
+					offlinemodel.set(model.toJSON());
+				}
+			}, this);
+			this.reports.each(function(model) {
+				model.save();
+			});
+		},
+		poll : function() {
+			this.onlinereports.fetch();
+			_.delay(this.poll, this.delay, this);
+		},
+		delay : 3000
 	});
 
 	/*
