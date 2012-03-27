@@ -72,7 +72,6 @@ Backbone.reportSync =
 						by : 'all',
 						limit : '300'
 					};
-					console.log(params);
 					return $.ajax(_.extend(params, options));
 				}
 				break;
