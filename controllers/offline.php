@@ -37,7 +37,8 @@ class Offline_Controller extends Main_Controller
 	{
 		parent::__construct();
 		$this->template->this_page = 'offline';
-		
+
+		header('Cache-control: must-revalidate');
 	}
 	
 	/**
@@ -67,11 +68,12 @@ class Offline_Controller extends Main_Controller
 		}
 
 		$content .= "# Rev: $rev\n";
-		$content .= "CACHE\n";
+		$content .= "CACHE:\n";
 
 		$content .= "/offline\n";
 		//$content .= "/offline/\n";
-		$content .= "/media/js/jquery.js\n";
+		//$content .= "/media/js/jquery.js\n";
+		$content .= "/media/css/admin/all.css\n";
 
 		$plugindir = PLUGINPATH . 'offline';
 
@@ -95,16 +97,19 @@ class Offline_Controller extends Main_Controller
 				}
 		}
 
-		if (is_dir($plugindir . '/css'))
+		if (is_dir($plugindir . '/images'))
 		{
 			$dir = dir($plugindir . '/images');
 			while (($file = $dir->read()) !== FALSE)
 				if ($file != '.' AND $file != '..')
 					$content .= "/plugins/offline/images/" . $file . "\n";
 		}
-		$content .= "NETWORK\n";
+		$content .= "NETWORK:\n";
 		$content .= "/api\n";
 		$content .= "*\n";
+		$content .= "FALLBACK:\n";
+		$content .= "/ /offline\n";
+		//$content .= "*\n";
 
 		echo $content;
 
