@@ -68,6 +68,11 @@
 						</p>
 					</div>
 					<ul class="info">
+						<li class="none-separator">Incident ID: 
+							<strong><%- id %> (<%- cid %>)</strong>
+						</li>
+					</ul>
+					<ul class="info">
 						<li class="none-separator"><?php echo Kohana::lang('ui_main.location');?>: 
 							<strong><%- location_name %></strong>
 						</li>
