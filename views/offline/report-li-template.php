@@ -35,9 +35,9 @@
 				</td>
 				<td class="col-3"><%- incident_date %></td>
 				<td class="col-4">
-					<ul>
+					<ul><!--
 						<li class="none-separator"><a href="#reports/approve/<%- cid %>" <% if (incident_active == 1) print(" class=\"status_yes\"") %>><?php echo Kohana::lang('ui_main.approve');?></a></li>
 						<li><a href="#reports/verify/<%- cid %>" <% if (incident_verified == 1) print(" class=\"status_yes\"") %> ><?php echo Kohana::lang('ui_main.verify');?></a></li>
-						<li><a href="#reports/defete/<%- cid %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+						<li><a href="#reports/defete/<%- cid %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>-->
 					</ul>
 				</td>

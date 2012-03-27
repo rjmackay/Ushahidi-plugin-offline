@@ -42,15 +42,15 @@
 						<li>
 							<a href="<?php echo url::site();?>offline#reports" class="active"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
 						</li>
-						<li>
+						<!--<li>
 							<a href="<?php echo url::site();?>offline#messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
-						</li>
+						</li>-->
 					</ul>
 					<!-- sub-nav -->
 					<ul class="sub-nav">
-						<li>
+						<!--<li>
 							<a href="<?php echo url::site();?>offline#settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
-						</li>
+						</li>-->
 					</ul>
 				</div>
 			</div>

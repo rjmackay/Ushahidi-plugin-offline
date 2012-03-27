@@ -1,6 +1,6 @@
 		<h2>
 				<a href="#reports"><?php echo Kohana::lang('ui_main.view_reports');?></a>
-				<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>
+				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
 		</h2>
 		<div class="tab"><ul><li></li></ul></div>
 		<!--<%- incident_title %>
