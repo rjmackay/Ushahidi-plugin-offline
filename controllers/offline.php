@@ -12,7 +12,7 @@
  * @license    http://www.gnu.org/copyleft/lesser.html GNU Lesser General Public License (LGPL)
  */
 
-class Offline_Controller extends Main_Controller
+class Offline_Controller extends Template_Controller
 {
 
 	/**
@@ -39,6 +39,9 @@ class Offline_Controller extends Main_Controller
 		$this->template->this_page = 'offline';
 
 		header('Cache-control: must-revalidate');
+
+		// Load cache
+		$this->cache = new Cache;
 	}
 	
 	/**
