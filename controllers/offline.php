@@ -174,7 +174,8 @@ class Offline_Controller extends Template_Controller {
 		$content .= "/api\n";
 		$content .= "*\n";
 		$content .= "FALLBACK:\n";
-		//$content .= "/index.php /offline\n";
+		$content .= "/admin /offline\n";
+		$content .= "/admin/* /offline\n";
 		//$content .= "*\n";
 
 		echo $content;
