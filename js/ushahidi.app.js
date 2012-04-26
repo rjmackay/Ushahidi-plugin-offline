@@ -7,14 +7,16 @@ $(function() {
 		initialize : function() {
 			_.bindAll(this, "resetOffline", "poll");
 			// Settings
-			/*this.settings = new Settings({
-				'username' : 'admin',
-				'password' : 'admin'
-			});
-			this.settings.save();*/
 			this.settings = new Settings();
 			this.settings.fetch();
-			
+			// Bootstrap with admin credentials
+			if (this.settings.get('username') == undefined || this.settings.get('username') == false) {
+				this.settings.set({
+					'username' : 'admin',
+					'password' : 'opto2313'
+				});
+				this.settings.save();
+			}
 			// @todo: Add check for admin / member later
 			
 			// Reports setup
@@ -24,7 +26,7 @@ $(function() {
 			this.onlinereports = new OnlineReportCollection();
 			this.onlinereports.settings = this.settings;
 			this.onlinereports.bind('reset', this.resetOffline);
-			//this.onlinereports.fetch();
+			this.onlinereports.fetch();
 			
 			// Messages
 			//this.messages = new MessagesCollection();
@@ -98,7 +100,7 @@ $(function() {
 			"reports/remove/:number" : "report_remove"
 		},
 		home : function() {
-			this.navigate('reports')
+			this.navigate('reports',{trigger: true});
 		},
 		reports : function() {
 			var reportAppView = new ReportAppView(
