@@ -113,7 +113,34 @@ class Offline_Controller extends Template_Controller {
 		//$content .= "/offline/\n";
 		//$content .= "/media/js/jquery.js\n";
 		$content .= "/media/css/admin/all.css\n";
-
+		$content .= "/media/img/admin/top-separator.gif
+/media/img/admin/content-bg.gif
+/media/img/admin/separator.gif
+/media/img/admin/separator-1.gif
+/media/img/admin/separator-2.gif
+/media/img/admin/icon-rss.gif
+/media/img/admin/icon-ok.gif
+/media/img/admin/icon-none.gif
+/media/img/admin/icon-mail.gif
+/media/img/admin/icon-phone.gif
+/media/img/admin/icon_sprite.png
+/media/img/admin/icon-twitter.gif
+/media/img/admin/dots.gif
+/media/img/admin/report-icon.gif
+/media/img/admin/category-icon.gif
+/media/img/admin/locations-icon.gif
+/media/img/admin/media-icon.gif
+/media/img/admin/messages-icon.gif
+/media/img/admin/alerts-icon.png
+/media/img/admin/votes-icon.png
+/media/img/admin/checkins-icon.png
+/media/img/admin/locations-icon.gif
+/media/img/admin/logo.gif
+/media/img/admin/arrow.gif
+/media/img/admin/drag.gif
+";
+		
+		
 		$plugindir = PLUGINPATH . 'offline';
 
 		if (is_dir($plugindir . '/css'))
@@ -147,7 +174,7 @@ class Offline_Controller extends Template_Controller {
 		$content .= "/api\n";
 		$content .= "*\n";
 		$content .= "FALLBACK:\n";
-		$content .= "/ /offline\n";
+		//$content .= "/index.php /offline\n";
 		//$content .= "*\n";
 
 		echo $content;
