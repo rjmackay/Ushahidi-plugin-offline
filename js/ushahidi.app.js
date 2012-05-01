@@ -96,7 +96,6 @@ $(function() {
 			"reports" : "reports",
 			"reports/view/:number" : "report_view",
 			// @todo: handle actions with events
-			"reports/add" : "report_add",
 			"reports/remove/:number" : "report_remove"
 		},
 		home : function() {
@@ -115,16 +114,6 @@ $(function() {
 				model : model
 			});
 			this.appView.showView(reportPageView);
-		},
-		report_add : function() {
-			/*data =
-			 {
-			 title : 'The Matrix ' + Math.floor(Math.random() * 11),
-			 format : 'dvd',
-			 };
-			 app.model.reports.create(data);*/
-			this.navigate();
-			// reset location so we can trigger again
 		},
 		report_remove : function(cid) {
 			//app.model.reports.getByCid(cid).destroy();
