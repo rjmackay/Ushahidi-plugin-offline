@@ -29,21 +29,10 @@ class offline {
 	 */
 	public function add()
 	{
-		// Only add the events if we are on that controller
-		/*if (Router::$controller == 'manage' or Router::$controller == 'offline')
+		if (strripos(Router::$current_uri, "admin") !== false)
 		{
-			Event::add('ushahidi_action.nav_admin_manage', array($this,'_sharing'));
+			Event::add('ushahidi_action.header_nav', array($this, '_add_offline_tab_header'));	 //adds the mobile tab
 		}
-		elseif (strripos(Router::$current_uri, "main") !== false)
-		{
-			Event::add('ushahidi_action.main_sidebar', array($this, '_display'));
-		}*/
-	}
-
-	public function _sharing()
-	{
-		$this_sub_page = Event::$data;
-		echo ($this_sub_page == "sharing") ? "Sharing" : "<a href=\"".url::site()."admin/manage/sharing\">Sharing</a>";
 	}
 	
 	/*
@@ -54,24 +43,12 @@ class offline {
 		// Add custom routing for appcache file
 		Event::$data['offline/index.appcache'] = 'offline/appcache';
 	}
+	
 
-	public function _display()
+	public function _add_offline_tab_header()
 	{
-		// Get all active Shares
-		$shares = array();
-		foreach (ORM::factory('sharing')
-					->where('sharing_active', 1)
-					->find_all() as $share)
-		{
-			$shares[$share->id] = array($share->sharing_name, $share->sharing_color);
-		}
-
-		$sharing_bar = View::factory('sharing/sharing_bar');
-
-		$sharing_bar->shares = $shares;
-		$sharing_bar->render(TRUE);
-		$this->template->js = new View('js/sharing_bar_js');
-		
+		echo "<li><a href=\"". url::site('offline')."\">". Kohana::lang('offline.switch_to_offline_version') ."</a></li>";
 	}
+
 }
 new offline;
