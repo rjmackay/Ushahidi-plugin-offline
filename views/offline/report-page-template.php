@@ -11,7 +11,7 @@
 	
 			<p class="<% (incident_verified == 1) ? print('r_verified') : print('r_unverified'); %>">
 				<% (incident_verified == 1) ? print('<?php echo Kohana::lang('ui_main.verified'); ?>') : print('<?php echo Kohana::lang('ui_main.unverified'); ?>'); %> |
-				<% (incident_active == 1) ? print('<?php echo Kohana::lang('ui_main.approved'); ?>') : print('<?php echo Kohana::lang('ui_main.unapproved'); ?>'); %>
+				<% (incident_active == 1) ? print('<?php echo Kohana::lang('ui_main.approved'); ?>') : print('<?php echo Kohana::lang('ui_admin.unapproved'); ?>'); %>
 			</p>
 	
 			<div class='row'>
