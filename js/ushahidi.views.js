@@ -48,7 +48,19 @@ var ReportLIView = ReportView.extend(
 });
 var ReportPageView = ReportView.extend(
 {
-	template : _.template($("#report-page-template").html())
+	template : _.template($("#report-page-template").html()),
+	
+	render : function() {
+		var context = _.extend(this.model.toJSON(),
+		{
+			cid : this.model.cid,
+			incident_date : this.model.incident_date(),
+			categories : this.model.categories()
+		});
+		this.$el.html(this.template(context));
+		this.model.getMap();
+		return this;
+	},
 });
 
 /*
