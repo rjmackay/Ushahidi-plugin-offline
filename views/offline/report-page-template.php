@@ -24,15 +24,15 @@
 				<%- incident_description %>
 			</div>
 	
-			<div class='row'>
-				<h4><?php echo Kohana::lang('ui_main.location');?></h4>
-				<%- location_name %>
-				<img src="" id="report-<%- cid %>-img" />
-			</div>
-	
 			<div class="report-category-list">
 				<h4><?php echo Kohana::lang('ui_main.categories');?></h4>
 				<%- categories %>
+			</div>
+	
+			<div class='row'>
+				<h4><?php echo Kohana::lang('ui_main.location');?></h4>
+				<%- location_name %>
+				<div><img src="" id="report-<%- cid %>-img" /></div>
 			</div>
 	
 			<!-- start report media -->
