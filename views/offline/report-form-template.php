@@ -3,15 +3,18 @@
 				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
 		</h2>
 		<div class="tab"><ul>
-			<li><a class="active">View</a></li>
-			<li><a href="#reports/edit/<%- cid %>">Edit</a></li>
+			<li><a href="#reports/view/<%- cid %>">View</a></li>
+			<li><a class="active">Edit</a></li>
 			<li><a href="#reports/delete/<%- cid %>">Delete</a></li>
 		</ul></div>
 		<!--<%- incident_title %>
 		<%- id %>-->
-		<div class="f-col-full">
+		<div class="f-col-full"><form method="get" id="report-edit-form" actio=''>
 	
-			<h1 class="report-title"><%- incident_title %></h1>
+			<div class="report-title">
+				<label for="incident_title"><?php echo Kohana::lang('ui_main.title'); ?></label>
+				<input type='text' name='incident_title' class='field-incident-title' value='<%- incident_title %>' />
+			</div>
 	
 			<p class="<% (incident_verified == 1) ? print('r_verified') : print('r_unverified'); %>">
 				<% (incident_verified == 1) ? print('<?php echo Kohana::lang('ui_main.verified'); ?>') : print('<?php echo Kohana::lang('ui_main.unverified'); ?>'); %> |
@@ -117,7 +120,11 @@
 	        </table>
 				</div>
 			</div>*/?>
+			
+		<div>
+			<input type='submit' value='save' id='report-save' />
+		</div>
 	
 		<div style="clear:both;"></div>
-	
+		</form>
 	</div>

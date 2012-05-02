@@ -23,6 +23,10 @@
 		<script type="text/template" id="report-li-template">
 	<?php include('report-li-template.php'); ?>
 		</script>
+		
+		<script type="text/template" id="report-form-template">
+	<?php include('report-form-template.php'); ?>
+		</script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>

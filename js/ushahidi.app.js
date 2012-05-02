@@ -96,7 +96,8 @@ $(function() {
 			"reports" : "reports",
 			"reports/view/:number" : "report_view",
 			// @todo: handle actions with events
-			"reports/remove/:number" : "report_remove"
+			"reports/delete/:number" : "report_remove",
+			"reports/edit/:number" : "report_edit"
 		},
 		home : function() {
 			this.navigate('reports',{trigger: true});
@@ -115,6 +116,13 @@ $(function() {
 			});
 			this.appView.showView(reportPageView);
 		},
+		report_edit : function(cid) {
+			var model = this.model.reports.getByCid(cid);
+			var reportEditView = new ReportEditView({
+				model : model
+			});
+			this.appView.showView(reportEditView);
+		},
 		report_remove : function(cid) {
 			//app.model.reports.getByCid(cid).destroy();
 			this.navigate();
@@ -127,4 +135,5 @@ $(function() {
 	});
 	window.app = UshahidiApp;
 	Backbone.history.start();
+	
 });

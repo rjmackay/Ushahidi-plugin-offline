@@ -62,6 +62,34 @@ var ReportPageView = ReportView.extend(
 		return this;
 	},
 });
+var ReportEditView = ReportView.extend(
+{
+	template : _.template($("#report-form-template").html()),
+	initialize : function() {
+		_.bindAll(this, "save");
+	},
+	events : {
+		'submit form' : 'save'
+	},
+	render : function() {
+		var context = _.extend(this.model.toJSON(),
+		{
+			cid : this.model.cid,
+			incident_date : this.model.incident_date(),
+			categories : this.model.categories()
+		});
+		this.$el.html(this.template(context));
+		return this;
+	},
+	save : function() {
+		console.log('saving');
+		var title = this.$('.field-incident-title').val();
+		console.log(this.$('.field-incident-title'));
+		this.model.set('incident_title', title);
+		window.app.navigate('reports/view/'+this.model.cid,{trigger: true});
+		return false;
+	}
+});
 
 /*
  *  Report list view
