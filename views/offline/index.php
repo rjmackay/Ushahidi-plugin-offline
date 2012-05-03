@@ -27,6 +27,10 @@
 		<script type="text/template" id="report-form-template">
 	<?php include('report-form-template.php'); ?>
 		</script>
+		
+		<script type="text/template" id="settings-edit-template">
+	<?php include('settings-edit-template.php'); ?>
+		</script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>
@@ -44,7 +48,7 @@
 					<!-- main-nav -->
 					<ul class="main-nav">
 						<li>
-							<a href="<?php echo url::site();?>offline#reports" class="active"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
+							<a href="<?php echo url::site();?>offline#reports" class="active reports"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
 						</li>
 						<!--<li>
 							<a href="<?php echo url::site();?>offline#messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
@@ -52,9 +56,9 @@
 					</ul>
 					<!-- sub-nav -->
 					<ul class="sub-nav">
-						<!--<li>
-							<a href="<?php echo url::site();?>offline#settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
-						</li>-->
+						<li>
+							<a href="<?php echo url::site();?>offline#settings/edit" class="settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
+						</li>
 					</ul>
 				</div>
 			</div>

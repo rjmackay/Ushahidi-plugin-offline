@@ -4,6 +4,18 @@
 var Settings = Backbone.Model.extend({
 	localStorage : new Backbone.LocalStorage("UshahidiSettings"),
 	sync : Backbone.LocalStorage.sync,
+	defaults : {
+		username : '',
+		password : ''
+	},
+	initialize : function () {
+		if (!this.get("username")) {
+			this.set({"username": this.defaults.username});
+		}
+		if (!this.get("password")) {
+			this.set({"password": this.defaults.password});
+		}
+	}
 });
 
 var Message = Backbone.Model.extend({

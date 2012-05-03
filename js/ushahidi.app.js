@@ -9,14 +9,6 @@ $(function() {
 			// Settings
 			this.settings = new Settings();
 			this.settings.fetch();
-			// Bootstrap with admin credentials
-			if (this.settings.get('username') == undefined || this.settings.get('username') == false) {
-				this.settings.set({
-					'username' : 'admin',
-					'password' : 'opto2313'
-				});
-				this.settings.save();
-			}
 			// @todo: Add check for admin / member later
 			
 			// Reports setup
@@ -26,8 +18,10 @@ $(function() {
 			this.onlinereports = new OnlineReportCollection();
 			this.onlinereports.settings = this.settings;
 			this.onlinereports.bind('reset', this.resetOffline);
-			this.onlinereports.fetch();
 			
+			if (this.settings.get('username') != '') {
+				this.onlinereports.fetch();
+			}
 			// Messages
 			//this.messages = new MessagesCollection();
 			
@@ -49,10 +43,12 @@ $(function() {
 			});
 		},
 		poll : function() {
-			this.onlinereports.fetch();
+			if (this.settings.get('username') != '') {
+				this.onlinereports.fetch();
+			}
 			_.delay(this.poll, this.delay, this);
 		},
-		delay : 4000
+		delay : 6000
 	});
 
 	/*
@@ -75,6 +71,10 @@ $(function() {
 			this.currentView.render();
 
 			this.container.html(this.currentView.el);
+		},
+		setTab : function(tab) {
+			$('.nav-holder .active').removeClass('active');
+			$('.nav-holder .'+tab).addClass('active');
 		}
 	});
 
@@ -97,17 +97,32 @@ $(function() {
 			"reports/view/:number" : "report_view",
 			// @todo: handle actions with events
 			"reports/delete/:number" : "report_remove",
-			"reports/edit/:number" : "report_edit"
+			"reports/edit/:number" : "report_edit",
+			"settings/edit" : "settings_edit"
 		},
 		home : function() {
-			this.navigate('reports',{trigger: true});
+			if (this.model.settings.get('username') != '')
+			{
+				this.navigate('reports',{trigger: true});
+			}
+			else
+			{
+				this.navigate('settings/edit');
+			}
 		},
 		reports : function() {
+			if (this.model.settings.get('username') == '')
+			{
+				this.navigate('settings/edit',{trigger: true});
+				return;
+			}
+			
 			var reportAppView = new ReportAppView(
 			{
 				model : this.model
 			});
 			this.appView.showView(reportAppView);
+			this.appView.setTab('reports');
 		},
 		report_view : function(cid) {
 			var model = this.model.reports.getByCid(cid);
@@ -126,6 +141,13 @@ $(function() {
 		report_remove : function(cid) {
 			//app.model.reports.getByCid(cid).destroy();
 			this.navigate();
+		},
+		settings_edit : function() {
+			var settingsEditView = new SettingsEditView({
+				model : this.model.settings
+			});
+			this.appView.showView(settingsEditView);
+			this.appView.setTab('settings');
 		},
 	});
 

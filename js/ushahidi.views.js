@@ -84,9 +84,34 @@ var ReportEditView = ReportView.extend(
 	save : function() {
 		console.log('saving');
 		var title = this.$('.field-incident-title').val();
-		console.log(this.$('.field-incident-title'));
+
 		this.model.set('incident_title', title);
 		window.app.navigate('reports/view/'+this.model.cid,{trigger: true});
+		return false;
+	}
+});
+
+var SettingsEditView = Backbone.View.extend(
+{
+	template : _.template($("#settings-edit-template").html()),
+	initialize : function() {
+		_.bindAll(this, "save");
+	},
+	events : {
+		'submit form' : 'save'
+	},
+	render : function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	},
+	save : function() {
+		var username = this.$('.field-username').val();
+		var password = this.$('.field-password').val();
+		this.model.set('username', username);
+		if (password != '') this.model.set('password', password);
+		this.model.save();
+
+		window.app.navigate('reports',{trigger: true});
 		return false;
 	}
 });
