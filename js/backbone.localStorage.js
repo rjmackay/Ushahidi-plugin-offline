@@ -37,7 +37,10 @@ _.extend(Backbone.LocalStorage.prototype, {
   // Add a model, giving it a (hopefully)-unique GUID, if it doesn't already
   // have an id of it's own.
   create: function(model) {
-    if (!model.id) model.id = model.attributes[model.idAttribute] = guid();
+    if (!model.id) {
+        model.id = guid();
+        model.set(model.idAttribute, model.id);
+    }
     this.localStorage().setItem(this.name+"-"+model.id, JSON.stringify(model));
     this.records.push(model.id.toString());
     this.save();
@@ -82,6 +85,7 @@ _.extend(Backbone.LocalStorage.prototype, {
 // *localStorage* property, which should be an instance of `Store`.
 // window.Store.sync and Backbone.localSync is deprectated, use Backbone.LocalStorage.sync instead
 Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(method, model, options, error) {
+  var store = model.localStorage || model.collection.localStorage;
 
   // Backwards compatibility with Backbone <= 0.3.3
   if (typeof options == 'function') {
@@ -92,7 +96,6 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
   }
 
   var resp;
-  var store = model.localStorage || model.collection.localStorage;
 
   switch (method) {
     case "read":    resp = model.id != undefined ? store.find(model) : store.findAll(); break;
@@ -108,9 +111,21 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
   }
 };
 
-// Override 'Backbone.sync' to default to localSync, 
-// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
 Backbone.ajaxSync = Backbone.sync;
-Backbone.sync = Backbone.LocalStorage.sync;
+
+Backbone.getSyncMethod = function(model) {
+	if(model.localStorage || (model.collection && model.collection.localStorage))
+	{
+		return Backbone.localSync;
+	}
+
+	return Backbone.ajaxSync;
+};
+
+// Override 'Backbone.sync' to default to localSync,
+// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
+Backbone.sync = function(method, model, options, error) {
+	return Backbone.getSyncMethod(model).apply(this, [method, model, options, error]);
+};
 
 })();
