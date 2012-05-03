@@ -43,6 +43,9 @@
 				<!-- title -->
 				<h1><?php echo $site_name
 				?></h1>
+				
+				<div id="offline" class="error" style="display:none;">Couldn't connect to server... <a class="reconnect" href="#">try again</a></div>
+				
 				<!-- nav-holder -->
 				<div class="nav-holder">
 					<!-- main-nav -->

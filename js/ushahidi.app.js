@@ -5,7 +5,7 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
-			_.bindAll(this, "resetOffline", "poll");
+			_.bindAll(this, "resetOffline", "poll", "fetchError");
 			// Settings
 			this.settings = new Settings();
 			this.settings.fetch();
@@ -25,8 +25,7 @@ $(function() {
 			// Messages
 			//this.messages = new MessagesCollection();
 			
-			// @todo dynamic change delay and start/stop
-			_.delay(this.poll, this.delay);
+			this.startPolling();
 		},
 		resetOffline : function() {
 			this.onlinereports.each(function(model) {
@@ -42,13 +41,31 @@ $(function() {
 				model.save();
 			});
 		},
+		delay : 6000,
 		poll : function() {
 			if (this.settings.get('username') != '') {
-				this.onlinereports.fetch();
+				this.onlinereports.fetch({error: this.fetchError, timeout: this.delay*0.75});
 			}
-			_.delay(this.poll, this.delay, this);
+			// @todo move reset delay to after fetch finishes
+			clearTimeout(this.pollTimeout);
+			this.pollTimeout = _.delay(this.poll, this.delay);
 		},
-		delay : 6000
+		startPolling : function() {
+			clearTimeout(this.pollTimeout);
+			this.pollTimeout = _.delay(this.poll, this.delay);
+		},
+		stopPolling : function() {
+			clearTimeout(this.pollTimeout);
+		},
+		// @todo make this global
+		fetchError : function(jqXHR, textStatus, errorThrown) {
+			if (textStatus.statusText == 'timeout')
+			{
+				console.log('Offline');
+				this.stopPolling();
+				$('#offline').show();
+			}
+		}
 	});
 
 	/*
@@ -89,6 +106,9 @@ $(function() {
 				container : params.container
 			});
 			this.model = new AppModel();
+			
+		_.bindAll(this, "reconnect");
+			$('.reconnect').click(this.reconnect);
 		},
 		routes :
 		{
@@ -148,6 +168,12 @@ $(function() {
 			});
 			this.appView.showView(settingsEditView);
 			this.appView.setTab('settings');
+		},
+		reconnect : function() {
+			this.model.onlinereports.fetch();
+			this.model.startPolling();
+			$('#offline').hide();
+			return false;
 		},
 	});
 
