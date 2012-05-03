@@ -6,9 +6,13 @@ var Settings = Backbone.Model.extend({
 	sync : Backbone.LocalStorage.sync,
 	defaults : {
 		username : '',
-		password : ''
+		password : '',
+		id: 1
 	},
 	initialize : function () {
+		// Always ID 1
+		this.set({id: 1});
+		// Avoid any undefined values
 		if (!this.get("username")) {
 			this.set({"username": this.defaults.username});
 		}
