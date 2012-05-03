@@ -26,7 +26,7 @@
 						</tr>
 					</tfoot>
 					<tbody id="reportList">
-						
+						<tr id='loading'><td colspan=4><b>Loading...</b></td></tr>
 					</tbody>
 				</table>
 			</div>

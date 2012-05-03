@@ -131,7 +131,10 @@ var ReportAppView = Backbone.View.extend(
 		this.$el.html(this.template(this.model.toJSON()));
 		this.reportList = this.$('#reportList');
 		if (this.model.reports.length > 0)
+		{
 			this.addAll();
+		}
+		
 		return this;
 	},
 	addReport : function(report) {
@@ -140,6 +143,7 @@ var ReportAppView = Backbone.View.extend(
 			model : report,
 			id : 'report-' + report.cid
 		});
+		this.$('#loading').hide();
 		this.reportList.append(view.render().el);
 		report.view = view;
 	},

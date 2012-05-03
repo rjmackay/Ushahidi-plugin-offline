@@ -19,13 +19,8 @@ $(function() {
 			this.onlinereports.settings = this.settings;
 			this.onlinereports.bind('reset', this.resetOffline);
 			
-			if (this.settings.get('username') != '') {
-				this.onlinereports.fetch();
-			}
 			// Messages
 			//this.messages = new MessagesCollection();
-			
-			this.startPolling();
 		},
 		resetOffline : function() {
 			this.onlinereports.each(function(model) {
@@ -47,12 +42,12 @@ $(function() {
 				this.onlinereports.fetch({error: this.fetchError, timeout: this.delay*0.75});
 			}
 			// @todo move reset delay to after fetch finishes
-			clearTimeout(this.pollTimeout);
-			this.pollTimeout = _.delay(this.poll, this.delay);
+			this.startPolling();
 		},
-		startPolling : function() {
+		startPolling : function(delay) {
+			delay = typeof delay !== 'undefined' ? delay : this.delay;
 			clearTimeout(this.pollTimeout);
-			this.pollTimeout = _.delay(this.poll, this.delay);
+			this.pollTimeout = _.delay(this.poll, delay);
 		},
 		stopPolling : function() {
 			clearTimeout(this.pollTimeout);
@@ -61,7 +56,6 @@ $(function() {
 		fetchError : function(jqXHR, textStatus, errorThrown) {
 			if (textStatus.statusText == 'timeout')
 			{
-				console.log('Offline');
 				this.stopPolling();
 				$('#offline').show();
 			}
@@ -131,6 +125,8 @@ $(function() {
 			}
 		},
 		reports : function() {
+			this.model.startPolling(50);
+			
 			if (this.model.settings.get('username') == '')
 			{
 				this.navigate('settings/edit',{trigger: true});
@@ -145,6 +141,8 @@ $(function() {
 			this.appView.setTab('reports');
 		},
 		report_view : function(cid) {
+			this.model.stopPolling();
+			
 			var model = this.model.reports.getByCid(cid);
 			var reportPageView = new ReportPageView({
 				model : model
@@ -152,6 +150,8 @@ $(function() {
 			this.appView.showView(reportPageView);
 		},
 		report_edit : function(cid) {
+			this.model.stopPolling();
+			
 			var model = this.model.reports.getByCid(cid);
 			var reportEditView = new ReportEditView({
 				model : model
@@ -159,10 +159,14 @@ $(function() {
 			this.appView.showView(reportEditView);
 		},
 		report_remove : function(cid) {
+			this.model.stopPolling();
+			
 			//app.model.reports.getByCid(cid).destroy();
 			this.navigate();
 		},
 		settings_edit : function() {
+			this.model.stopPolling();
+			
 			var settingsEditView = new SettingsEditView({
 				model : this.model.settings
 			});
@@ -170,8 +174,7 @@ $(function() {
 			this.appView.setTab('settings');
 		},
 		reconnect : function() {
-			this.model.onlinereports.fetch();
-			this.model.startPolling();
+			this.model.startPolling(50);
 			$('#offline').hide();
 			return false;
 		},
