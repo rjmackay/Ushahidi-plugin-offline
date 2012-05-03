@@ -107,7 +107,7 @@ $(function() {
 			}
 			else
 			{
-				this.navigate('settings/edit');
+				this.navigate('settings/edit',{trigger: true});
 			}
 		},
 		reports : function() {
