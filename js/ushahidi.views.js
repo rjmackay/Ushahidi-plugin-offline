@@ -58,7 +58,7 @@ var ReportPageView = ReportView.extend(
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));
-		this.model.getMap();
+		//this.model.getMap();
 		return this;
 	},
 });
