@@ -20,7 +20,8 @@ $(function() {
 			this.onlinereports.bind('reset', this.resetOffline);
 			
 			// Messages
-			//this.messages = new MessagesCollection();
+			this.messages = new MessagesCollection();
+			this.messages.fetch();
 		},
 		resetOffline : function() {
 			this.onlinereports.each(function(model) {
@@ -112,7 +113,9 @@ $(function() {
 			// @todo: handle actions with events
 			"reports/delete/:number" : "report_remove",
 			"reports/edit/:number" : "report_edit",
-			"settings/edit" : "settings_edit"
+			"settings/edit" : "settings_edit",
+			"messages/:type" : "messages",
+			"messages" : "messages"
 		},
 		home : function() {
 			if (this.model.settings.get('username') != '')
@@ -172,6 +175,23 @@ $(function() {
 			});
 			this.appView.showView(settingsEditView);
 			this.appView.setTab('settings');
+		},
+		messages : function(type) {
+			type = (typeof type == 'undefined') ? 'twitter' : type;
+			this.model.startPolling(50);
+			
+			if (this.model.settings.get('username') == '')
+			{
+				this.navigate('settings/edit',{trigger: true});
+				return;
+			}
+			
+			var messageAppView = new MessageAppView(
+			{
+				model : this.model
+			});
+			this.appView.showView(messageAppView);
+			this.appView.setTab('messages');
 		},
 		reconnect : function() {
 			this.model.startPolling(50);

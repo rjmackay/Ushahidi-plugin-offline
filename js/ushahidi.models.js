@@ -23,6 +23,13 @@ var Settings = Backbone.Model.extend({
 });
 
 var Message = Backbone.Model.extend({
+	urlRoot : '/api/rest/messages',
+});
+var MessagesCollection = Backbone.Collection.extend(
+{
+	model : Message,
+	//localStorage : new Backbone.LocalStorage("MessagesCollection"),
+	url : '/api/rest/messages',
 });
 
 var Report = Backbone.Model.extend(
@@ -124,11 +131,6 @@ var OfflineReportCollection = ReportCollection.extend(
 	sync : Backbone.LocalStorage.sync
 });
 
-var MessagesCollection = Backbone.Collection.extend(
-{
-	model : Message,
-	localStorage : new Backbone.LocalStorage("MessagesCollection")
-});
 
 // Getting a file through XMLHttpRequest as an arraybuffer and creating a Blob
 function getImageFile(url, callback)

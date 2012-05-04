@@ -15,6 +15,9 @@
 	<?php include('app-template.php'); ?>
 		</script>
 		
+		<script type="text/template" id="message-app-template">
+	<?php include('message-app-template.php'); ?>
+		</script>
 		
 		<script type="text/template" id="report-page-template">
 	<?php include('report-page-template.php'); ?>
@@ -22,6 +25,10 @@
 		
 		<script type="text/template" id="report-li-template">
 	<?php include('report-li-template.php'); ?>
+		</script>
+		
+		<script type="text/template" id="message-li-template">
+	<?php include('message-li-template.php'); ?>
 		</script>
 		
 		<script type="text/template" id="report-form-template">
@@ -53,9 +60,9 @@
 						<li>
 							<a href="<?php echo url::site();?>offline#reports" class="active reports"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
 						</li>
-						<!--<li>
-							<a href="<?php echo url::site();?>offline#messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
-						</li>-->
+						<li>
+							<a href="<?php echo url::site();?>offline#messages" class="messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
+						</li>
 					</ul>
 					<!-- sub-nav -->
 					<ul class="sub-nav">

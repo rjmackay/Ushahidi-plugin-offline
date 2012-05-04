@@ -116,6 +116,36 @@ var SettingsEditView = Backbone.View.extend(
 	}
 });
 
+var MessageLIView = Backbone.View.extend(
+{
+	
+	tagName : 'tr',
+	template : _.template($("#message-li-template").html()),
+	initialize : function(args) {
+		_.bindAll(this, "update", "remove");
+		this.model.bind('change', this.update);
+		this.model.bind('remove', this.remove)
+	},
+	render : function() {
+		var context = _.extend(this.model.toJSON(),
+		{
+			cid : this.model.cid
+		});
+		this.$el.html(this.template(context));
+		return this;
+	},
+	remove : function() {
+		this.$el.remove();
+	},
+	update : function(report) {
+		this.render();
+	},
+	onClose : function() {
+		this.model.unbind('change', this.update);
+		this.model.unbind('remove', this.remove);
+	}
+});
+
 /*
  *  Report list view
  */
@@ -153,9 +183,51 @@ var ReportAppView = Backbone.View.extend(
 	},
 	onClose : function() {
 		this.model.reports.unbind('add', this.addReport);
-		this.model.reports.unbind('remove', this.removeReport);
 		this.model.reports.unbind('reset', this.addAll);
 		// Destroy report views
 		this.model.reports.each(function(model) { model.view.close() });
+	}
+});
+
+/*
+ *  Message list view
+ */
+var MessageAppView = Backbone.View.extend(
+{
+	template : _.template($("#message-app-template").html()),
+	initialize : function() {
+		_.bindAll(this, "addMessage", "addAll");
+		this.model.messages.bind('add', this.addMessage);
+		this.model.messages.bind('reset', this.addAll);
+	},
+	render : function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		this.messageList = this.$('#messageList');
+		if (this.model.messages.length > 0)
+		{
+			this.addAll();
+		}
+		
+		return this;
+	},
+	addMessage : function(message) {
+		var view = new MessageLIView(
+		{
+			model : message,
+			id : 'message-' + message.cid
+		});
+		this.$('#loading').hide();
+		this.messageList.append(view.render().el);
+		message.view = view;
+	},
+	addAll : function() {
+		this.messageList.empty();
+		this.model.messages.each(this.addMessage);
+	},
+	onClose : function() {
+		this.model.messages.unbind('add', this.addMessage);
+		this.model.messages.unbind('reset', this.addAll);
+		// Destroy report views
+		this.model.messages.each(function(model) { model.view.close() });
 	}
 });
