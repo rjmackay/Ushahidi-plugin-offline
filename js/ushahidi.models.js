@@ -34,38 +34,11 @@ var MessagesCollection = Backbone.Collection.extend(
 
 var Report = Backbone.Model.extend(
 {
+	baseUrl : 'api/rest/incidents',
 	initialize : function () {
 		_.bindAll(this, 'saveMap','getMap','displayMap');
 		// If offline report get the map
 		//if (this.collection.sync ==  Backbone.LocalStorage.sync) this.getMap();
-	},
-	parse : function(response) {
-		// Check if we're dealing with an API response or localstorage
-		if (response.incident == undefined)
-		{
-			return response;
-		}
-		
-		// Parse json data into the format the API expects posted back
-		data =
-		{
-		}
-		
-		data.id = response.incident.incidentid;
-		//data.incident_id = response.incident.incidentid;
-		data.incident_title = response.incident.incidenttitle;
-		data.incident_description = response.incident.incidentdescription;
-		data.incident_datetime = response.incident.incidentdate;
-		data.incident_mode = response.incident.incidentmode;
-		data.incident_active = response.incident.incidentactive;
-		data.incident_verified = response.incident.incidentverified;
-		data.location_id = response.incident.locationid;
-		data.location_name = response.incident.locationname;
-		data.location_latitude = response.incident.locationlatitude;
-		data.location_longitude = response.incident.locationlongitude;
-		data.incident_category = response.categories;
-		
-		return data;
 	},
 	incident_date : function() {
 		var date = new moment(this.attributes.incident_datetime);
@@ -117,12 +90,8 @@ var ReportCollection = Backbone.Collection.extend(
 
 var OnlineReportCollection = ReportCollection.extend(
 {
-	url : '/api',
-	parse : function(response) {
-		if(response.payload != undefined)
-			return response.payload.incidents;
-	},
-	sync : Backbone.reportSync.sync
+	url : '/api/rest/incidents',
+	sync : Backbone.ajaxSync
 });
 
 var OfflineReportCollection = ReportCollection.extend(
