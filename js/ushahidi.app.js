@@ -6,18 +6,20 @@ $(function() {
 	{
 		initialize : function() {
 			_.bindAll(this, "resetOffline", "poll", "fetchError");
+			
 			// Settings
 			this.settings = new Settings();
 			this.settings.fetch();
 			// @todo: Add check for admin / member later
 			
 			// Reports setup
-			this.reports = new OfflineReportCollection();
-			this.reports.fetch();
+			//this.reports = new OfflineReportCollection();
+			//this.reports.fetch();
 			
 			this.onlinereports = new OnlineReportCollection();
 			this.onlinereports.settings = this.settings;
-			this.onlinereports.bind('reset', this.resetOffline);
+			//this.onlinereports.bind('reset', this.resetOffline);
+			this.reports = this.onlinereports;
 			
 			// Messages
 			this.messages = new MessagesCollection();
@@ -42,6 +44,7 @@ $(function() {
 		poll : function() {
 			if (this.settings.get('username') != '') {
 				this.onlinereports.fetch({error: this.fetchError, timeout: this.delay*0.75});
+				//this.messages.fetch({error: this.fetchError, timeout: this.delay*0.75});
 			}
 			// @todo move reset delay to after fetch finishes
 			this.startPolling();
