@@ -22,14 +22,29 @@ var Settings = Backbone.Model.extend({
 	}
 });
 
+var syncWithAuth = function(method, model, options, error) {
+		//return Backbone.getSyncMethod(model).apply(this, [method, model, options, error]);
+		var settings = model.settings || model.collection.settings;
+
+		// Add username / password
+		if (!options.username)
+		{
+			options.username = settings.get('username'),
+			options.password = settings.get('password')
+		}
+		
+		Backbone.sync.apply(this, [method, model, options, error]);
+};
+
 var Message = Backbone.Model.extend({
-	urlRoot : '/api/rest/messages',
+	urlRoot : '/api/rest/messages'
 });
 var MessagesCollection = Backbone.Collection.extend(
 {
 	model : Message,
 	//localStorage : new Backbone.LocalStorage("MessagesCollection"),
 	url : '/api/rest/messages',
+	sync : syncWithAuth
 });
 
 var Report = Backbone.Model.extend(
@@ -41,16 +56,16 @@ var Report = Backbone.Model.extend(
 		//if (this.collection.sync ==  Backbone.LocalStorage.sync) this.getMap();
 	},
 	incident_date : function() {
-		var date = new moment(this.attributes.incident_datetime);
+		var date = new moment(this.attributes.incident_date);
 		return date.format('YYYY/MM/DD');
 	},
 	categories : function() {
-		incident_category = [];
-		for(c in this.attributes.incident_category)
+		categories = [];
+		for(c in this.attributes.category)
 		{
-			incident_category.push(this.attributes.incident_category[c].category.title);
+			categories.push(this.attributes.category[c].category_title);
 		}
-		return incident_category.join(',');
+		return categories.join(', ');
 	},
 	// Map image handling;
 	getMap : function() {
@@ -85,13 +100,14 @@ var Report = Backbone.Model.extend(
 var ReportCollection = Backbone.Collection.extend(
 {
 	model : Report,
-	localStorage : new Backbone.LocalStorage("ReportCollection")
+	//localStorage : new Backbone.LocalStorage("ReportCollection")
 });
 
 var OnlineReportCollection = ReportCollection.extend(
 {
 	url : '/api/rest/incidents',
-	sync : Backbone.ajaxSync
+	sync : syncWithAuth,
+	localStorage : null
 });
 
 var OfflineReportCollection = ReportCollection.extend(

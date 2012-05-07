@@ -21,6 +21,7 @@ $(function() {
 			
 			// Messages
 			this.messages = new MessagesCollection();
+			this.messages.settings = this.settings;
 			this.messages.fetch();
 		},
 		resetOffline : function() {

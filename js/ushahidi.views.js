@@ -24,7 +24,6 @@ var ReportView = Backbone.View.extend(
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
-			incident_date : this.model.incident_date(),
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));
@@ -54,7 +53,6 @@ var ReportPageView = ReportView.extend(
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
-			incident_date : this.model.incident_date(),
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));
