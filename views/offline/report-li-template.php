@@ -4,12 +4,12 @@
 				<td class="col-2">
 					<div class="post">
 						<h4>
-							<a href="#reports/view/<%- cid %>" class="more">
+							<a href="#reports/view/<%- id %>" class="more">
 								<%- incident_title %>
 							</a>
 						</h4>
 						<p><%- _(incident_description).escape().substr(0,150) %>... 
-							<a href="#reports/view/<%- cid %>" class="more">
+							<a href="#reports/view/<%- id %>" class="more">
 								<?php echo Kohana::lang('ui_main.more');?>
 							</a>
 						</p>
@@ -37,9 +37,9 @@
 				<td class="col-4">
 					<ul>
 						<?php if (Kohana::config('offline.enable_editing')) { ?>
-						<li class="none-separator"><a href="#reports/approve/<%- cid %>" <% if (incident_active == 1) print(" class=\"status_yes\"") %>><?php echo Kohana::lang('ui_main.approve');?></a></li>
-						<li><a href="#reports/verify/<%- cid %>" <% if (incident_verified == 1) print(" class=\"status_yes\"") %> ><?php echo Kohana::lang('ui_main.verify');?></a></li>
-						<li><a href="#reports/delete/<%- cid %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+						<li class="none-separator"><a href="#reports/approve/<%- id %>" <% if (incident_active == 1) print(" class=\"status_yes\"") %>><?php echo Kohana::lang('ui_main.approve');?></a></li>
+						<li><a href="#reports/verify/<%- id %>" <% if (incident_verified == 1) print(" class=\"status_yes\"") %> ><?php echo Kohana::lang('ui_main.verify');?></a></li>
+						<li><a href="#reports/delete/<%- id %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
 						<?php } ?>
 					</ul>
 				</td>

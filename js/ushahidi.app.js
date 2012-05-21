@@ -113,7 +113,7 @@ $(function() {
 			});
 			this.model = new AppModel();
 			
-		_.bindAll(this, "reconnect");
+			_.bindAll(this, "reconnect");
 			$('.reconnect').click(this.reconnect);
 		},
 		routes :
@@ -154,10 +154,10 @@ $(function() {
 			this.appView.showView(reportAppView);
 			this.appView.setTab('reports');
 		},
-		report_view : function(cid) {
+		report_view : function(id) {
 			this.model.stopPolling();
 			
-			var model = this.model.reports.getByCid(cid);
+			var model = this.model.reports.get(id);
 			var reportPageView = new ReportPageView({
 				model : model
 			});
