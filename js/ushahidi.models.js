@@ -22,6 +22,9 @@ var Settings = Backbone.Model.extend({
 	}
 });
 
+/*
+ * Quick sync wrapper to add authentication.
+ */
 var syncWithAuth = function(method, model, options, error) {
 		//return Backbone.getSyncMethod(model).apply(this, [method, model, options, error]);
 		var settings = model.settings || model.collection.settings;
@@ -29,8 +32,8 @@ var syncWithAuth = function(method, model, options, error) {
 		// Add username / password
 		if (!options.username)
 		{
-			options.username = settings.get('username'),
-			options.password = settings.get('password')
+			options.username = settings.get('username');
+			options.password = settings.get('password');
 		}
 		
 		Backbone.sync.apply(this, [method, model, options, error]);
@@ -100,6 +103,8 @@ var Report = Backbone.Model.extend(
 var ReportCollection = Backbone.Collection.extend(
 {
 	model : Report,
+	url : '/api/rest/incidents',
+	sync : syncWithAuth
 	//localStorage : new Backbone.LocalStorage("ReportCollection")
 });
 
