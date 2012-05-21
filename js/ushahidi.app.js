@@ -43,8 +43,15 @@ $(function() {
 		delay : 6000,
 		poll : function() {
 			if (this.settings.get('username') != '') {
-				this.onlinereports.fetch({error: this.fetchError, timeout: this.delay*0.75});
-				//this.messages.fetch({error: this.fetchError, timeout: this.delay*0.75});
+				options = {
+					username : this.settings.get('username'),
+					password : this.settings.get('password'),
+					error: this.fetchError,
+					timeout: this.delay*0.75
+				};
+				
+				this.reports.fetch(options);
+				this.messages.fetch(options);
 			}
 			// @todo move reset delay to after fetch finishes
 			this.startPolling();
