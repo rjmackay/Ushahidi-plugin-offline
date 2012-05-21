@@ -19,8 +19,10 @@
 				<td class="col-3"><%- message_date %></td>
 				<td class="col-4">
 					<ul>
+						<?php if (Kohana::config('offline.enable_editing')) { ?>
 						<li class="none-separator"><?php echo Kohana::lang('ui_admin.create_report'); ?></li>
 						<li class="none-separator"><?php echo Kohana::lang('ui_admin.view_report'); ?></li>
 						<li><?php echo Kohana::lang('ui_main.delete'); ?></li>
+						<?php } ?>
 					</ul>
 				</td>

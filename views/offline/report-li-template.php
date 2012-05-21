@@ -36,8 +36,10 @@
 				<td class="col-3"><%- incident_date %></td>
 				<td class="col-4">
 					<ul>
+						<?php if (Kohana::config('offline.enable_editing')) { ?>
 						<li class="none-separator"><a href="#reports/approve/<%- cid %>" <% if (incident_active == 1) print(" class=\"status_yes\"") %>><?php echo Kohana::lang('ui_main.approve');?></a></li>
 						<li><a href="#reports/verify/<%- cid %>" <% if (incident_verified == 1) print(" class=\"status_yes\"") %> ><?php echo Kohana::lang('ui_main.verify');?></a></li>
 						<li><a href="#reports/delete/<%- cid %>" class="del"><?php echo Kohana::lang('ui_main.delete');?></a></li>
+						<?php } ?>
 					</ul>
 				</td>

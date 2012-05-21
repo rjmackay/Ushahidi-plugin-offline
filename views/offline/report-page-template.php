@@ -2,11 +2,13 @@
 				<a href="#reports"><?php echo Kohana::lang('ui_main.view_reports');?></a>
 				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
 		</h2>
+		<?php if (Kohana::config('offline.enable_editing')) { ?>
 		<div class="tab"><ul>
 			<li><a class="active">View</a></li>
 			<li><a href="#reports/edit/<%- cid %>">Edit</a></li>
 			<li><a href="#reports/delete/<%- cid %>">Delete</a></li>
 		</ul></div>
+		<?php } ?>
 		<!--<%- incident_title %>
 		<%- id %>-->
 		<div class="f-col-full">
