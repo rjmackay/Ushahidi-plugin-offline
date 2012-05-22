@@ -24,6 +24,7 @@ var ReportView = Backbone.View.extend(
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
+			id : this.model.id,
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));
@@ -49,16 +50,17 @@ var ReportPageView = ReportView.extend(
 {
 	template : _.template($("#report-page-template").html()),
 	
-	render : function() {
+	/*render : function() {
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
+			id : this.model.id,
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));
-		//this.model.getMap();
+		this.model.getMap();
 		return this;
-	},
+	},*/
 });
 var ReportEditView = ReportView.extend(
 {
@@ -73,6 +75,7 @@ var ReportEditView = ReportView.extend(
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
+			id : this.model.id,
 			incident_date : this.model.incident_date(),
 			categories : this.model.categories()
 		});

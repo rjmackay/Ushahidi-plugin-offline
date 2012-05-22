@@ -22,32 +22,17 @@ var Settings = Backbone.Model.extend({
 	}
 });
 
-/*
- * Quick sync wrapper to add authentication.
- */
-var syncWithAuth = function(method, model, options, error) {
-		//return Backbone.getSyncMethod(model).apply(this, [method, model, options, error]);
-		var settings = model.settings || model.collection.settings;
-
-		// Add username / password
-		if (!options.username)
-		{
-			options.username = settings.get('username');
-			options.password = settings.get('password');
-		}
-		
-		Backbone.sync.apply(this, [method, model, options, error]);
-};
-
 var Message = Backbone.Model.extend({
 	urlRoot : '/api/rest/messages'
 });
 var MessagesCollection = Backbone.Collection.extend(
 {
 	model : Message,
-	//localStorage : new Backbone.LocalStorage("MessagesCollection"),
 	url : '/api/rest/messages',
-	sync : syncWithAuth
+	initialize : function ()
+	{
+		this.storage = new Offline.Storage('MessagesCollection', this, {autoPush: true});
+	}
 });
 
 var Report = Backbone.Model.extend(
@@ -104,23 +89,11 @@ var ReportCollection = Backbone.Collection.extend(
 {
 	model : Report,
 	url : '/api/rest/incidents',
-	sync : syncWithAuth
-	//localStorage : new Backbone.LocalStorage("ReportCollection")
+	initialize : function ()
+	{
+		this.storage = new Offline.Storage('ReportCollction', this, {autoPush: true});
+	}
 });
-
-var OnlineReportCollection = ReportCollection.extend(
-{
-	url : '/api/rest/incidents',
-	sync : syncWithAuth,
-	localStorage : null
-});
-
-var OfflineReportCollection = ReportCollection.extend(
-{
-	localStorage : new Backbone.LocalStorage("ReportCollection"),
-	sync : Backbone.LocalStorage.sync
-});
-
 
 // Getting a file through XMLHttpRequest as an arraybuffer and creating a Blob
 function getImageFile(url, callback)

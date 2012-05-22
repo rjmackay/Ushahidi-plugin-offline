@@ -38,6 +38,7 @@
 		<script type="text/template" id="settings-edit-template">
 	<?php include('settings-edit-template.php'); ?>
 		</script>
+		<script src="/plugins/offline/js/backbone_offline.js"></script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>

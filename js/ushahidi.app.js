@@ -5,7 +5,8 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
-			_.bindAll(this, "resetOffline", "poll", "fetchError");
+			_.bindAll(this, "poll", "fetchError");
+			
 			
 			// Settings
 			this.settings = new Settings();
@@ -13,45 +14,20 @@ $(function() {
 			// @todo: Add check for admin / member later
 			
 			// Reports setup
-			//this.reports = new OfflineReportCollection();
+			this.reports = new ReportCollection();
+			this.reports.settings = this.settings;
 			//this.reports.fetch();
-			
-			this.onlinereports = new OnlineReportCollection();
-			this.onlinereports.settings = this.settings;
-			//this.onlinereports.bind('reset', this.resetOffline);
-			this.reports = this.onlinereports;
 			
 			// Messages
 			this.messages = new MessagesCollection();
 			this.messages.settings = this.settings;
-			this.messages.fetch();
-		},
-		resetOffline : function() {
-			this.onlinereports.each(function(model) {
-				offlinemodel = this.reports.get(model.id);
-				if (offlinemodel == undefined) {
-					this.reports.create(model);
-				} else {
-					// @todo make sure we're clearing blank fields
-					offlinemodel.set(model.toJSON());
-				}
-			}, this);
-			this.reports.each(function(model) {
-				model.save();
-			});
+			//this.messages.fetch();
 		},
 		delay : 6000,
 		poll : function() {
 			if (this.settings.get('username') != '') {
-				options = {
-					username : this.settings.get('username'),
-					password : this.settings.get('password'),
-					error: this.fetchError,
-					timeout: this.delay*0.75
-				};
-				
-				this.reports.fetch(options);
-				this.messages.fetch(options);
+				this.reports.storage.sync.incremental();
+				this.messages.storage.sync.incremental();
 			}
 			// @todo move reset delay to after fetch finishes
 			this.startPolling();
