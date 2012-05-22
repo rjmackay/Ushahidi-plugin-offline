@@ -5,7 +5,7 @@ $(function() {
 	var AppModel = Backbone.Model.extend(
 	{
 		initialize : function() {
-			_.bindAll(this, "poll", "fetchError");
+			_.bindAll(this, "poll");
 			
 			
 			// Settings
