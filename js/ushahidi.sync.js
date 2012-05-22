@@ -50,5 +50,23 @@ Offline.Sync.prototype.ajax = function(method, model, options) {
 	}
 };
 
+// From app - could be used for custom online/offline behaviour
+/*
+reconnect : function() {
+	this.model.online = true;
+	this.model.startPolling(50);
+	$('#offline').hide();
+	return false;
+},
+fetchError : function(jqXHR, textStatus, errorThrown) {
+	if (textStatus.statusText == 'timeout')
+	{
+		this.stopPolling();
+		this.online = false;
+		$('#offline').show();
+	}
+}
+*/
+
 // Make sure we've got the right backbone sync.
 Backbone.sync = Offline.sync;

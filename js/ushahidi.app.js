@@ -41,13 +41,6 @@ $(function() {
 			clearTimeout(this.pollTimeout);
 		},
 		// @todo make this global
-		fetchError : function(jqXHR, textStatus, errorThrown) {
-			if (textStatus.statusText == 'timeout')
-			{
-				this.stopPolling();
-				$('#offline').show();
-			}
-		}
 	});
 
 	/*
@@ -89,8 +82,8 @@ $(function() {
 			});
 			this.model = new AppModel();
 			
-			_.bindAll(this, "reconnect");
-			$('.reconnect').click(this.reconnect);
+			//_.bindAll(this, "reconnect");
+			//$('.reconnect').click(this.reconnect);
 		},
 		routes :
 		{
@@ -179,12 +172,7 @@ $(function() {
 			});
 			this.appView.showView(messageAppView);
 			this.appView.setTab('messages');
-		},
-		reconnect : function() {
-			this.model.startPolling(50);
-			$('#offline').hide();
-			return false;
-		},
+		}
 	});
 
 	var UshahidiApp = new AppRouter(
