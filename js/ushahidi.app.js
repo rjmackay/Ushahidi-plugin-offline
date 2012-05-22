@@ -91,7 +91,6 @@ $(function() {
 			"reports" : "reports",
 			"reports/view/:number" : "report_view",
 			// @todo: handle actions with events
-			"reports/delete/:number" : "report_remove",
 			"reports/edit/:number" : "report_edit",
 			"settings/edit" : "settings_edit",
 			"messages/:type" : "messages",
@@ -140,12 +139,6 @@ $(function() {
 				model : model
 			});
 			this.appView.showView(reportEditView);
-		},
-		report_remove : function(cid) {
-			this.model.stopPolling();
-			
-			//app.model.reports.getByCid(cid).destroy();
-			this.navigate();
 		},
 		settings_edit : function() {
 			this.model.stopPolling();
