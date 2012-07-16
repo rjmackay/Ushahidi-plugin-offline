@@ -3,13 +3,13 @@
 				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
 		</h2>
 		<div class="tab"><ul>
-			<li><a href="#reports/view/<%- cid %>">View</a></li>
+			<li><a href="#reports/view/<%- id %>">View</a></li>
 			<li><a class="active">Edit</a></li>
-			<li><a href="#reports/delete/<%- cid %>">Delete</a></li>
+			<li><a href="#reports/delete/<%- id %>">Delete</a></li>
 		</ul></div>
 		<!--<%- incident_title %>
 		<%- id %>-->
-		<div class="f-col-full"><form method="get" id="report-edit-form" actio=''>
+		<div class="f-col-full"><form method="get" id="report-edit-form" action=''>
 	
 			<div class="report-title">
 				<label for="incident_title"><?php echo Kohana::lang('ui_main.title'); ?></label>
@@ -23,7 +23,7 @@
 	
 			<div class='row'>
 				<h4><?php echo Kohana::lang('ui_main.date');?></h4>
-				<%- incident_datetime %>
+				<%- incident_date %>
 			</div>
 	
 			<div class="row">
@@ -38,7 +38,7 @@
 	
 			<div class='row'>
 				<h4><?php echo Kohana::lang('ui_main.location');?></h4>
-				<%- location_name %>
+				<%- location.location_name %>
 				<div><img src="" id="report-<%- cid %>-img" /></div>
 			</div>
 	

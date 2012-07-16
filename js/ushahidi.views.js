@@ -87,7 +87,7 @@ var ReportEditView = ReportView.extend(
 		var title = this.$('.field-incident-title').val();
 
 		this.model.set('incident_title', title);
-		window.app.navigate('reports/view/'+this.model.cid,{trigger: true});
+		window.app.navigate('reports/view/'+this.model.id, {trigger: true});
 		return false;
 	}
 });

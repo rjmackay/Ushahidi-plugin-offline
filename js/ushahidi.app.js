@@ -131,10 +131,10 @@ $(function() {
 			});
 			this.appView.showView(reportPageView);
 		},
-		report_edit : function(cid) {
+		report_edit : function(id) {
 			this.model.stopPolling();
 			
-			var model = this.model.reports.getByCid(cid);
+			var model = this.model.reports.get(id);
 			var reportEditView = new ReportEditView({
 				model : model
 			});
