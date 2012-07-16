@@ -2,6 +2,12 @@
 * Custom Ushahidi Backbone.sync tweaks
 */
 
+/* Create basic auth token */
+function make_base_auth(user, password) {
+	var tok = user + ':' + password;
+	var hash = btoa(tok);
+	return "Basic " + hash;
+}
 
 /*
  * Quick sync wrapper to add authentication.
@@ -12,8 +18,10 @@ Offline.syncWithAuth = function(method, model, options, error) {
 	// Add username / password
 	if (!options.username)
 	{
-		options.username = settings.get('username');
-		options.password = settings.get('password');
+		options.beforeSend = function(xhr, jqsettings)
+		{
+			xhr.setRequestHeader('Authorization', make_base_auth(settings.get('username'), settings.get('password')));
+		}
 	}
 	
 	Backbone.ajaxSync.apply(this, [method, model, options, error]);
@@ -40,8 +48,10 @@ Offline.Sync.prototype.ajax = function(method, model, options) {
 		// add username / password
 		if (!options.username)
 		{
-			options.username = settings.get('username');
-			options.password = settings.get('password');
+			options.beforeSend = function(xhr, jqsettings)
+			{
+				xhr.setRequestHeader('Authorization', make_base_auth(settings.get('username'), settings.get('password')));
+			}
 		}
 		
 		return Backbone.ajaxSync(method, model, options);
