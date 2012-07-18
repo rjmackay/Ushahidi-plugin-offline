@@ -76,7 +76,6 @@ var ReportEditView = ReportView.extend(
 		{
 			cid : this.model.cid,
 			id : this.model.id,
-			incident_date : this.model.incident_date(),
 			categories : this.model.categories()
 		});
 		this.$el.html(this.template(context));

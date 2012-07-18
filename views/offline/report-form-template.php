@@ -7,8 +7,6 @@
 			<li><a class="active">Edit</a></li>
 			<li><a href="#reports/delete/<%- id %>">Delete</a></li>
 		</ul></div>
-		<!--<%- incident_title %>
-		<%- id %>-->
 		<div class="f-col-full"><form method="get" id="report-edit-form" action=''>
 	
 			<div class="report-title">
