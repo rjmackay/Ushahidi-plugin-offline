@@ -7,7 +7,6 @@ $(function() {
 		initialize : function() {
 			_.bindAll(this, "poll");
 			
-			
 			// Settings
 			this.settings = new Settings();
 			this.settings.fetch();
@@ -16,18 +15,19 @@ $(function() {
 			// Reports setup
 			this.reports = new ReportCollection();
 			this.reports.settings = this.settings;
-			//this.reports.fetch();
+			this.reports.fetch({local : true});
 			
 			// Messages
 			this.messages = new MessagesCollection();
 			this.messages.settings = this.settings;
-			//this.messages.fetch();
+			this.messages.fetch({local : true});
 		},
 		delay : 6000,
 		poll : function() {
 			if (this.settings.get('username') != '') {
-				this.reports.storage.sync.incremental();
-				this.messages.storage.sync.incremental();
+				// Bind via reset callback to make sure localstorage loads first
+				this.reports.resetCallback.add(this.reports.storage.sync.incremental, this.reports.storage.sync);
+				this.messages.resetCallback.add(this.messages.storage.sync.incremental, this.messages.storage.sync);
 			}
 			// @todo move reset delay to after fetch finishes
 			this.startPolling();
@@ -115,30 +115,36 @@ $(function() {
 				return;
 			}
 			
-			var reportAppView = new ReportAppView(
-			{
-				model : this.model
-			});
-			this.appView.showView(reportAppView);
-			this.appView.setTab('reports');
+			this.model.reports.resetCallback.add(function () {
+				var reportAppView = new ReportAppView(
+				{
+					model : this.model
+				});
+				this.appView.showView(reportAppView);
+				this.appView.setTab('reports');
+			}, this);
 		},
 		report_view : function(id) {
 			this.model.stopPolling();
 			
-			var model = this.model.reports.get(id);
-			var reportPageView = new ReportPageView({
-				model : model
-			});
-			this.appView.showView(reportPageView);
+			this.model.reports.resetCallback.add(function() {
+				var model = this.model.reports.get(id);
+				var reportPageView = new ReportPageView({
+					model : model
+				});
+				this.appView.showView(reportPageView);
+			}, this);
 		},
 		report_edit : function(id) {
 			this.model.stopPolling();
 			
-			var model = this.model.reports.get(id);
-			var reportEditView = new ReportEditView({
-				model : model
-			});
-			this.appView.showView(reportEditView);
+			this.model.reports.resetCallback.add(function() {
+				var model = this.model.reports.get(id);
+				var reportEditView = new ReportEditView({
+					model : model
+				});
+				this.appView.showView(reportEditView);
+			}, this);
 		},
 		settings_edit : function() {
 			this.model.stopPolling();
@@ -159,12 +165,14 @@ $(function() {
 				return;
 			}
 			
-			var messageAppView = new MessageAppView(
-			{
-				model : this.model
-			});
-			this.appView.showView(messageAppView);
-			this.appView.setTab('messages');
+			this.model.messages.resetCallback.add(function() {
+				var messageAppView = new MessageAppView(
+				{
+					model : this.model
+				});
+				this.appView.showView(messageAppView);
+				this.appView.setTab('messages');
+			}, this);
 		}
 	});
 
