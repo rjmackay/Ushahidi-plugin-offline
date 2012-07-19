@@ -117,6 +117,31 @@ var Report = Backbone.Model.extend(
 		{
 			imgEl.attr('src',this.get('map'));
 		}
+	},
+	// Actions
+	toggleVerified : function()
+	{
+		if (this.get('incident_verified') == 1)
+		{
+			this.set('incident_verified', 0);
+		}
+		else
+		{
+			this.set('incident_verified', 1);
+		}
+		this.save();
+	},
+	toggleActive : function()
+	{
+		if (this.get('incident_active') == 1)
+		{
+			this.set('incident_active', 0);
+		}
+		else
+		{
+			this.set('incident_active', 1);
+		}
+		this.save();
 	}
 });
 

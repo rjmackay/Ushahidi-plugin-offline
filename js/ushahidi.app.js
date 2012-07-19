@@ -92,6 +92,8 @@ $(function() {
 			"reports/view/:number" : "report_view",
 			// @todo: handle actions with events
 			"reports/edit/:number" : "report_edit",
+			"reports/approve/:number" : "report_approve",
+			"reports/verify/:number" : "report_verify",
 			"settings/edit" : "settings_edit",
 			"messages/:type" : "messages",
 			"messages" : "messages"
@@ -144,6 +146,20 @@ $(function() {
 					model : model
 				});
 				this.appView.showView(reportEditView);
+			}, this);
+		},
+		report_approve : function(id) {
+			this.model.reports.resetCallback.add(function() {
+				var model = this.model.reports.get(id);
+				model.toggleActive();
+				this.navigate('reports',{trigger: true});
+			}, this);
+		},
+		report_verify : function(id) {
+			this.model.reports.resetCallback.add(function() {
+				var model = this.model.reports.get(id);
+				model.toggleVerified();
+				this.navigate('reports',{trigger: true});
 			}, this);
 		},
 		settings_edit : function() {
