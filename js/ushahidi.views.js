@@ -83,9 +83,25 @@ var ReportEditView = ReportView.extend(
 	},
 	save : function() {
 		console.log('saving');
-		var title = this.$('.field-incident-title').val();
-
-		this.model.set('incident_title', title);
+		data = {};
+		_.each(this.$('form').serializeArray(), function (item) { data[item.name] = item.value; } );
+		
+		data.location = this.model.get('location')
+		data.location.location_name = data['location.location_name'],
+		data.location.latitude = data['location.latitude'];
+		data.location.longitude = data['location.longitude'];
+		
+		delete data['location.location_name'];
+		delete data['location.latitude'];
+		delete data['location.longitude'];
+		
+		if (data.incident_verified == undefined)
+			data.incident_verified = 0;
+		if (data.incident_active == undefined)
+			data.incident_active = 0;
+		
+		this.model.set(data);
+		this.model.save();
 		window.app.navigate('reports/view/'+this.model.id, {trigger: true});
 		return false;
 	}

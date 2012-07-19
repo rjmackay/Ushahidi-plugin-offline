@@ -3,6 +3,7 @@
 	<head>
 		<title>Ushahidi Report Tool</title>
 		<link rel="stylesheet" type="text/css" href="/media/css/admin/all.css" />
+		<link rel="stylesheet" type="text/css" href="/plugins/offline/css/offline.css" />
 		<!-- -->
 		<script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
 		<script src="/plugins/offline/js/moment.min.js"></script>

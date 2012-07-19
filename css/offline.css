@@ -1,0 +1,29 @@
+
+.report-form label {
+	font-weight:bold;
+	color:#404040;
+	font-size:15px;
+	line-height:18px;
+	padding:16px 0 4px;
+	display: block;
+}
+
+.report-form label.inline {
+	display: inline;
+	font-size: 12px;
+	padding: 0;
+	color: #555;
+	font-weight: normal;
+}
+
+.required,
+.report-form label .required {
+  color: #CC1830;
+  font-size: 15px;
+  font-weight: normal;
+}
+
+.report-form input.text, .report-form input.file, .tab_form_item input.text
+{
+	float: none;
+}
