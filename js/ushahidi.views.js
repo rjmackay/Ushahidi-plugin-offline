@@ -55,10 +55,10 @@ var ReportPageView = ReportView.extend(
 		{
 			cid : this.model.cid,
 			id : this.model.id,
-			categories : this.model.categories()
+			categories : this.model.categories(),
 		});
 		this.$el.html(this.template(context));
-		this.model.getMap();
+		//this.model.getMap();
 		return this;
 	},*/
 });

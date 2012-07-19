@@ -10,6 +10,7 @@
 		<script src="/plugins/offline/js/underscore-min.js"></script>
 		<script src="/plugins/offline/js/backbone-min.js"></script>
 		<script src="/plugins/offline/js/backbone.localStorage.js"></script>
+		<script src="/plugins/offline/js/backbone_offline.js"></script>
 		
 		<script type="text/template" id="app-template">
 	<?php include('app-template.php'); ?>
@@ -38,7 +39,6 @@
 		<script type="text/template" id="settings-edit-template">
 	<?php include('settings-edit-template.php'); ?>
 		</script>
-		<script src="/plugins/offline/js/backbone_offline.js"></script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>
