@@ -44,15 +44,14 @@ var Report = Backbone.Model.extend(
 		//if (this.collection.sync ==  Backbone.LocalStorage.sync) this.getMap();
 	},
 	incident_date : function() {
-		var date = new moment(this.attributes.incident_date);
+		var date = new moment(this.get('incident_date'));
 		return date.format('YYYY/MM/DD');
 	},
 	categories : function() {
 		categories = [];
-		for(c in this.attributes.category)
-		{
-			categories.push(this.attributes.category[c].category_title);
-		}
+		_.each(this.get('category'), function(cat) {
+			categories.push(cat.category_title);
+		});
 		return categories.join(', ');
 	},
 	// Map image handling;
