@@ -101,6 +101,10 @@ var ReportEditView = ReportView.extend(
 			data.incident_active = 0;
 		
 		this.model.set(data);
+		
+		if (this.model.id == null)
+			window.app.model.reports.add(this.model);
+		
 		this.model.save();
 		window.app.navigate('reports/view/'+this.model.id, {trigger: true});
 		return false;

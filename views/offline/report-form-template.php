@@ -1,16 +1,19 @@
 		<h2>
 				<a href="#reports"><?php echo Kohana::lang('ui_main.view_reports');?></a>
-				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
+				<% if(sid || id) { %><a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>
+				<% } else { %><?php echo Kohana::lang('ui_main.create_report');?><% } %>
 		</h2>
+		<% if(sid || id) { %>
 		<div class="tab"><ul>
 			<li><a href="#reports/view/<%- id %>">View</a></li>
 			<li><a class="active">Edit</a></li>
 			<li><a href="#reports/delete/<%- id %>">Delete</a></li>
 		</ul></div>
+		<% } %>
 		
 		<div class="f-col-full"><form method="get" id="report-edit-form" class="report-form" action=''>
 	
-			<h2><%- incident_title %> (#<%- sid %>)</h2>
+			<h2><% if(sid || id) { %><%- incident_title %> (#<%- sid %>) <% } else { %> New Report <% } %></h2>
 	
 			<div class="report-title">
 				<label for="incident_title"><?php echo Kohana::lang('ui_main.title'); ?></label>

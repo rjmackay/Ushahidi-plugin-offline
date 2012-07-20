@@ -1,6 +1,6 @@
 		<h2>
 				<a href="#reports"><?php echo Kohana::lang('ui_main.view_reports');?></a>
-				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
+				<?php if (Kohana::config('offline.enable_editing')) { ?><a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a><?php } ?>
 		</h2>
 		<?php if (Kohana::config('offline.enable_editing')) { ?>
 		<div class="tab"><ul>

@@ -90,8 +90,8 @@ $(function() {
 			"" : "home",
 			"reports" : "reports",
 			"reports/view/:number" : "report_view",
-			// @todo: handle actions with events
 			"reports/edit/:number" : "report_edit",
+			"reports/add" : "report_add",
 			"reports/approve/:number" : "report_approve",
 			"reports/verify/:number" : "report_verify",
 			"settings/edit" : "settings_edit",
@@ -142,6 +142,15 @@ $(function() {
 			
 			this.model.reports.resetCallback.add(function() {
 				var model = this.model.reports.get(id);
+				var reportEditView = new ReportEditView({
+					model : model
+				});
+				this.appView.showView(reportEditView);
+			}, this);
+		},
+		report_add : function(id) {
+			this.model.reports.resetCallback.add(function() {
+				var model = new Report();
 				var reportEditView = new ReportEditView({
 					model : model
 				});

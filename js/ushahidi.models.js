@@ -74,6 +74,30 @@ var MessagesCollection = Backbone.Collection.extend(
 var Report = Backbone.Model.extend(
 {
 	baseUrl : 'api/rest/incidents',
+	defaults : {
+		'incident_title' : '',
+		'incident_description' : '',
+		'incident_date' : '',
+		'incident_verified' : 0,
+		'incident_active' : 0,
+		'sid' : null,
+		'id' : null,
+		'location' : {
+			'location_name' : '',
+			'latitude' : 0,
+			'longitude' : 0,
+			'country_id' : null,
+		},
+		'categories' : [],
+		'incident_persion' : {
+			'person_first' : '',
+			'person_last' : '',
+			'person_phone' : '',
+			'person_email' : ''
+		},
+		'media' : [],
+		'user' : {},
+	},
 	initialize : function () {
 		_.bindAll(this, 'saveMap','getMap','displayMap');
 		// If offline report get the map
