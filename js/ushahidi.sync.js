@@ -13,7 +13,7 @@ function make_base_auth(user, password) {
  * Quick sync wrapper to add authentication.
  */
 Offline.syncWithAuth = function(method, model, options, error) {
-	var settings = model.settings || model.collection.settings;
+	var settings = model.settings || model.collection.settings || window.app.model.settings;
 
 	// Add username / password
 	if (!options.username)
@@ -43,7 +43,7 @@ Offline.Sync.prototype.ajax = function(method, model, options) {
 	if (Offline.onLine()) {
 		this.prepareOptions(options);
 
-		var settings = model.settings || model.collection.settings;
+		var settings = model.settings || model.collection.settings || window.app.model.settings;
 		
 		// add username / password
 		if (!options.username)

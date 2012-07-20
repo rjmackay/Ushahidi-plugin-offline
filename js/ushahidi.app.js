@@ -94,6 +94,7 @@ $(function() {
 			"reports/add" : "report_add",
 			"reports/approve/:number" : "report_approve",
 			"reports/verify/:number" : "report_verify",
+			"reports/delete/:number" : "report_delete",
 			"settings/edit" : "settings_edit",
 			"messages/:type" : "messages",
 			"messages" : "messages"
@@ -168,6 +169,17 @@ $(function() {
 			this.model.reports.resetCallback.add(function() {
 				var model = this.model.reports.get(id);
 				model.toggleVerified();
+				this.navigate('reports',{trigger: true});
+			}, this);
+		},
+		report_delete : function(id) {
+			this.model.reports.resetCallback.add(function() {
+				var model = this.model.reports.get(id);
+				
+				var answer = confirm('Are you sure you want to delete?');
+				if (answer) {
+					model.destroy({wait: true});
+				}
 				this.navigate('reports',{trigger: true});
 			}, this);
 		},
