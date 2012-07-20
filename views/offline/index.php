@@ -40,6 +40,10 @@
 		<script type="text/template" id="settings-edit-template">
 	<?php include('settings-edit-template.php'); ?>
 		</script>
+		<script>
+			var baseURL = '<?php echo url::base(); ?>';
+			window.baseURL = baseURL;
+		</script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>
