@@ -215,11 +215,11 @@ var AppRouter = Backbone.Router.extend(
 		
 		var messages;
 		if (filter == 'twitter')
-			messages = new ReportCollection(this.model.messages.where({'message_type' : 'Twitter'}));
+			messages = new MessagesCollection(this.model.messages.where({'message_service' : 'Twitter'}));
 		else if (filter == 'sms')
-			messages = new ReportCollection(this.model.messages.where({'message_type' : 'SMS'}));
+			messages = new MessagesCollection(this.model.messages.where({'message_service' : 'SMS'}));
 		else if (filter == 'email')
-			messages = new ReportCollection(this.model.messages.where({'message_type' : 'Email'}));
+			messages = new MessagesCollection(this.model.messages.where({'message_service' : 'Email'}));
 		else
 			messages = this.model.messages;
 		

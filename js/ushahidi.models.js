@@ -68,6 +68,9 @@ var MessagesCollection = Backbone.Collection.extend(
 		// Add callback for initial reset
 		this.resetCallback = new Backbone.Callbacks();
 		this.on('reset', this.resetCallback.run, this.resetCallback);
+	},
+	comparator : function(report) {
+		return - new moment(report.get('message_date')).unix();
 	}
 });
 
@@ -180,6 +183,9 @@ var ReportCollection = Backbone.Collection.extend(
 		// Add callback for initial reset
 		this.resetCallback = new Backbone.Callbacks();
 		this.on('reset', this.resetCallback.run, this.resetCallback);
+	},
+	comparator : function(report) {
+		return - new moment(report.get('incident_date')).unix();
 	}
 });
 
