@@ -1,7 +1,8 @@
 			<h2>
-				<a href="#messages/sms"><?php echo Kohana::lang('ui_main.sms');?></a>
-				<a href="#messages/email"><?php echo Kohana::lang('ui_main.email');?></a>
-				<a href="#messages/twitter"><?php echo Kohana::lang('ui_main.twitter');?></a>
+				<a href="#messages" class="<%- (filter == undefined ? 'active' : '') %> messages-filter-all"><?php echo Kohana::lang('ui_main.all');?></a>
+				<a href="#messages/sms" class="<%- (filter == 'sms' ? 'active' : '') %> messages-filter-sms"><?php echo Kohana::lang('ui_main.sms');?></a>
+				<a href="#messages/email" class="<%- (filter == 'email' ? 'active' : '') %> messages-filter-email"><?php echo Kohana::lang('ui_main.email');?></a>
+				<a href="#messages/twitter" class="<%- (filter == 'twitter' ? 'active' : '') %> messages-filter-twitter"><?php echo Kohana::lang('ui_main.twitter');?></a>
 				<!--<a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a>-->
 			</h2>
 			<!--<div class="tab"><ul>

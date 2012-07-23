@@ -88,6 +88,7 @@ var AppRouter = Backbone.Router.extend(
 	{
 		"" : "home",
 		"reports" : "reports",
+		"reports/:filter" : "reports",
 		"reports/view/:number" : "report_view",
 		"reports/edit/:number" : "report_edit",
 		"reports/add" : "report_add",
@@ -96,7 +97,8 @@ var AppRouter = Backbone.Router.extend(
 		"reports/delete/:number" : "report_delete",
 		"settings/edit" : "settings_edit",
 		"messages/:type" : "messages",
-		"messages" : "messages"
+		"messages" : "messages",
+		"messages/:filter" : "messages"
 	},
 	home : function() {
 		if (this.model.settings.get('username') != '')
@@ -108,7 +110,7 @@ var AppRouter = Backbone.Router.extend(
 			this.navigate('settings/edit',{trigger: true});
 		}
 	},
-	reports : function() {
+	reports : function(filter) {
 		this.model.startPolling(50);
 		
 		if (this.model.settings.get('username') == '')
@@ -117,10 +119,21 @@ var AppRouter = Backbone.Router.extend(
 			return;
 		}
 		
+		var reports;
+		if (filter == 'a')
+			reports = new ReportCollection(this.model.reports.where({'incident_active' : 0}));
+		else if (filter == 'v')
+			reports = new ReportCollection(this.model.reports.where({'incident_verified' : 0}));
+		else if (filter == 'o')
+			reports = new ReportCollection(this.model.reports.where({'category' : []}));
+		else
+			reports = this.model.reports;
+		
 		this.model.reports.resetCallback.add(function () {
 			var reportAppView = new ReportAppView(
 			{
-				model : this.model
+				model : reports,
+				filter: filter
 			});
 			this.appView.showView(reportAppView);
 			this.appView.setTab('reports');
@@ -191,8 +204,7 @@ var AppRouter = Backbone.Router.extend(
 		this.appView.showView(settingsEditView);
 		this.appView.setTab('settings');
 	},
-	messages : function(type) {
-		type = (typeof type == 'undefined') ? 'twitter' : type;
+	messages : function(filter) {
 		this.model.startPolling(50);
 		
 		if (this.model.settings.get('username') == '')
@@ -201,10 +213,21 @@ var AppRouter = Backbone.Router.extend(
 			return;
 		}
 		
+		var messages;
+		if (filter == 'twitter')
+			messages = new ReportCollection(this.model.messages.where({'message_type' : 'Twitter'}));
+		else if (filter == 'sms')
+			messages = new ReportCollection(this.model.messages.where({'message_type' : 'SMS'}));
+		else if (filter == 'email')
+			messages = new ReportCollection(this.model.messages.where({'message_type' : 'Email'}));
+		else
+			messages = this.model.messages;
+		
 		this.model.messages.resetCallback.add(function() {
 			var messageAppView = new MessageAppView(
 			{
-				model : this.model
+				model : messages,
+				filter: filter
 			});
 			this.appView.showView(messageAppView);
 			this.appView.setTab('messages');

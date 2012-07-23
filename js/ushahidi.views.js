@@ -172,15 +172,18 @@ var MessageLIView = Backbone.View.extend(
 var ReportAppView = Backbone.View.extend(
 {
 	template : _.template($("#app-template").html()),
-	initialize : function() {
+	initialize : function(options) {
 		_.bindAll(this, "addReport", "addAll");
-		this.model.reports.bind('add', this.addReport);
-		this.model.reports.bind('reset', this.addAll);
+		this.model.bind('add', this.addReport);
+		this.model.bind('reset', this.addAll);
+		this.filter = options.filter;
 	},
 	render : function() {
-		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.html(this.template({
+			filter : this.filter
+		}));
 		this.reportList = this.$('#reportList');
-		if (this.model.reports.length > 0)
+		if (this.model.length > 0)
 		{
 			this.addAll();
 		}
@@ -199,13 +202,13 @@ var ReportAppView = Backbone.View.extend(
 	},
 	addAll : function() {
 		this.reportList.empty();
-		this.model.reports.each(this.addReport);
+		this.model.each(this.addReport);
 	},
 	onClose : function() {
-		this.model.reports.unbind('add', this.addReport);
-		this.model.reports.unbind('reset', this.addAll);
+		this.model.unbind('add', this.addReport);
+		this.model.unbind('reset', this.addAll);
 		// Destroy report views
-		this.model.reports.each(function(model) { model.view.close() });
+		this.model.each(function(model) { model.view.close() });
 	}
 });
 
@@ -215,19 +218,21 @@ var ReportAppView = Backbone.View.extend(
 var MessageAppView = Backbone.View.extend(
 {
 	template : _.template($("#message-app-template").html()),
-	initialize : function() {
+	initialize : function(options) {
 		_.bindAll(this, "addMessage", "addAll");
-		this.model.messages.bind('add', this.addMessage);
-		this.model.messages.bind('reset', this.addAll);
+		this.model.bind('add', this.addMessage);
+		this.model.bind('reset', this.addAll);
+		this.filter = options.filter;
 	},
 	render : function() {
-		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.html(this.template({
+			filter : this.filter
+		}));
 		this.messageList = this.$('#messageList');
-		if (this.model.messages.length > 0)
+		if (this.model.length > 0)
 		{
 			this.addAll();
 		}
-		
 		return this;
 	},
 	addMessage : function(message) {
@@ -242,12 +247,12 @@ var MessageAppView = Backbone.View.extend(
 	},
 	addAll : function() {
 		this.messageList.empty();
-		this.model.messages.each(this.addMessage);
+		this.model.each(this.addMessage);
 	},
 	onClose : function() {
-		this.model.messages.unbind('add', this.addMessage);
-		this.model.messages.unbind('reset', this.addAll);
+		this.model.unbind('add', this.addMessage);
+		this.model.unbind('reset', this.addAll);
 		// Destroy report views
-		this.model.messages.each(function(model) { model.view.close() });
+		this.model.each(function(model) { model.view.close() });
 	}
 });
