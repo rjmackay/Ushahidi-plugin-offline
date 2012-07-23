@@ -88,7 +88,7 @@ var Report = Backbone.Model.extend(
 			'longitude' : 0,
 			'country_id' : null,
 		},
-		'categories' : [],
+		'category' : [],
 		'incident_persion' : {
 			'person_first' : '',
 			'person_last' : '',
