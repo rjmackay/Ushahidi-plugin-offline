@@ -260,42 +260,50 @@
     };
 
     Sync.prototype.full = function(options) {
-      var _this = this;
+      var success,
+        _this = this;
       if (options == null) {
         options = {};
       }
-      return this.ajax('read', this.collection.items, {
-        success: function(response, status, xhr) {
-          var item, _i, _len;
-          _this.storage.clear();
-          _this.collection.items.reset([], {
-            silent: true
+      success = options.success;
+      options.success = function(response, status, xhr) {
+        var item, _i, _len;
+        _this.storage.clear();
+        _this.collection.items.reset([], {
+          silent: true
+        });
+        for (_i = 0, _len = response.length; _i < _len; _i++) {
+          item = response[_i];
+          _this.collection.items.create(item, {
+            silent: true,
+            local: true,
+            regenerateId: true
           });
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            item = response[_i];
-            _this.collection.items.create(item, {
-              silent: true,
-              local: true,
-              regenerateId: true
-            });
-          }
-          if (!options.silent) {
-            _this.collection.items.trigger('reset');
-          }
-          if (options.success) {
-            return options.success(response);
-          }
         }
-      });
+        if (!options.silent) {
+          _this.collection.items.trigger('reset');
+        }
+        if (success) {
+          return success(response, status, xhr);
+        }
+      };
+      return this.ajax('read', this.collection.items, options);
     };
 
-    Sync.prototype.incremental = function() {
-      var _this = this;
-      return this.pull({
-        success: function() {
-          return _this.push();
+    Sync.prototype.incremental = function(options) {
+      var success,
+        _this = this;
+      if (options == null) {
+        options = {};
+      }
+      success = options.success;
+      options.success = function(response, status, xhr) {
+        if (success) {
+          success(response, status, xhr);
         }
-      });
+        return _this.push();
+      };
+      return this.pull(options);
     };
 
     Sync.prototype.prepareOptions = function(options) {
@@ -305,30 +313,33 @@
         this.storage.removeItem('offline');
         success = options.success;
         return options.success = function(response, status, xhr) {
-          success(response, status, xhr);
+          if (success) {
+            success(response, status, xhr);
+          }
           return _this.incremental();
         };
       }
     };
 
     Sync.prototype.pull = function(options) {
-      var _this = this;
+      var success,
+        _this = this;
       if (options == null) {
         options = {};
       }
-      return this.ajax('read', this.collection.items, {
-        success: function(response, status, xhr) {
-          var item, _i, _len;
-          _this.collection.destroyDiff(response);
-          for (_i = 0, _len = response.length; _i < _len; _i++) {
-            item = response[_i];
-            _this.pullItem(item);
-          }
-          if (options.success) {
-            return options.success();
-          }
+      success = options.success;
+      options.success = function(response, status, xhr) {
+        var item, _i, _len;
+        _this.collection.destroyDiff(response);
+        for (_i = 0, _len = response.length; _i < _len; _i++) {
+          item = response[_i];
+          _this.pullItem(item);
         }
-      });
+        if (success) {
+          return success(response, status, xhr);
+        }
+      };
+      return this.ajax('read', this.collection.items, options);
     };
 
     Sync.prototype.pullItem = function(item) {

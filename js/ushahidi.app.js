@@ -25,7 +25,7 @@ var AppModel = Backbone.Model.extend(
 	poll : function() {
 		if (this.settings.get('username') != '') {
 			// Bind via reset callback to make sure localstorage loads first
-			this.reports.resetCallback.add(this.reports.storage.sync.incremental, this.reports.storage.sync);
+			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300}}) }, this);
 			this.messages.resetCallback.add(this.messages.storage.sync.incremental, this.messages.storage.sync);
 		}
 		// @todo move reset delay to after fetch finishes
