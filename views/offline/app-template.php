@@ -2,12 +2,33 @@
 				<?php echo Kohana::lang('ui_main.view_reports');?>
 				<?php if (Kohana::config('offline.enable_editing')) { ?><a href="#reports/add"><?php echo Kohana::lang('ui_main.create_report');?></a><?php } ?>
 			</h2>
-			<div class="tab"><ul>
-				<li><a href="#reports" class="<%- (filter == undefined ? 'active' : '') %> reports-filter-all"><?php echo Kohana::lang('ui_main.show_all');?></a></li>
-				<li><a href="#reports/a" class="<%- (filter == 'a' ? 'active' : '') %> reports-filter-approved"><?php echo Kohana::lang('ui_main.awaiting_approval');?></a></li>
-				<li><a href="#reports/v" class="<%- (filter == 'v' ? 'active' : '') %> reports-filter-verified"><?php echo Kohana::lang('ui_main.awaiting_verification');?></a></li>
-				<li><a href="#reports/o" class="<%- (filter == 'o' ? 'active' : '') %> reports-filter-orphaned"><?php echo Kohana::lang('ui_main.uncategorized_reports');?></a></li>
-			</ul></div>
+			<!-- tabs -->
+			<div class="tabs">
+				<!-- tabset -->
+				<ul class="tabset">
+					<li><a href="#reports" class="<%- (filter == undefined ? 'active' : '') %> reports-filter-all"><?php echo Kohana::lang('ui_main.show_all');?></a></li>
+					<li><a href="#reports/a" class="<%- (filter == 'a' ? 'active' : '') %> reports-filter-approved"><?php echo Kohana::lang('ui_main.awaiting_approval');?></a></li>
+					<li><a href="#reports/v" class="<%- (filter == 'v' ? 'active' : '') %> reports-filter-verified"><?php echo Kohana::lang('ui_main.awaiting_verification');?></a></li>
+					<li><a href="#reports/o" class="<%- (filter == 'o' ? 'active' : '') %> reports-filter-orphaned"><?php echo Kohana::lang('ui_main.uncategorized_reports');?></a></li>
+				</ul>
+				<!-- tab -->
+				<div class="tab">
+					<ul>
+						<li><a href="#" class="mass-approve">
+							<?php echo Kohana::lang('ui_main.approve');?></a>
+						</li>
+						<li><a href="#" class="mass-disapprove">
+							<?php echo Kohana::lang('ui_main.disapprove');?></a>
+						</li>
+						<li><a href="#" class="mass-verify">
+							<?php echo Kohana::lang('ui_admin.verify_unverify');?></a>
+						</li>
+						<li><a href="#" class="mass-delete">
+							<?php echo Kohana::lang('ui_main.delete');?></a>
+						</li>
+					</ul>
+				</div>
+			</div>
 			<div class="table-holder">
 				<table class="table">
 					<thead>
