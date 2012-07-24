@@ -31,7 +31,9 @@
 	
 			<div class="report-category-list">
 				<h4><?php echo Kohana::lang('ui_main.categories');?></h4>
-				<%- categories %>
+				<ul><% _.each(category, function(item) { %>
+					<li><%- item.category_title %></li>
+				<% }); %></ul>
 			</div>
 	
 			<div class='row'>
@@ -42,10 +44,20 @@
 	
 			<!-- start report media -->
 			<div class="report-media">
-				<h4><?php echo Kohana::lang('ui_main.media');?></h4>
-				<% _.each(media, function(item) { %>
-					<li><%= item.media_link %></li>
-				<% }); %>
+				<h4><?php echo Kohana::lang('ui_main.reports_news');?></h4>
+				<ul><% _.each( media.filter( function(item) { return item.media_type == 4; } ), function(item) { %>
+					<li><%- item.media_link %></li>
+				<% }); %></ul>
+				
+				<h4><?php echo Kohana::lang('ui_main.external_video_link');?></h4>
+				<ul><% _.each( media.filter( function(item) { return item.media_type == 2; } ), function(item) { %>
+					<li><%- item.media_link %></li>
+				<% }); %></ul>
+				
+				<h4><?php echo Kohana::lang('ui_main.reports_photos');?></h4>
+				<ul><% _.each( media.filter( function(item) { return item.media_type == 1; } ), function(item) { %>
+					<li><%- item.media_link %></li>
+				<% }); %></ul>
 			</div>
 	
 		<div style="clear:both;"></div>
