@@ -10,10 +10,8 @@
 		</ul></div>
 		<?php } ?>
 
-		<div class="f-col-full">
-	
-			<h1 class="report-title"><%- incident_title %> (#<%- sid %>)</h1>
-	
+		<h2><%- incident_title %> (#<%- sid %>)</h1>
+		<div class="f-col">
 			<p class="<% (incident_verified == 1) ? print('r_verified') : print('r_unverified'); %>">
 				<% (incident_verified == 1) ? print('<?php echo Kohana::lang('ui_main.verified'); ?>') : print('<?php echo Kohana::lang('ui_main.unverified'); ?>'); %> |
 				<% (incident_active == 1) ? print('<?php echo Kohana::lang('ui_main.approved'); ?>') : print('<?php echo Kohana::lang('ui_admin.unapproved'); ?>'); %>
@@ -28,6 +26,17 @@
 				<h4><?php echo Kohana::lang('ui_main.reports_description');?></h4>
 				<%= _(incident_description).escape().replace(/\n/g,'<br />') %>
 			</div>
+	
+			<?php 
+			// Hack to render custom fields - only supports default form for now
+			echo View::factory('reports/detail_custom_forms')
+				->set('form_field_names', customforms::get_custom_form_fields(FALSE, 1, FALSE, 'view'))
+				->set('show_empty', TRUE)
+				->render();
+			?>
+	
+		</div>
+		<div class="f-col-1">
 	
 			<div class="report-category-list">
 				<h4><?php echo Kohana::lang('ui_main.categories');?></h4>

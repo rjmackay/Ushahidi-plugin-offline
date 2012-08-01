@@ -62,8 +62,7 @@ var ReportLIView = ReportView.extend(
 var ReportPageView = ReportView.extend(
 {
 	template : _.template($("#report-page-template").html()),
-	
-	/*render : function() {
+	render : function() {
 		var context = _.extend(this.model.toJSON(),
 		{
 			cid : this.model.cid,
@@ -71,8 +70,16 @@ var ReportPageView = ReportView.extend(
 		});
 		this.$el.html(this.template(context));
 		//this.model.getMap();
+		
+		// Set values for custom fields
+		// Slight hack since we're using field generated from customforms helper
+		var el = this.$el
+		_.each(this.model.get('custom_field'), function(data, key) {
+			$('.custom_field_'+key+' .answer', el).text(_.escape(data));
+		});
+		
 		return this;
-	},*/
+	}
 });
 var ReportEditView = ReportView.extend(
 {
