@@ -20,6 +20,11 @@ var AppModel = Backbone.Model.extend(
 		this.messages = new MessagesCollection();
 		this.messages.settings = this.settings;
 		this.messages.fetch({local : true});
+		
+		// Category Tree
+		this.categoryTree = new CategoryTree();
+		this.categoryTree.settings = this.settings;
+		this.categoryTree.fetch();
 	},
 	delay : 6000,
 	poll : function() {
@@ -27,6 +32,10 @@ var AppModel = Backbone.Model.extend(
 			// Bind via reset callback to make sure localstorage loads first
 			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300}}) }, this);
 			this.messages.resetCallback.add(this.messages.storage.sync.incremental, this.messages.storage.sync);
+		
+			// Hack to populate categoryTree
+			this.categoryTree.sync = Offline.syncWithAuth;
+			this.categoryTree.fetch({success : function(model, response) { model.sync = Backbone.LocalStorage.sync; model.save() } });
 		}
 		// @todo move reset delay to after fetch finishes
 		this.startPolling();

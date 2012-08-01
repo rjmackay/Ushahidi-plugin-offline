@@ -11,9 +11,9 @@
 		</ul></div>
 		<% } %>
 		
-		<div class="f-col-full"><form method="get" id="report-edit-form" class="report-form" action=''>
-	
-			<h2><% if(sid || id) { %><%- incident_title %> (#<%- sid %>) <% } else { %> New Report <% } %></h2>
+		<h2><% if(sid || id) { %><%- incident_title %> (#<%- sid %>) <% } else { %> New Report <% } %></h2>
+		<form method="POST" id="report-edit-form" class="report-form" action=''>
+		<div class="f-col">
 	
 			<div class="report-title">
 				<label for="incident_title"><?php echo Kohana::lang('ui_main.title'); ?></label>
@@ -39,45 +39,69 @@
 				<textarea name="incident_description" class='field-incident-description' cols=80 rows=20><%- incident_description %></textarea>
 			</div>
 	
+			<?php 
+			// Hack to render custom fields - only supports default form for now
+			echo View::factory('reports/submit_custom_forms')
+			->set('disp_custom_fields', customforms::get_custom_form_fields(FALSE, 1))
+			->set('custom_field_mismatch', customforms::get_edit_mismatch(1))
+			->render();
+			?>
+	
+		</div>
+		<div class="f-col-1">
+	
 			<div class="report-category-list">
 				<h4><?php echo Kohana::lang('ui_main.categories');?></h4>
-				<%- categories %>
+				Selected: <%- categories %>
+				<ul id="category-tree">
+				<% _.each(category_tree, function(cat) { %>
+					<li><label class="inline"><input type='checkbox' name='category[]' value='<%- cat.category_id %>' <% if(cat.children.length != 0) { print('disabled="disabled" ') } %><% if (cat.category_id == category_ids[cat.category_id]) { print('checked="checked"') } %>><%- cat.category_title %></label>
+					<% if(cat.children.length != 0) { %>
+						<ul>
+						<% _.each(cat.children, function(child) { %>
+							<li><label class="inline"><input type='checkbox' name='category[]' value='<%- child.category_id %>' <% if (child.category_id == category_ids[child.category_id]) { print('checked=checked') } %>><%- child.category_title %></label></li>
+						<% }) %>
+						</ul>
+					<% } %>
+					</li>
+				<% }) %>
+				</ul>
 			</div>
-	
-			<div class='row'>
-				<label for="location.location_name"><?php echo Kohana::lang('ui_main.location');?></label>
-				<input type='text' name='location.location_name' class='field-location_name text' value='<%- location.location_name %>' />
-				<label><?php echo Kohana::lang('ui_main.latitude');?>: <input type='text' name='location.latitude' class='field-latitude text' value='<%- location.latitude %>' /></label>
-				<label><?php echo Kohana::lang('ui_main.longitude');?>: <input type='text' name='location.longitude' class='field-longitude text' value='<%- location.longitude %>' /></label>
+
+			<div class='row location-row'>
+				<label for="location[location_name]"><?php echo Kohana::lang('ui_main.location');?></label>
+				<input type='text' name='location[location_name]' class='field-location_name text long' value='<%- location.location_name %>' /><br />
+				<label for="location[latitude]" class="inline"><?php echo Kohana::lang('ui_main.latitude');?>:</label> <input type='text' name='location[latitude]' class='field-latitude text' value='<%- location.latitude %>' />
+				<label for="location[longitude]" class="inline"><?php echo Kohana::lang('ui_main.longitude');?>:</label> <input type='text' name='location[longitude]' class='field-longitude text' value='<%- location.longitude %>' />
 				
 			</div>
 	
 			<!-- start report media -->
 			<div class="report-media">
 					<h4><?php echo Kohana::lang('ui_main.reports_news');?></h4>
-					<ul><% _.each( media.filter( function(item) { return item.media_type == 4; } ), function(item, key) { %>
-						<li><input type='text' name='media[<%- key %>].media_link' class='field-media_link text' value='<%- item.media_link %>' /></li>
+					<% _.each( media.filter( function(item) { return item.media_type == 4; } ), function(item, key) { %>
+					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'news_media_link['+item.id+']' : 'news_media_link_new[]' %>' class='field-media_link text long' value='<%- item.media_link %>' /></div>
 					<% }); %>
-						<li><input type='text' name='media[].media_link' class='field-media_link text' value='' /></li>
-					</ul>
+					<div class="row"><input type='text' name='news_media_link_new[]' class='field-media_link text long' value='' />
+					<a href="#" class="add add-news">add</a></div>
 					
 					<h4><?php echo Kohana::lang('ui_main.external_video_link');?></h4>
-					<ul><% _.each( media.filter( function(item) { return item.media_type == 2; } ), function(item, key) { %>
-						<li><input type='text' name='media[<%- key %>].media_link' class='field-media_link text' value='<%- item.media_link %>' /></li>
+					<% _.each( media.filter( function(item) { return item.media_type == 2; } ), function(item, key) { %>
+					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'video_media_link['+item.id+']' : 'video_media_link_new[]' %>' class='field-media_link text long' value='<%- item.media_link %>' /></div>
 					<% }); %>
-						<li><input type='text' name='media[].media_link' class='field-media_link text' value='' /></li>
-					</ul>
+					<div class="row"><input type='text' name='video_media_link_new[]' class='field-media_link text long' value='' />
+					<a href="#" class="add add-video">add</a></div>
 					
 					<h4><?php echo Kohana::lang('ui_main.reports_photos');?> (Cannot be edited offline)</h4>
 					<ul><% _.each( media.filter( function(item) { return item.media_type == 1; } ), function(item) { %>
 						<li><%- item.media_link %></li>
 					<% }); %></ul>
 			</div>
-			
-		<div>
-			<input type='submit' value='save' id='report-save' />
-		</div>
-	
-		<div style="clear:both;"></div>
-		</form>
 	</div>
+
+	<div style="clear:both;"></div>
+
+	<div class="btns-bottom">
+		<input type='submit' value='<?php echo Kohana::lang('ui_main.save_report'); ?>' id='report-save' />
+	</div>
+	</form>

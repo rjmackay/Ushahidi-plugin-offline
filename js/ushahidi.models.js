@@ -54,6 +54,34 @@ var Settings = Backbone.Model.extend({
 	}
 });
 
+// Quick hack for storing category tree
+var CategoryTree = Backbone.Model.extend({
+	localStorage : new Backbone.LocalStorage("CategoryTree"),
+	sync : Backbone.LocalStorage.sync,
+	defaults : {
+		categories : {},
+		id: 1
+	},
+	url : '/api/rest/categories/tree',
+	initialize : function () {
+		// Always ID 1
+		this.set({id: 1});
+	},
+	parse : function (data)
+	{
+		if (this.sync == Offline.syncWithAuth)
+		{
+			attr = {};
+			attr.categories = data;
+			return attr;
+		}
+		else
+		{
+			return data;
+		}
+	}
+});
+
 var Message = Backbone.Model.extend({
 	urlRoot : '/api/rest/messages'
 });
@@ -92,7 +120,7 @@ var Report = Backbone.Model.extend(
 			'country_id' : null,
 		},
 		'category' : [],
-		'incident_persion' : {
+		'incident_person' : {
 			'person_first' : '',
 			'person_last' : '',
 			'person_phone' : '',
@@ -100,6 +128,7 @@ var Report = Backbone.Model.extend(
 		},
 		'media' : [],
 		'user' : {},
+		'custom_field' : []
 	},
 	initialize : function () {
 		_.bindAll(this, 'saveMap','getMap','displayMap');
@@ -116,6 +145,13 @@ var Report = Backbone.Model.extend(
 			categories.push(cat.category_title);
 		});
 		return categories.join(', ');
+	},
+	category_ids : function() {
+		ids = [];
+		_.each(this.get('category'), function(cat) {
+			ids[cat.id] = parseInt(cat.id, 10);
+		});
+		return ids;
 	},
 	// Map image handling;
 	getMap : function() {

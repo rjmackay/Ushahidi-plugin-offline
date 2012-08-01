@@ -1,4 +1,8 @@
 
+.report-form h4 {
+	clear: both;
+}
+
 .report-form label {
 	font-weight:bold;
 	color:#404040;
@@ -6,6 +10,7 @@
 	line-height:18px;
 	padding:16px 0 4px;
 	display: block;
+	clear: both;
 }
 
 .report-form label.inline {
@@ -14,7 +19,24 @@
 	padding: 0;
 	color: #555;
 	font-weight: normal;
+	float: left;
 }
+.report-category-list label.inline {
+	float: none;
+}
+
+.location-row input.field-location_name{
+	float: none;
+	margin-bottom: 5px;
+}
+.location-row label.inline {
+	width: 70px;
+	clear: none;
+}
+.location-row input.field-latitude {
+	margin-right: 40px;
+}
+
 
 .required,
 .report-form label .required {
@@ -25,5 +47,21 @@
 
 .report-form input.text, .report-form input.file, .tab_form_item input.text
 {
-	float: none;
+	/*float: none;*/
+}
+
+.btns-bottom {
+	border-top: 2px solid gainsboro;
+	padding: 9px 20px;
+}
+
+#report-save {
+	padding: 0 9px;
+	color: #5C5C5C;
+	background: #F2F7FA;
+	float: left;
+	line-height: 24px;
+	text-decoration: none;
+	border: 1px solid #D1D1D1;
+	text-transform: uppercase;
 }

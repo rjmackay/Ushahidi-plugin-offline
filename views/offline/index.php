@@ -3,15 +3,18 @@
 	<head>
 		<title>Ushahidi Report Tool</title>
 		<link rel="stylesheet" type="text/css" href="/media/css/admin/all.css" />
+		<link rel="stylesheet" type="text/css" href="/media/css/jquery.treeview.css" />
 		<link rel="stylesheet" type="text/css" href="/plugins/offline/css/offline.css" />
 		<!-- -->
 		<script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
 		<script src="/plugins/offline/js/moment.min.js"></script>
 		<script src="/plugins/offline/js/json2.js"></script>
+		<script src="/plugins/offline/js/jquery.to_json.js"></script>
 		<script src="/plugins/offline/js/underscore-min.js"></script>
 		<script src="/plugins/offline/js/backbone-min.js"></script>
 		<script src="/plugins/offline/js/backbone.localStorage.js"></script>
 		<script src="/plugins/offline/js/backbone_offline.js"></script>
+		<script src="/media/js/jquery.treeview.js"></script>
 		
 		<script type="text/template" id="app-template">
 	<?php include('app-template.php'); ?>
