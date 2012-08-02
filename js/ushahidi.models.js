@@ -31,6 +31,14 @@ _.extend(Backbone.Callbacks.prototype, {
 
 // Custom enhancements to Backbone Collections
 _.extend(Backbone.Collection.prototype, {
+	// Add method for getting models by server id
+	getBySid : function (sid)
+	{
+		if (sid == null) return void 0;
+		return this.find(function(item) {
+			return item.get('sid') === sid;
+		});
+	},
 	// Add reset callback to ALL collections
 	initialize : function (models, options)
 	{
@@ -121,7 +129,12 @@ var CategoryTree = Backbone.Model.extend({
 });
 
 var Message = Backbone.Model.extend({
-	urlRoot : '/api/rest/messages'
+	urlRoot : '/api/rest/messages',
+	getReport : function ()
+	{
+		if (this.get('incident_id') == 0) return;
+		return window.app.model.reports.getBySid(this.get('incident_id'));
+	}
 });
 var MessagesCollection = Backbone.Collection.extend(
 {

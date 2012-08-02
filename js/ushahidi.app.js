@@ -98,16 +98,17 @@ var AppRouter = Backbone.Router.extend(
 		"" : "home",
 		"reports" : "reports",
 		"reports/:filter" : "reports",
-		"reports/view/:number" : "report_view",
-		"reports/edit/:number" : "report_edit",
+		"reports/view/:id" : "report_view",
+		"reports/edit/:id" : "report_edit",
 		"reports/add" : "report_add",
-		"reports/approve/:number" : "report_approve",
-		"reports/verify/:number" : "report_verify",
-		"reports/delete/:number" : "report_delete",
+		"reports/approve/:id" : "report_approve",
+		"reports/verify/:id" : "report_verify",
+		"reports/delete/:id" : "report_delete",
 		"settings/edit" : "settings_edit",
-		"messages/:type" : "messages",
 		"messages" : "messages",
-		"messages/:filter" : "messages"
+		"messages/:filter" : "messages",
+		"messages/delete/:id" : "message_delete",
+		"reports/add/from_message/:id" : "message_to_report"
 	},
 	home : function() {
 		if (this.model.settings.get('username') != '')

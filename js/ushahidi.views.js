@@ -247,7 +247,9 @@ var MessageLIView = Backbone.View.extend(
 	render : function() {
 		var context = _.extend(this.model.toJSON(),
 		{
-			cid : this.model.cid
+			cid : this.model.cid,
+			id : this.model.id,
+			report : this.model.getReport()
 		});
 		this.$el.html(this.template(context));
 		return this;

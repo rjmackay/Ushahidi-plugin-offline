@@ -20,9 +20,12 @@
 				<td class="col-4">
 					<ul>
 						<?php if (Kohana::config('offline.enable_editing')) { ?>
-						<li class="none-separator"><?php echo Kohana::lang('ui_admin.create_report'); ?></li>
-						<li class="none-separator"><?php echo Kohana::lang('ui_admin.view_report'); ?></li>
-						<li><?php echo Kohana::lang('ui_main.delete'); ?></li>
+						<% if (incident_id == 0) { %>
+							<li class="none-separator"><a href="#reports/add/from_message/<%- id %>"><?php echo Kohana::lang('ui_admin.create_report'); ?></a></li>
+						<% } else { %>
+							<li class="none-separator"><a href="#reports/view/<%- report.id %>"><?php echo Kohana::lang('ui_admin.view_report'); ?></a></li>
+						<% } %>
+						<li><a href="#messages/delete/<%- id %>" class="del"><?php echo Kohana::lang('ui_main.delete'); ?></a></li>
 						<?php } ?>
 					</ul>
 				</td>
