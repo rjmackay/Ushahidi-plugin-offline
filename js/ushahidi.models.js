@@ -11,7 +11,6 @@ Backbone.Callbacks = function(){
 };
 
 _.extend(Backbone.Callbacks.prototype, {
-
   // Add a callback to be executed. Callbacks added here are
   // guaranteed to execute, even if they are added after the 
   // `run` method is called.
@@ -28,6 +27,17 @@ _.extend(Backbone.Callbacks.prototype, {
   run: function(options, context){
     this.deferred.resolve(context, options);
   }
+});
+
+// Custom enhancements to Backbone Collections
+_.extend(Backbone.Collection.prototype, {
+	// Add reset callback to ALL collections
+	initialize : function (models, options)
+	{
+		// Add callback for initial reset
+		this.resetCallback = new Backbone.Callbacks();
+		this.on('reset', this.resetCallback.run, this.resetCallback);
+	}
 });
 
 /**
@@ -91,11 +101,8 @@ var MessagesCollection = Backbone.Collection.extend(
 	url : '/api/rest/messages',
 	initialize : function (models, options)
 	{
+		this.constructor.__super__.initialize.apply(this, arguments);
 		this.storage = new Offline.Storage('MessagesCollection', this, {autoPush: true});
-		
-		// Add callback for initial reset
-		this.resetCallback = new Backbone.Callbacks();
-		this.on('reset', this.resetCallback.run, this.resetCallback);
 	},
 	comparator : function(report) {
 		return - new moment(report.get('message_date')).unix();
@@ -214,11 +221,8 @@ var ReportCollection = Backbone.Collection.extend(
 	url : '/api/rest/incidents',
 	initialize : function (models, options)
 	{
+		this.constructor.__super__.initialize.apply(this, arguments);
 		this.storage = new Offline.Storage('ReportCollection', this, {autoPush: true});
-		
-		// Add callback for initial reset
-		this.resetCallback = new Backbone.Callbacks();
-		this.on('reset', this.resetCallback.run, this.resetCallback);
 	},
 	comparator : function(report) {
 		return - new moment(report.get('incident_date')).unix();
