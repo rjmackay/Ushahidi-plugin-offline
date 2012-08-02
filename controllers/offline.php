@@ -110,8 +110,6 @@ class Offline_Controller extends Template_Controller {
 		$content .= "CACHE:\n";
 
 		$content .= "/offline\n";
-		//$content .= "/offline/\n";
-		//$content .= "/media/js/jquery.js\n";
 		$content .= "/media/css/admin/all.css\n";
 		$content .= "/media/img/admin/top-separator.gif
 /media/img/admin/content-bg.gif
@@ -138,6 +136,9 @@ class Offline_Controller extends Template_Controller {
 /media/img/admin/logo.gif
 /media/img/admin/arrow.gif
 /media/img/admin/drag.gif
+/media/img/admin/footer-bg.jpg
+/media/js/jquery.treeview.js
+/media/css/jquery.treeview.css
 ";
 		
 		
