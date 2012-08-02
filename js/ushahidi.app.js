@@ -31,7 +31,7 @@ var AppModel = Backbone.Model.extend(
 		if (this.settings.get('username') != '') {
 			// Bind via reset callback to make sure localstorage loads first
 			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300}}) }, this);
-			this.messages.resetCallback.add(this.messages.storage.sync.incremental, this.messages.storage.sync);
+			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 300}}) }, this);
 		
 			// Hack to populate categoryTree
 			this.categoryTree.sync = Offline.syncWithAuth;
