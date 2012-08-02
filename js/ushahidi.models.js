@@ -41,6 +41,34 @@ _.extend(Backbone.Collection.prototype, {
 });
 
 /**
+ * Date comparator helper
+ * Creates a comparator function based on field / order passed
+ * 
+ * Example:
+ *   MyCollection = Backbone.Collection.extend({
+ *     comparator: new date_comparator('record_date', 'asc'),
+ *   });
+ * 
+ * @param String field - date field name to sort by
+ * @param String order - Sort order asc/desc
+ * @return function( - comparator function
+ **/
+var date_comparator = function (field, order)
+{
+	// Defaults
+	if (field == undefined) field = 'id';
+	if (order == undefined) order = 'desc';
+	
+	order_multiplier = (order == 'asc') ? 1 : -1;
+	
+	return function (model)
+	{
+		if (model.get(field) == null) return new moment().unix();
+			return order_multiplier * new moment(model.get(field)).unix();
+	}
+}
+
+/**
  * Models and collections
  */
 var Settings = Backbone.Model.extend({
@@ -104,9 +132,7 @@ var MessagesCollection = Backbone.Collection.extend(
 		this.constructor.__super__.initialize.apply(this, arguments);
 		this.storage = new Offline.Storage('MessagesCollection', this, {autoPush: true});
 	},
-	comparator : function(report) {
-		return - new moment(report.get('message_date')).unix();
-	}
+	comparator : new date_comparator('message_date', 'desc')
 });
 
 var Report = Backbone.Model.extend(
@@ -224,9 +250,7 @@ var ReportCollection = Backbone.Collection.extend(
 		this.constructor.__super__.initialize.apply(this, arguments);
 		this.storage = new Offline.Storage('ReportCollection', this, {autoPush: true});
 	},
-	comparator : function(report) {
-		return - new moment(report.get('incident_date')).unix();
-	}
+	comparator : new date_comparator('incident_date', 'desc')
 });
 
 // Getting a file through XMLHttpRequest as an arraybuffer and creating a Blob
