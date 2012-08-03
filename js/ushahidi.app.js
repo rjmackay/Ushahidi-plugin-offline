@@ -242,6 +242,24 @@ var AppRouter = Backbone.Router.extend(
 			this.appView.showView(messageAppView);
 			this.appView.setTab('messages');
 		}, this);
+	},
+	message_delete : function(id) {
+		this.model.messages.resetCallback.add(function() {
+			var model = this.model.messages.get(id);
+			
+			var answer = confirm('Are you sure you want to delete?');
+			if (answer) {
+				model.destroy({wait: true});
+			}
+			this.navigate('messages',{trigger: true});
+		}, this);
+	},
+	message_to_report : function(id) {
+		this.model.messages.resetCallback.add(function() {
+			this.model.reports.resetCallback.add(function() {
+				this.navigate('messages',{trigger: true});
+			}, this);
+		}, this);
 	}
 });
 
