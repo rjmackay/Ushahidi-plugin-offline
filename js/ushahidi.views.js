@@ -198,12 +198,24 @@ var ReportEditView = ReportView.extend(
 			}
 		});
 		
+		
 		this.model.set(data);
 		
 		if (this.model.id == null)
+		{
 			window.app.model.reports.add(this.model);
+			if (this.model.get('message_id') != undefined)
+			{
+				var success = function(model, response) {
+					var message = window.app.model.messages.getBySid(this.model.get('message_id'));
+					incident_id = (model.get('sid') != undefined) ? model.get('sid') : model.get('id')
+					message.set('incident_id', incident_id);
+					message.save();
+				}
+			}
+		}
 		
-		this.model.save();
+		this.model.save({success: success});
 		window.app.navigate('reports/view/'+this.model.id, {trigger: true});
 		return false;
 	}

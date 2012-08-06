@@ -260,7 +260,47 @@ var AppRouter = Backbone.Router.extend(
 	message_to_report : function(id) {
 		this.model.messages.resetCallback.add(function() {
 			this.model.reports.resetCallback.add(function() {
-				this.navigate('messages',{trigger: true});
+				var message = this.model.messages.get(id);
+				if (message == undefined ||
+					message.get('incident_id') != 0)
+				{
+					this.navigate('messages',{trigger: true});
+				}
+				
+				var model = new Report({
+					'message_id' : message.get('sid'),
+					'incident_title' : message.get('message'),
+					'incident_description' : (message.get('message_detail') != null) ? message.get('message_detail') : '',
+					'incident_date' : message.get('message_date'),
+				});
+				
+				// person
+				if (message.get('reporter') != undefined)
+				{
+					reporter = message.get('reporter');
+					person = model.get('incident_person');
+					person.person_first = reporter.reporter_first;
+					person.person_last = reporter.reporter_last;
+					person = model.set('incident_person', person);
+				}
+				
+				// location
+				if (message.get('latitude') != undefined && message.get('longitude') != undefined)
+				{
+					location = model.get('location');
+					location.latitude = message.get('latitude');
+					location.longitude = message.get('longitude');
+					location.location_name = (message.get('location_name') != undefined) ? message.get('location_name') : '';
+					location = model.set('location', location);
+				}
+				
+				var reportEditView = new ReportEditView({
+					model : model
+				});
+				this.appView.showView(reportEditView);
+				this.appView.setTab('reports');
+				
+				
 			}, this);
 		}, this);
 	}
