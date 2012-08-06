@@ -158,6 +158,7 @@ var AppRouter = Backbone.Router.extend(
 				model : model
 			});
 			this.appView.showView(reportPageView);
+			this.appView.setTab('reports');
 		}, this);
 	},
 	report_edit : function(id) {
@@ -169,6 +170,7 @@ var AppRouter = Backbone.Router.extend(
 				model : model
 			});
 			this.appView.showView(reportEditView);
+			this.appView.setTab('reports');
 		}, this);
 	},
 	report_add : function(id) {
@@ -178,6 +180,7 @@ var AppRouter = Backbone.Router.extend(
 				model : model
 			});
 			this.appView.showView(reportEditView);
+			this.appView.setTab('reports');
 		}, this);
 	},
 	report_approve : function(id) {
