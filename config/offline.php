@@ -2,4 +2,4 @@
 /**
  * Enable offline editing (experimental)
  */
-$config['enable_editing'] = FALSE;
+$config['enable_editing'] = TRUE;
