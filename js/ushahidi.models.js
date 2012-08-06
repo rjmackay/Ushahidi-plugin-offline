@@ -133,6 +133,8 @@ var Message = Backbone.Model.extend({
 	getReport : function ()
 	{
 		if (this.get('incident_id') == 0) return;
+		if (typeof this.get('incident_id') == 'string') return window.app.model.reports.get(this.get('incident_id'));
+		
 		return window.app.model.reports.getBySid(this.get('incident_id'));
 	}
 });
