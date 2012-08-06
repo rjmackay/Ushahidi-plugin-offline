@@ -26,7 +26,7 @@ var AppModel = Backbone.Model.extend(
 		this.categoryTree.settings = this.settings;
 		this.categoryTree.fetch();
 	},
-	delay : 6000,
+	delay : 10000,
 	poll : function() {
 		if (this.settings.get('username') != '') {
 			// Bind via reset callback to make sure localstorage loads first
