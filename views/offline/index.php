@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html manifest="/offline/index.appcache">
 	<head>
-		<title>Ushahidi Report Tool</title>
+		<title>Ushahidi Offline Admin</title>
 		<link rel="stylesheet" type="text/css" href="/media/css/admin/all.css" />
 		<link rel="stylesheet" type="text/css" href="/media/css/jquery.treeview.css" />
 		<link rel="stylesheet" type="text/css" href="/plugins/offline/css/offline.css" />
