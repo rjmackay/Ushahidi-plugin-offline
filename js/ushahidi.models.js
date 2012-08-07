@@ -183,10 +183,6 @@ var Report = Backbone.Model.extend(
 		// If offline report get the map
 		//if (this.collection.sync ==  Backbone.LocalStorage.sync) this.getMap();
 	},
-	incident_date : function() {
-		var date = new moment(this.get('incident_date'));
-		return date.format('YYYY/MM/DD');
-	},
 	categories : function() {
 		categories = [];
 		_.each(this.get('category'), function(cat) {

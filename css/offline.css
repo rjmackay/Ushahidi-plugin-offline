@@ -40,10 +40,11 @@
 
 .required,
 .report-form label .required {
-  color: #CC1830;
-  font-size: 15px;
+  color: #555;
+  font-size: 12px;
   font-weight: normal;
 }
+
 
 .report-form input.text, .report-form input.file, .tab_form_item input.text
 {
@@ -65,3 +66,6 @@
 	border: 1px solid #D1D1D1;
 	text-transform: uppercase;
 }
+
+label.error { color: red; }
+label.error { float: none; color: red;

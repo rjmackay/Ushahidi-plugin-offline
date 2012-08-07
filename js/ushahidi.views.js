@@ -23,6 +23,16 @@ var addHttp = function ()
 }
 String.prototype.addHttp = addHttp;
 
+jQuery.validator.addMethod('moment', function(value, element) {
+	return this.optional(element) || moment(value).isValid();
+}, 'Please enter a valid date.');
+
+
+jQuery.validator.addMethod('moment-datetime', function(value, element) {
+	var datetime = $(".field-incident-date").val() +'T'+ $(".field-incident-time").val();
+	return this.optional(element) || moment(datetime).isValid();
+}, 'Please enter a valid date.');
+
 /*
  * Report
  */
@@ -95,7 +105,6 @@ var ReportEditView = ReportView.extend(
 		}
 	},
 	events : {
-		'submit form' : 'save',
 		'click .add-news' : 'addNews',
 		'click .add-video' : 'addVideo'
 	},
@@ -110,10 +119,30 @@ var ReportEditView = ReportView.extend(
 		});
 		this.$el.html(this.template(context));
 		
+		// Set up category tree
 		$("#category-tree", this.$el).treeview({
 			persist: "location",
 			collapsed: true,
 			unique: false
+		});
+		
+		// Add form validation
+		$('form', this.$el).validate({
+			submitHandler : this.save,
+			rules : {
+				incident_title : 'required',
+				incident_date : 'required moment-datetime',
+				incident_time : 'required moment-datetime',
+				incident_description : 'required',
+				'incident_person[person_email]' : 'email',
+				'category[]' : { required: true, minlength: 1 },
+				'news_media_link_new[]' : 'url',
+				'video_media_link_new[]' : 'url'
+			},
+			groups: {
+				date: "incident_date incident_time"
+			},
+			debug : true
 		});
 		
 		// Set values for custom fields
@@ -133,7 +162,7 @@ var ReportEditView = ReportView.extend(
 		this.$('.add-video').before("<input type='text' name='video[].media_link' class='field-media_link text long' value='' />");
 		return false;
 	},
-	save : function() {
+	save : function(form) {
 		rawdata = $('form', this.$el).toJSON();
 		data = _.clone(rawdata);
 		
@@ -199,6 +228,9 @@ var ReportEditView = ReportView.extend(
 			}
 		});
 		
+		// Format date
+		data.incident_date = moment(rawdata.incident_date+'T'+rawdata.incident_time).format();
+		delete data.incident_time;
 		
 		this.model.set(data);
 		
@@ -228,11 +260,17 @@ var SettingsEditView = Backbone.View.extend(
 	initialize : function() {
 		_.bindAll(this, "save");
 	},
-	events : {
-		'submit form' : 'save'
-	},
 	render : function() {
 		this.$el.html(this.template(this.model.toJSON()));
+		
+		$('form', this.$el).validate({
+			submitHandler : this.save,
+			rules : {
+				username : 'required',
+				password : 'required'
+			}
+		});
+		
 		return this;
 	},
 	save : function() {

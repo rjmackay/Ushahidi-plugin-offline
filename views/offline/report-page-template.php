@@ -19,7 +19,7 @@
 	
 			<div class='row'>
 				<h4><?php echo Kohana::lang('ui_main.date');?></h4>
-				<%- incident_date %>
+				<%- moment(incident_date).format('YYYY-MM-DD HH:mm:ss') %>
 			</div>
 	
 			<div class="row">

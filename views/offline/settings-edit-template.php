@@ -2,7 +2,7 @@
 			<li></li>
 		</ul></div>
 		
-		<div class="f-col-full"><form method="get" id="settings-form" action=''>
+		<div class="f-col-full"><form method="post" id="settings-form" action=''>
 	
 		<div class="username">
 			<label for="username"><?php echo Kohana::lang('ui_main.username'); ?></label>

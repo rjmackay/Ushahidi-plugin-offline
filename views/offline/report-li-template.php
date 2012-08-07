@@ -33,7 +33,7 @@
 					//echo $edit_log;
 					?>
 				</td>
-				<td class="col-3"><%- incident_date %></td>
+				<td class="col-3"><%- moment(incident_date).format('YYYY-MM-DD HH:mm:ss') %></td>
 				<td class="col-4">
 					<ul>
 						<?php if (Kohana::config('offline.enable_editing')) { ?>

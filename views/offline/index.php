@@ -15,6 +15,7 @@
 		<script src="/plugins/offline/js/backbone.localStorage.js"></script>
 		<script src="/plugins/offline/js/backbone_offline.js"></script>
 		<script src="/media/js/jquery.treeview.js"></script>
+		<script src="/media/js/jquery.validate.min.js"></script>
 		
 		<script type="text/template" id="app-template">
 	<?php include('app-template.php'); ?>

@@ -31,7 +31,8 @@
 	
 			<div class='row'>
 				<label for="incident_date"><?php echo Kohana::lang('ui_main.date');?></label>
-				<input type='text' name='incident_date' class='field-incident-date text' value='<%- incident_date %>' />
+				<input type='text' name='incident_date' class='field-incident-date text' value='<%- moment(incident_date).format('YYYY-MM-DD') %>' />
+				<input type='text' name='incident_time' class='field-incident-time text' value='<%- moment(incident_date).format('HH:mm:ss') %>' />
 			</div>
 	
 			<div class="row">
@@ -94,14 +95,14 @@
 			<div class="report-media">
 					<h4><?php echo Kohana::lang('ui_main.reports_news');?></h4>
 					<% _.each( media.filter( function(item) { return item.media_type == 4; } ), function(item, key) { %>
-					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'news_media_link['+item.id+']' : 'news_media_link_new[]' %>' class='field-media_link text long' value='<%- item.media_link %>' /></div>
+					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'news_media_link['+item.id+']' : 'news_media_link_new[]' %>' class='field-media_link text long url' value='<%- item.media_link %>' /></div>
 					<% }); %>
 					<div class="row"><input type='text' name='news_media_link_new[]' class='field-media_link text long' value='' />
 					<a href="#" class="add add-news">add</a></div>
 					
 					<h4><?php echo Kohana::lang('ui_main.external_video_link');?></h4>
 					<% _.each( media.filter( function(item) { return item.media_type == 2; } ), function(item, key) { %>
-					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'video_media_link['+item.id+']' : 'video_media_link_new[]' %>' class='field-media_link text long' value='<%- item.media_link %>' /></div>
+					<div class="row"><input type='text' name='<%- (item.id != undefined) ? 'video_media_link['+item.id+']' : 'video_media_link_new[]' %>' class='field-media_link text long url' value='<%- item.media_link %>' /></div>
 					<% }); %>
 					<div class="row"><input type='text' name='video_media_link_new[]' class='field-media_link text long' value='' />
 					<a href="#" class="add add-video">add</a></div>

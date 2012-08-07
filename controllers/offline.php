@@ -138,6 +138,7 @@ class Offline_Controller extends Template_Controller {
 /media/img/admin/drag.gif
 /media/img/admin/footer-bg.jpg
 /media/js/jquery.treeview.js
+/media/js/jquery.validate.js
 /media/css/jquery.treeview.css
 ";
 		
