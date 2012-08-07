@@ -41,12 +41,20 @@ var AppModel = Backbone.Model.extend(
 		this.startPolling();
 	},
 	startPolling : function(delay) {
-		delay = typeof delay !== 'undefined' ? delay : this.delay;
-		clearTimeout(this.pollTimeout);
-		this.pollTimeout = _.delay(this.poll, delay);
+		// Only reset polling if we're not polling already OR delay is passed
+		if (this.pollTimeout == null || typeof delay !== 'undefined')
+		{
+			// Trigger poll immediately if we're not polling already
+			if (this.pollTimeout == null && typeof delay === 'undefined') delay = 0;
+			delay = typeof delay !== 'undefined' ? delay : this.delay;
+			// Clear existing timeout
+			this.stopPolling();
+			this.pollTimeout = _.delay(this.poll, delay);
+		}
 	},
 	stopPolling : function() {
 		clearTimeout(this.pollTimeout);
+		this.pollTimeout = null;
 	},
 	// @todo make this global
 });
@@ -89,7 +97,7 @@ var AppRouter = Backbone.Router.extend(
 			container : params.container
 		});
 		this.model = new AppModel();
-		
+		this.model.startPolling(5);
 		//_.bindAll(this, "reconnect");
 		//$('.reconnect').click(this.reconnect);
 	},
@@ -121,7 +129,7 @@ var AppRouter = Backbone.Router.extend(
 		}
 	},
 	reports : function(filter) {
-		this.model.startPolling(50);
+		this.model.startPolling();
 		
 		if (this.model.settings.get('username') == '')
 		{
@@ -218,8 +226,7 @@ var AppRouter = Backbone.Router.extend(
 		this.appView.setTab('settings');
 	},
 	messages : function(filter) {
-		this.model.startPolling(50);
-		
+		this.model.startPolling();
 		if (this.model.settings.get('username') == '')
 		{
 			this.navigate('settings/edit',{trigger: true});
