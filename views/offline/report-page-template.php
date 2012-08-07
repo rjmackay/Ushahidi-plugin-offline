@@ -34,6 +34,20 @@
 				->set('show_empty', TRUE)
 				->render();
 			?>
+			
+			<h4><?php echo Kohana::lang('ui_main.personal_information');?></h4>
+			<div class="row">
+				<h4><?php echo Kohana::lang('ui_main.first_name');?></h4>
+				<%- incident_person.person_first != null ? incident_person.person_first : '' %>
+			</div>
+			<div class="row">
+				<h4><?php echo Kohana::lang('ui_main.last_name');?></h4>
+				<%- incident_person.person_last != null ? incident_person.person_last : '' %>
+			</div>
+			<div class="row">
+				<h4><?php echo Kohana::lang('ui_main.email_address');?></h4>
+				<%- incident_person.person_email != null ? incident_person.person_email : '' %>
+			</div>
 	
 		</div>
 		<div class="f-col-1">

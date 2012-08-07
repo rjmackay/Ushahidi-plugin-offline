@@ -46,7 +46,21 @@
 			->set('custom_field_mismatch', customforms::get_edit_mismatch(1))
 			->render();
 			?>
-	
+			
+			<div class="row">
+				<h4><?php echo Kohana::lang('ui_main.personal_information');?></h4>
+				<label for="incident_person[person_first]"><?php echo Kohana::lang('ui_main.first_name');?></label>
+				<input type='text' name='incident_person[person_first]' class='field-person-first text' value='<%- incident_person.person_first != null ? incident_person.person_first : '' %>' />
+			</div>
+			<div class="row">
+				<label for="incident_person[person_last]"><?php echo Kohana::lang('ui_main.last_name');?></label>
+				<input type='text' name='incident_person[person_last]' class='field-person-last text' value='<%- incident_person.person_last != null ? incident_person.person_last : '' %>' />
+			</div>
+			<div class="row">
+				<label for="incident_person[person_email]"><?php echo Kohana::lang('ui_main.email_address');?></label>
+				<input type='text' name='incident_person[person_email]' class='field-person-email text' value='<%- incident_person.person_email != null ? incident_person.person_email : '' %>' />
+			</div>
+			
 		</div>
 		<div class="f-col-1">
 	

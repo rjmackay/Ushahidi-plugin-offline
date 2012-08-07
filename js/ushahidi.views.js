@@ -140,6 +140,7 @@ var ReportEditView = ReportView.extend(
 		// Use extend to only overwrite the field present in the form and keep others
 		data.location = _.extend(this.model.get('location'), rawdata.location);
 		data.custom_field = _.extend(this.model.get('custom_field'), rawdata.custom_field);
+		data.incident_person = _.extend(this.model.get('incident_person'), rawdata.incident_person);
 		
 		if (data.incident_verified == undefined)
 			data.incident_verified = 0;
