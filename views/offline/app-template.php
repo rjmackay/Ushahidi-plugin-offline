@@ -30,25 +30,27 @@
 				</div>
 			</div>
 			<div class="table-holder">
-				<table class="table">
-					<thead>
-						<tr>
-							<th class="col-1"><input id="checkallincidents" type="checkbox" class="check-box" onclick="CheckAll( this.id, 'incident_id[]' )" /></th>
-							<th class="col-2"><?php echo Kohana::lang('ui_main.report_details');?></th>
-							<th class="col-3"><?php echo Kohana::lang('ui_main.date');?></th>
-							<th class="col-4"><?php echo Kohana::lang('ui_main.actions');?></th>
-						</tr>
-					</thead>
-					<tfoot>
-						<tr class="foot">
-							<td colspan="4">
-								
-							</td>
-						</tr>
-					</tfoot>
-					<tbody id="reportList">
-						<tr id='loading'><td colspan=4><b>Loading...</b></td></tr>
-					</tbody>
-				</table>
+				<form method="post">
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="col-1"><input id="checkallincidents" type="checkbox" class="check-box" /></th>
+								<th class="col-2"><?php echo Kohana::lang('ui_main.report_details');?></th>
+								<th class="col-3"><?php echo Kohana::lang('ui_main.date');?></th>
+								<th class="col-4"><?php echo Kohana::lang('ui_main.actions');?></th>
+							</tr>
+						</thead>
+						<tfoot>
+							<tr class="foot">
+								<td colspan="4">
+									
+								</td>
+							</tr>
+						</tfoot>
+						<tbody id="reportList">
+							<tr id='loading'><td colspan=4><b>Loading...</b></td></tr>
+						</tbody>
+					</table>
+				</form>
 			</div>
 			

@@ -286,10 +286,17 @@ var ReportAppView = Backbone.View.extend(
 {
 	template : _.template($("#app-template").html()),
 	initialize : function(options) {
-		_.bindAll(this, "addReport", "addAll");
+		_.bindAll(this, "addReport", "addAll", 'massApprove', 'massDisapprove', 'massVerify', 'massDelete', 'checkAll');
 		this.model.bind('add', this.addReport);
 		this.model.bind('reset', this.addAll);
 		this.filter = options.filter;
+	},
+	events : {
+		'click .mass-approve' : 'massApprove',
+		'click .mass-disapprove' : 'massDisapprove',
+		'click .mass-verify' : 'massVerify',
+		'click .mass-delete' : 'massDelete',
+		'change #checkallincidents' : 'checkAll'
 	},
 	render : function() {
 		this.$el.html(this.template({
@@ -322,6 +329,60 @@ var ReportAppView = Backbone.View.extend(
 		this.model.unbind('reset', this.addAll);
 		// Destroy report views
 		this.model.each(function(model) { model.view.close() });
+	},
+	massApprove : function() {
+		rawdata = $('form', this.$el).toJSON();
+		if (rawdata.incident_id == undefined) return false;
+		
+		var answer = confirm('Are you sure you want to approve '+rawdata.incident_id.length+' reports?');
+		if (answer) {
+			_.each(rawdata.incident_id, function (id) {
+				this.model.get(id).set('incident_active', 1).save();
+			}, this);
+		}
+		return false;
+	},
+	massDisapprove : function() {
+		rawdata = $('form', this.$el).toJSON();
+		if (rawdata.incident_id == undefined) return false;
+		
+			
+		var answer = confirm('Are you sure you want to dis-approve '+rawdata.incident_id.length+' reports?');
+		if (answer) {
+			_.each(rawdata.incident_id, function (id) {
+				this.model.get(id).set('incident_active', 0).save();
+			}, this);
+		}
+		return false;
+	},
+	massVerify : function() {
+		rawdata = $('form', this.$el).toJSON();
+		if (rawdata.incident_id == undefined) return false;
+		
+		var answer = confirm('Are you sure you want to verify '+rawdata.incident_id.length+' reports?');
+		if (answer) {
+			_.each(rawdata.incident_id, function (id) {
+				this.model.get(id).toggleVerified();
+			}, this);
+		}
+		return false;
+		
+	},
+	massDelete : function() {
+		rawdata = $('form', this.$el).toJSON();
+		if (rawdata.incident_id == undefined) return false;
+		
+			
+		var answer = confirm('Are you sure you want to delete '+rawdata.incident_id.length+' reports?');
+		if (answer) {
+			_.each(rawdata.incident_id, function (id) {
+				this.model.get(id).destroy({wait: true});
+			}, this);
+		}
+		return false;
+	},
+	checkAll : function() {
+		$('form input.mass-select', this.$el).prop('checked', $('form input#checkallincidents', this.$el).prop('checked'));
 	}
 });
 
@@ -332,10 +393,14 @@ var MessageAppView = Backbone.View.extend(
 {
 	template : _.template($("#message-app-template").html()),
 	initialize : function(options) {
-		_.bindAll(this, "addMessage", "addAll");
+		_.bindAll(this, "addMessage", "addAll", 'massDelete', 'checkAll');
 		this.model.bind('add', this.addMessage);
 		this.model.bind('reset', this.addAll);
 		this.filter = options.filter;
+	},
+	events : {
+		'click .mass-delete' : 'massDelete',
+		'change #checkall' : 'checkAll'
 	},
 	render : function() {
 		this.$el.html(this.template({
@@ -367,5 +432,21 @@ var MessageAppView = Backbone.View.extend(
 		this.model.unbind('reset', this.addAll);
 		// Destroy report views
 		this.model.each(function(model) { model.view.close() });
+	},
+	massDelete : function() {
+		rawdata = $('form', this.$el).toJSON();
+		if (rawdata.message_id == undefined) return false;
+		
+			
+		var answer = confirm('Are you sure you want to delete '+rawdata.message_id.length+' messages?');
+		if (answer) {
+			_.each(rawdata.message_id, function (id) {
+				this.model.get(id).destroy({wait: true});
+			}, this);
+		}
+		return false;
+	},
+	checkAll : function() {
+		$('form input.mass-select', this.$el).prop('checked', $('form input#checkall', this.$el).prop('checked'));
 	}
 });

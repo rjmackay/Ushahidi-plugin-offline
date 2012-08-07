@@ -1,5 +1,5 @@
 				<td class="col-1">
-					<input name="message_id[]" value="<%- id %>" type="checkbox" class="check-box"/>
+					<input name="message_id[]" value="<%- id %>" type="checkbox" class="check-box mass-select"/>
 				</td>
 				<td class="col-2">
 					<div class="post">
