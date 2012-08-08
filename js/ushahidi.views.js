@@ -130,14 +130,21 @@ var ReportEditView = ReportView.extend(
 		$('form', this.$el).validate({
 			submitHandler : this.save,
 			rules : {
-				incident_title : 'required',
+				incident_title :  { required:true, rangelength: [3,200]},
 				incident_date : 'required moment-datetime',
 				incident_time : 'required moment-datetime',
 				incident_description : 'required',
-				'incident_person[person_email]' : 'email',
-				'category[]' : { required: true, minlength: 1 },
+				'incident_person[person_email]' : { email:true, rangelength: [3,100]},
+				'incident_person[person_first]' : { rangelength: [2,100]},
+				'incident_person[person_last]' : { rangelength: [2,100]},
+				'category[]' : { required: true, minlength: 1, number:true },
 				'news_media_link_new[]' : 'url',
-				'video_media_link_new[]' : 'url'
+				'video_media_link_new[]' : 'url',
+				'location[location_name]' : { required:true, rangelength: [3,200]},
+				'location[latitude]' : { required:true, number:true, range: [-90,90]},
+				'location[longitude]' : { required:true, number:true, range: [-180,180]},
+				'incident_active' : { range: [0,1]},
+				'incident_verified' : { range: [0,1]}
 			},
 			groups: {
 				date: "incident_date incident_time"
