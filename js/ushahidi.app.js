@@ -98,8 +98,6 @@ var AppRouter = Backbone.Router.extend(
 		});
 		this.model = new AppModel();
 		this.model.startPolling(5);
-		//_.bindAll(this, "reconnect");
-		//$('.reconnect').click(this.reconnect);
 	},
 	routes :
 	{
