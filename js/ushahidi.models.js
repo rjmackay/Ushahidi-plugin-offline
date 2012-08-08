@@ -156,7 +156,8 @@ var Report = Backbone.Model.extend(
 	defaults : {
 		'incident_title' : '',
 		'incident_description' : '',
-		'incident_date' : '',
+		'incident_date' : moment().format(),
+		'incident_dateadd' : moment().format(),
 		'incident_verified' : 0,
 		'incident_active' : 0,
 		'sid' : null,

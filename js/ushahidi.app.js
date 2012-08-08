@@ -103,13 +103,13 @@ var AppRouter = Backbone.Router.extend(
 	{
 		"" : "home",
 		"reports" : "reports",
-		"reports/:filter" : "reports",
+		"reports/add" : "report_add",
 		"reports/view/:id" : "report_view",
 		"reports/edit/:id" : "report_edit",
-		"reports/add" : "report_add",
 		"reports/approve/:id" : "report_approve",
 		"reports/verify/:id" : "report_verify",
 		"reports/delete/:id" : "report_delete",
+		"reports/:filter" : "reports",
 		"settings/edit" : "settings_edit",
 		"messages" : "messages",
 		"messages/:filter" : "messages",
@@ -179,7 +179,9 @@ var AppRouter = Backbone.Router.extend(
 			this.appView.setTab('reports');
 		}, this);
 	},
-	report_add : function(id) {
+	report_add : function() {
+		this.model.stopPolling();
+		
 		this.model.reports.resetCallback.add(function() {
 			var model = new Report();
 			var reportEditView = new ReportEditView({
@@ -304,8 +306,6 @@ var AppRouter = Backbone.Router.extend(
 				});
 				this.appView.showView(reportEditView);
 				this.appView.setTab('reports');
-				
-				
 			}, this);
 		}, this);
 	}
