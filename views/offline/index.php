@@ -63,6 +63,8 @@
 				
 				<div id="offline" class="error" style="display:none;">Couldn't connect to server... <a class="reconnect" href="#">try again</a></div>
 				
+				<div id="dirty" class="error" style="display:none;">There are <span></span> un-synced items... <a class="sync" href="#">sync now</a></div>
+				
 				<!-- nav-holder -->
 				<div class="nav-holder">
 					<!-- main-nav -->

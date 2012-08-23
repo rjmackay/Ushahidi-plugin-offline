@@ -4,7 +4,7 @@
 var AppModel = Backbone.Model.extend(
 {
 	initialize : function() {
-		_.bindAll(this, "poll");
+		_.bindAll(this, "poll", 'dirty', 'checkDirty');
 		
 		// Settings
 		this.settings = new Settings();
@@ -25,6 +25,13 @@ var AppModel = Backbone.Model.extend(
 		this.categoryTree = new CategoryTree();
 		this.categoryTree.settings = this.settings;
 		this.categoryTree.fetch();
+		
+		var context = this;
+		$('#dirty .sync').click(_.debounce(function() {
+			context.startPolling(0);
+			return false;
+		}, 1000, true));
+		this.checkDirty();
 	},
 	delay : 10000,
 	poll : function() {
@@ -56,7 +63,25 @@ var AppModel = Backbone.Model.extend(
 		clearTimeout(this.pollTimeout);
 		this.pollTimeout = null;
 	},
-	// @todo make this global
+	dirty : function() {
+		var dirtyCount = this.reports.storage.sync.collection.dirty().length;
+		dirtyCount += this.messages.storage.sync.collection.dirty().length;
+		if (dirtyCount == 0) return false;
+		return dirtyCount;
+	},
+	checkDirty : function() {
+		count = this.dirty();
+		if (count)
+		{
+			$('#dirty').show();
+			$('#dirty span').text(count);
+		}
+		else
+		{
+			$('#dirty').hide();
+		}
+		_.delay(this.checkDirty, 500);
+	}
 });
 
 /*
