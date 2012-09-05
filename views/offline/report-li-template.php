@@ -16,7 +16,7 @@
 					</div>
 					<ul class="info">
 						<li class="none-separator">Incident ID: 
-							<strong><%- sid %> (<%- id %>)</strong>
+							<strong><%- sid %></strong>
 						</li>
 					</ul>
 					<ul class="info">

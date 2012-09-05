@@ -7,7 +7,7 @@
 					</div>
 					<ul class="info">
 						<li class="none-separator">Message ID:
-							<strong><%- sid %> (<%- id %>)</strong>
+							<strong><%- sid %></strong>
 						</li>
 					</ul>
 					<ul class="info">
