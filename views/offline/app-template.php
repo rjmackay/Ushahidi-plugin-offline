@@ -48,7 +48,7 @@
 							</tr>
 						</tfoot>
 						<tbody id="reportList">
-							<tr id='loading'><td colspan=4><b>Loading...</b></td></tr>
+							<tr id='loading'><td colspan=4><b>No reports</b></td></tr>
 						</tbody>
 					</table>
 				</form>

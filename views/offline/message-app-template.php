@@ -34,7 +34,7 @@
 						</tr>
 					</tfoot>
 					<tbody id="messageList">
-						<tr id='loading'><td colspan=4><b>Loading...</b></td></tr>
+						<tr id='loading'><td colspan=4><b>No Messages</b></td></tr>
 					</tbody>
 				</table>
 			</form></div>
