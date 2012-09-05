@@ -302,7 +302,7 @@ var AppRouter = Backbone.Router.extend(
 				var model = new Report({
 					'message_id' : message.get('sid'),
 					'incident_title' : message.get('message'),
-					'incident_description' : (message.get('message_detail') != null) ? message.get('message_detail') : '',
+					'incident_description' : (message.get('message_detail') != null) ? message.get('message_detail') : message.get('message'),
 					'incident_date' : message.get('message_date'),
 				});
 				
