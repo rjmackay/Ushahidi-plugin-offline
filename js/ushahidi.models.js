@@ -76,30 +76,6 @@ var date_comparator = function (field, order)
 	}
 }
 
-/**
- * Models and collections
- */
-var Settings = Backbone.Model.extend({
-	localStorage : new Backbone.LocalStorage("UshahidiSettings"),
-	sync : Backbone.LocalStorage.sync,
-	defaults : {
-		username : '',
-		password : '',
-		id: 1
-	},
-	initialize : function () {
-		// Always ID 1
-		this.set({id: 1});
-		// Avoid any undefined values
-		if (!this.get("username")) {
-			this.set({"username": this.defaults.username});
-		}
-		if (!this.get("password")) {
-			this.set({"password": this.defaults.password});
-		}
-	}
-});
-
 // Quick hack for storing category tree
 var CategoryTree = Backbone.Model.extend({
 	localStorage : new Backbone.LocalStorage("CategoryTree"),

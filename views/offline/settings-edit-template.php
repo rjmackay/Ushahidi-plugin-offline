@@ -6,7 +6,7 @@
 	
 		<div class="username">
 			<label for="username"><?php echo Kohana::lang('ui_main.username'); ?></label>
-			<input type='text' name='username' class='field-username' value='<%- username %>' />
+			<input type='text' name='username' class='field-username' value='' />
 		</div>
 	
 		<div class="password">

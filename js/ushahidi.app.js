@@ -6,24 +6,21 @@ var AppModel = Backbone.Model.extend(
 	initialize : function() {
 		_.bindAll(this, "poll", 'dirty', 'checkDirty');
 		
-		// Settings
-		this.settings = new Settings();
-		this.settings.fetch();
-		// @todo: Add check for admin / member later
+		this.authenticated = false;
 		
 		// Reports setup
 		this.reports = new ReportCollection();
-		this.reports.settings = this.settings;
+		//this.reports.settings = this.settings;
 		this.reports.fetch({local : true});
 		
 		// Messages
 		this.messages = new MessagesCollection();
-		this.messages.settings = this.settings;
+		//this.messages.settings = this.settings;
 		this.messages.fetch({local : true});
 		
 		// Category Tree
 		this.categoryTree = new CategoryTree();
-		this.categoryTree.settings = this.settings;
+		//this.categoryTree.settings = this.settings;
 		this.categoryTree.fetch();
 		
 		var context = this;
@@ -35,14 +32,21 @@ var AppModel = Backbone.Model.extend(
 	},
 	delay : 10000,
 	poll : function() {
-		if (this.settings.get('username') != '') {
+		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function() {
+			this.authenticated = true;
+		}).error( function() {
+			this.authenticated = false;
+			window.app.navigate('settings/edit', {trigger: true});
+		});
+		
+		if (this.authenticated) {
 			// Bind via reset callback to make sure localstorage loads first
-			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300}}) }, this);
-			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 300}}) }, this);
+			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300, admin : 1}}) }, this);
+			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 300, admin : 1}}) }, this);
 		
 			// Hack to populate categoryTree
-			this.categoryTree.sync = Offline.syncWithAuth;
-			this.categoryTree.fetch({success : function(model, response) { model.sync = Backbone.LocalStorage.sync; model.save() } });
+			this.categoryTree.sync = Offline.sync;
+			this.categoryTree.fetch({data : {admin : 1}, success : function(model, response) { model.sync = Backbone.LocalStorage.sync; model.save() } });
 		}
 		// @todo move reset delay to after fetch finishes
 		this.startPolling();
@@ -142,23 +146,17 @@ var AppRouter = Backbone.Router.extend(
 		"reports/add/from_message/:id" : "message_to_report"
 	},
 	home : function() {
-		if (this.model.settings.get('username') != '')
-		{
+		//if (this.model.settings.get('username') != '')
+		//{
 			this.navigate('reports',{trigger: true});
-		}
-		else
-		{
-			this.navigate('settings/edit',{trigger: true});
-		}
+		//}
+		//else
+		//{
+		//	this.navigate('settings/edit',{trigger: true});
+		//}
 	},
 	reports : function(filter) {
 		this.model.startPolling();
-		
-		if (this.model.settings.get('username') == '')
-		{
-			this.navigate('settings/edit',{trigger: true});
-			return;
-		}
 		
 		var reports;
 		if (filter == 'a')
@@ -244,19 +242,12 @@ var AppRouter = Backbone.Router.extend(
 	settings_edit : function() {
 		this.model.stopPolling();
 		
-		var settingsEditView = new SettingsEditView({
-			model : this.model.settings
-		});
+		var settingsEditView = new SettingsEditView();
 		this.appView.showView(settingsEditView);
 		this.appView.setTab('settings');
 	},
 	messages : function(filter) {
 		this.model.startPolling();
-		if (this.model.settings.get('username') == '')
-		{
-			this.navigate('settings/edit',{trigger: true});
-			return;
-		}
 		
 		var messages;
 		if (filter == 'twitter')

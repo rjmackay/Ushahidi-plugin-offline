@@ -78,12 +78,6 @@
 						</li>
 						<?php } ?>
 					</ul>
-					<!-- sub-nav -->
-					<ul class="sub-nav">
-						<li>
-							<a href="<?php echo url::site();?>offline#settings/edit" class="settings"><?php echo Kohana::lang('ui_admin.settings'); ?></a>
-						</li>
-					</ul>
 				</div>
 			</div>
 			<!-- content -->

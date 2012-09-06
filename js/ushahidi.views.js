@@ -268,7 +268,7 @@ var SettingsEditView = Backbone.View.extend(
 		_.bindAll(this, "save");
 	},
 	render : function() {
-		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.html(this.template());
 		
 		$('form', this.$el).validate({
 			submitHandler : this.save,
@@ -283,11 +283,25 @@ var SettingsEditView = Backbone.View.extend(
 	save : function() {
 		var username = this.$('.field-username').val();
 		var password = this.$('.field-password').val();
-		this.model.set('username', username);
-		if (password != '') this.model.set('password', password);
-		this.model.save();
+		
+		options = {}
+		options.url = window.baseURL+'api/rest?admin=1';
 
-		window.app.navigate('reports',{trigger: true});
+		options.beforeSend = function(xhr, jqsettings) {
+			xhr.setRequestHeader('Authorization', make_base_auth(username, password));
+		}
+		options.success = function() {
+			window.app.model.authenticated = true;
+			window.app.navigate('reports', {trigger: true});
+		};
+		options.error = function() {
+			window.app.model.authenticated = false;
+			console.log('auth failed')
+			//window.app.navigate('settings/edit', {trigger: true});
+		};
+		
+		jQuery.ajax(options);
+
 		return false;
 	}
 });
