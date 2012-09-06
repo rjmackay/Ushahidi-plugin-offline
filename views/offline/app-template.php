@@ -12,6 +12,7 @@
 					<li><a href="#reports/o" class="<%- (filter == 'o' ? 'active' : '') %> reports-filter-orphaned"><?php echo Kohana::lang('ui_main.uncategorized_reports');?></a></li>
 				</ul>
 				<!-- tab -->
+				<?php if (Kohana::config('offline.enable_editing')) { ?>
 				<div class="tab">
 					<ul>
 						<li><a href="#" class="mass-approve">
@@ -28,13 +29,14 @@
 						</li>
 					</ul>
 				</div>
+				<?php } ?>
 			</div>
 			<div class="table-holder">
 				<form method="post">
 					<table class="table">
 						<thead>
 							<tr>
-								<th class="col-1"><input id="checkallincidents" type="checkbox" class="check-box" /></th>
+								<th class="col-1"><?php if (Kohana::config('offline.enable_editing')) { ?><input id="checkallincidents" type="checkbox" class="check-box" /><?php } ?></th>
 								<th class="col-2"><?php echo Kohana::lang('ui_main.report_details');?></th>
 								<th class="col-3"><?php echo Kohana::lang('ui_main.date');?></th>
 								<th class="col-4"><?php echo Kohana::lang('ui_main.actions');?></th>

@@ -72,9 +72,11 @@
 						<li>
 							<a href="<?php echo url::site();?>offline#reports" class="active reports"><?php echo Kohana::lang('ui_admin.reports'); ?></a>
 						</li>
+						<?php if (Kohana::config('offline.enable_editing')) { ?>
 						<li>
 							<a href="<?php echo url::site();?>offline#messages" class="messages"><?php echo Kohana::lang('ui_admin.messages'); ?></a>
 						</li>
+						<?php } ?>
 					</ul>
 					<!-- sub-nav -->
 					<ul class="sub-nav">
