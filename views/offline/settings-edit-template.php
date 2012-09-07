@@ -15,7 +15,7 @@
 		</div>
 
 		<div>
-			<input type='submit' value='save' id='report-save' />
+			<input type='submit' value='Login' id='report-save' />
 		</div>
 	
 		<div style="clear:both;"></div>
