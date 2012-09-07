@@ -3,24 +3,22 @@
  **/
 var AppModel = Backbone.Model.extend(
 {
-	initialize : function() {
+	initialize : function(params) {
 		_.bindAll(this, "poll", 'dirty', 'checkDirty');
 		
 		this.authenticated = false;
 		
 		// Reports setup
 		this.reports = new ReportCollection();
-		//this.reports.settings = this.settings;
 		this.reports.fetch({local : true});
 		
 		// Messages
 		this.messages = new MessagesCollection();
-		//this.messages.settings = this.settings;
 		this.messages.fetch({local : true});
 		
 		// Category Tree
 		this.categoryTree = new CategoryTree();
-		//this.categoryTree.settings = this.settings;
+		this.categoryTree.set({categories: params.categoryTree})
 		this.categoryTree.fetch();
 		
 		var context = this;
@@ -32,10 +30,16 @@ var AppModel = Backbone.Model.extend(
 	},
 	delay : 10000,
 	poll : function() {
+		var context = this
+		
 		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function() {
-			this.authenticated = true;
+			if (!context.authenticated) 
+			{
+				context.authenticated = true;
+				context.startPolling(0);
+			}
 		}).error( function() {
-			this.authenticated = false;
+			context.authenticated = false;
 			window.app.navigate('settings/edit', {trigger: true});
 		});
 		
@@ -45,7 +49,7 @@ var AppModel = Backbone.Model.extend(
 			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 300, admin : 1}}) }, this);
 		
 			// Hack to populate categoryTree
-			this.categoryTree.sync = Offline.sync;
+			this.categoryTree.sync = Backbone.ajaxSync;
 			this.categoryTree.fetch({data : {admin : 1}, success : function(model, response) { model.sync = Backbone.LocalStorage.sync; model.save() } });
 		}
 		// @todo move reset delay to after fetch finishes
@@ -125,7 +129,9 @@ var AppRouter = Backbone.Router.extend(
 		{
 			container : params.container
 		});
-		this.model = new AppModel();
+		this.model = new AppModel({
+			categoryTree: params.categoryTree
+		});
 		this.model.startPolling(5);
 	},
 	routes :
@@ -325,16 +331,4 @@ var AppRouter = Backbone.Router.extend(
 			}, this);
 		}, this);
 	}
-});
-
-
-$(function() {
-	var UshahidiApp = new AppRouter(
-	{
-		container : $('#content .bg')
-	});
-	window.app = UshahidiApp;
-	// @todo only trigger start after initial model load?
-	Backbone.history.start();
-	
 });

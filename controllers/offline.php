@@ -39,6 +39,8 @@ class Offline_Controller extends Template_Controller {
 
 		// Load cache
 		$this->cache = new Cache;
+		
+		$this->auth = Auth::instance();
 
 		// Retrieve Default Settings
 		$this->template->site_name = Kohana::config('settings.site_name');

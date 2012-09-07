@@ -91,7 +91,7 @@ var CategoryTree = Backbone.Model.extend({
 	},
 	parse : function (data)
 	{
-		if (this.sync == Offline.syncWithAuth)
+		if (this.sync == Backbone.ajaxSync)
 		{
 			attr = {};
 			attr.categories = data;
@@ -163,6 +163,7 @@ var Report = Backbone.Model.extend(
 	categories : function() {
 		categories = [];
 		_.each(this.get('category'), function(cat) {
+			if (cat.id == null) return;
 			categories.push(cat.category_title);
 		});
 		return categories.join(', ');
@@ -170,6 +171,7 @@ var Report = Backbone.Model.extend(
 	category_ids : function() {
 		ids = [];
 		_.each(this.get('category'), function(cat) {
+			if (cat.id == null) return;
 			ids[cat.id] = parseInt(cat.id, 10);
 		});
 		return ids;

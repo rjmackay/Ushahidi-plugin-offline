@@ -44,14 +44,27 @@
 		<script type="text/template" id="settings-edit-template">
 	<?php include('settings-edit-template.php'); ?>
 		</script>
-		<script>
-			var baseURL = '<?php echo url::base(); ?>';
-			window.baseURL = baseURL;
-		</script>
 		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>
 		<script src="/plugins/offline/js/ushahidi.app.js"></script>
+		<script>
+			var baseURL = '<?php echo url::base(); ?>';
+			window.baseURL = baseURL;
+			
+			var categoryTree = <?php echo json_encode(category::get_category_tree_data(FALSE, $this->auth->admin_access())); ?>
+
+			$(function() {
+				var UshahidiApp = new AppRouter(
+				{
+					container : $('#content .bg'),
+					baseURL : baseURL,
+					categoryTree : categoryTree
+				});
+				window.app = UshahidiApp;
+				Backbone.history.start();
+			});
+		</script>
 	</head>
 	<body>
 		<div class="holder">
