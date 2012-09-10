@@ -48,6 +48,7 @@
 		<script src="/plugins/offline/js/ushahidi.models.js"></script>
 		<script src="/plugins/offline/js/ushahidi.views.js"></script>
 		<script src="/plugins/offline/js/ushahidi.app.js"></script>
+		<script src="/plugins/offline/js/appcache.js"></script>
 		<script>
 			var baseURL = '<?php echo url::base(); ?>';
 			window.baseURL = baseURL;
@@ -77,6 +78,8 @@
 				<div id="offline" class="error" style="display:none;">Couldn't connect to server... <a class="reconnect" href="#">try again</a></div>
 				
 				<div id="dirty" class="error" style="display:none;">There are <span></span> un-synced items... <a class="sync" href="#">sync now</a></div>
+				
+				<div id="appcache" class="error" style="display:none;">Application updates ready. <a class="reload" href="#">Reload to update</a></div>
 				
 				<!-- nav-holder -->
 				<div class="nav-holder">
