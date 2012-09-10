@@ -1,6 +1,6 @@
-#ExpiresActive On
-#ExpiresDefault "access"
-#Header merge Cache-Control no-cache
+ExpiresActive On
+ExpiresDefault "access plus 1 month"
+Header merge Cache-Control "max-age=2592000, must-revalidate"
 
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
