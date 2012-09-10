@@ -39,10 +39,13 @@ window.applicationCache.addEventListener('updateready', function() {
 	$('#appcache').show();
 }, false);
 
-$('#appcache .reload').click(function() {
-	window.location.reload(true);
-})
-
-setInterval(function() {
-	window.applicationCache.update()
-}, 10000); 
+$(function() {
+	$('#appcache .reload').click(function() {
+		window.location.reload(true);
+		return false;
+	});
+	
+	setInterval(function() {
+		window.applicationCache.update()
+	}, 10000);
+});
