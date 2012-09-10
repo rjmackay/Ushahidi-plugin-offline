@@ -32,15 +32,21 @@ var AppModel = Backbone.Model.extend(
 	poll : function() {
 		var context = this
 		
-		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function() {
+		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function(data, textStatus, xhr) {
+			// If we weren't authenticated already:
+			// Set authenticated flag and poll server again
 			if (!context.authenticated) 
 			{
 				context.authenticated = true;
 				context.startPolling(0);
 			}
-		}).error( function() {
-			context.authenticated = false;
-			window.app.navigate('settings/edit', {trigger: true});
+		}).error( function(data, textStatus, xhr) {
+			// If auth fails, redirect (ignoring other error codes, in case we're just offline)
+			if (xhr.status == 401)
+			{
+				context.authenticated = false;
+				window.app.navigate('settings/edit', {trigger: true});
+			}
 		});
 		
 		if (this.authenticated) {
