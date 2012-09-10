@@ -45,7 +45,7 @@ class Offline_Controller extends Template_Controller {
 		// Retrieve Default Settings
 		$this->template->site_name = Kohana::config('settings.site_name');
 		header('Cache-control: must-revalidate');
-		header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time()));
+		header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time()+1));
 	}
 
 	/**
@@ -55,7 +55,31 @@ class Offline_Controller extends Template_Controller {
 	public function index()
 	{
 		// Do nothing - everything is static html!
-
+		$css = array();
+		$css[] = "media/css/admin/all.css";
+		$css[] = "media/css/jquery.treeview.css";
+		$css[] = $this->_hash_file("plugins/offline/css/offline.css");
+		
+		$js = array();
+		$js[] = $this->_hash_file("plugins/offline/js/jquery-1.7.1.min.js");
+		$js[] = $this->_hash_file("plugins/offline/js/moment.min.js");
+		$js[] = $this->_hash_file("plugins/offline/js/json2.js");
+		$js[] = $this->_hash_file("plugins/offline/js/jquery.to_json.js");
+		$js[] = $this->_hash_file("plugins/offline/js/underscore-min.js");
+		$js[] = $this->_hash_file("plugins/offline/js/backbone-min.js");
+		$js[] = $this->_hash_file("plugins/offline/js/backbone.localStorage.js");
+		$js[] = $this->_hash_file("plugins/offline/js/backbone_offline.js");
+		$js[] = "media/js/jquery.treeview.js";
+		$js[] = "media/js/jquery.validate.min.js";
+		$js[] = $this->_hash_file("plugins/offline/js/ushahidi.sync.js");
+		$js[] = $this->_hash_file("plugins/offline/js/ushahidi.models.js");
+		$js[] = $this->_hash_file("plugins/offline/js/ushahidi.views.js");
+		$js[] = $this->_hash_file("plugins/offline/js/ushahidi.app.js");
+		$js[] = $this->_hash_file("plugins/offline/js/appcache.js");
+		
+		$this->template->css = $css;
+		$this->template->js = $js;
+		
 	}
 
 	/**
@@ -71,13 +95,15 @@ class Offline_Controller extends Template_Controller {
 			$rev = time();
 			$this->cache->set('offline_appcache_rev', $rev);
 		}
+		// Hardcoded revision ID - bump for each release
+		$rev = '0.2.1';
 
 		$content .= "# Rev: $rev\n";
 		$content .= "CACHE:\n";
 
-		$content .= "/offline\n";
-		$content .= "/media/css/admin/all.css\n";
-		$content .= "/media/img/admin/top-separator.gif
+		//$content .= "/offline\n";
+		$content .= "/media/css/admin/all.css
+/media/img/admin/top-separator.gif
 /media/img/admin/content-bg.gif
 /media/img/admin/separator.gif
 /media/img/admin/separator-1.gif
@@ -111,6 +137,7 @@ class Offline_Controller extends Template_Controller {
 /media/img/icon-plus.gif
 ";
 		
+		$plugin_files = array();
 		
 		$plugindir = PLUGINPATH . 'offline';
 
@@ -120,7 +147,7 @@ class Offline_Controller extends Template_Controller {
 			while (($file = $dir->read()) !== FALSE)
 				if (preg_match("/\.css/i", $file))
 				{
-					$content .= "/plugins/offline/css/" . $file . "\n";
+					$plugin_files[] = "/plugins/offline/css/" . $file;
 				}
 		}
 
@@ -130,7 +157,7 @@ class Offline_Controller extends Template_Controller {
 			while (($file = $dir->read()) !== FALSE)
 				if (preg_match("/\.js/i", $file))
 				{
-					$content .= "/plugins/offline/js/" . $file . "\n";
+					$plugin_files[] = "/plugins/offline/js/" . $file;
 				}
 		}
 
@@ -141,7 +168,11 @@ class Offline_Controller extends Template_Controller {
 				if ($file != '.' AND $file != '..')
 					$content .= "/plugins/offline/images/" . $file . "\n";
 		}
-		$content .= "NETWORK:\n";
+		
+		$plugin_files = $this->_hash_files($plugin_files);
+		$content .= implode("\n",$plugin_files);
+		
+		$content .= "\nNETWORK:\n";
 		$content .= "/api\n";
 		$content .= "*\n";
 		$content .= "FALLBACK:\n";
@@ -152,6 +183,24 @@ class Offline_Controller extends Template_Controller {
 		echo $content;
 
 		exit();
+	}
+
+	private function _hash_files($files)
+	{
+		$output = array();
+		foreach ($files as $file)
+		{
+			$output[] = $this->_hash_file($file);
+		}
+		return $output;
+	}
+
+	private function _hash_file($file)
+	{
+		$hash = md5_file(DOCROOT . $file);
+		$ext = substr($file, strrpos($file, '.'));
+		$file = substr($file, 0, strrpos($file, '.'));
+		return "$file.$hash$ext";
 	}
 
 }

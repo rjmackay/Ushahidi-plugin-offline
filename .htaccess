@@ -1,0 +1,12 @@
+#ExpiresActive On
+#ExpiresDefault "access"
+#Header merge Cache-Control no-cache
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^css/(.*)\..{32}\.css$ css/$1.css [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^js/(.*)\..{32}\.js$ js/$1.js [L]

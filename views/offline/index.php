@@ -2,20 +2,6 @@
 <html manifest="/offline/index.appcache">
 	<head>
 		<title>Ushahidi Offline Admin</title>
-		<link rel="stylesheet" type="text/css" href="/media/css/admin/all.css" />
-		<link rel="stylesheet" type="text/css" href="/media/css/jquery.treeview.css" />
-		<link rel="stylesheet" type="text/css" href="/plugins/offline/css/offline.css" />
-		<!-- -->
-		<script src="/plugins/offline/js/jquery-1.7.1.min.js"></script>
-		<script src="/plugins/offline/js/moment.min.js"></script>
-		<script src="/plugins/offline/js/json2.js"></script>
-		<script src="/plugins/offline/js/jquery.to_json.js"></script>
-		<script src="/plugins/offline/js/underscore-min.js"></script>
-		<script src="/plugins/offline/js/backbone-min.js"></script>
-		<script src="/plugins/offline/js/backbone.localStorage.js"></script>
-		<script src="/plugins/offline/js/backbone_offline.js"></script>
-		<script src="/media/js/jquery.treeview.js"></script>
-		<script src="/media/js/jquery.validate.min.js"></script>
 		
 		<script type="text/template" id="app-template">
 	<?php include('app-template.php'); ?>
@@ -44,11 +30,14 @@
 		<script type="text/template" id="settings-edit-template">
 	<?php include('settings-edit-template.php'); ?>
 		</script>
-		<script src="/plugins/offline/js/ushahidi.sync.js"></script>
-		<script src="/plugins/offline/js/ushahidi.models.js"></script>
-		<script src="/plugins/offline/js/ushahidi.views.js"></script>
-		<script src="/plugins/offline/js/ushahidi.app.js"></script>
-		<script src="/plugins/offline/js/appcache.js"></script>
+		<?php
+		echo html::link($css, 'stylesheet', 'text/css');
+		foreach ($js as $script)
+		{
+			$script = url::base().$script;
+			echo "<script type=\"text/javascript\" src=\"$script\"></script>\n";
+		}
+		?>
 		<script>
 			var baseURL = '<?php echo url::base(); ?>';
 			window.baseURL = baseURL;
