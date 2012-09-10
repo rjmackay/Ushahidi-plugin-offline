@@ -1,3 +1,5 @@
+loggingEnabled = false;
+
 var cacheStatusValues = [];
 cacheStatusValues[0] = 'uncached';
 cacheStatusValues[1] = 'idle';
@@ -28,12 +30,12 @@ function logEvent(e) {
 	{
 		message += ' (prolly a syntax error in manifest)';
 	}
-	console.log(message);
+	loggingEnabled && console.log(message);
 }
 
 window.applicationCache.addEventListener('updateready', function() {
 	window.applicationCache.swapCache();
-	console.log('swap cache has been called');
+	loggingEnabled && console.log('swap cache has been called');
 	$('#appcache').show();
 }, false);
 
