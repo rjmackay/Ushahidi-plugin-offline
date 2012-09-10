@@ -32,7 +32,7 @@ var AppModel = Backbone.Model.extend(
 	poll : function() {
 		var context = this
 		
-		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function(data, textStatus, xhr) {
+		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function(xhr) {
 			// If we weren't authenticated already:
 			// Set authenticated flag and poll server again
 			if (!context.authenticated) 
@@ -40,7 +40,7 @@ var AppModel = Backbone.Model.extend(
 				context.authenticated = true;
 				context.startPolling(0);
 			}
-		}).error( function(data, textStatus, xhr) {
+		}).error( function(xhr) {
 			// If auth fails, redirect (ignoring other error codes, in case we're just offline)
 			if (xhr.status == 401)
 			{
@@ -51,8 +51,8 @@ var AppModel = Backbone.Model.extend(
 		
 		if (this.authenticated) {
 			// Bind via reset callback to make sure localstorage loads first
-			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 300, admin : 1}}) }, this);
-			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 300, admin : 1}}) }, this);
+			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 200, admin : 1}}) }, this);
+			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 200, admin : 1}}) }, this);
 		
 			// Hack to populate categoryTree
 			this.categoryTree.sync = Backbone.ajaxSync;
