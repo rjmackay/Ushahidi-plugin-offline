@@ -1,5 +1,7 @@
 loggingEnabled = false;
 
+// Based on code from: http://jonathanstark.com/blog/2009/09/27/debugging-html-5-offline-application-cache/
+
 var cacheStatusValues = [];
 cacheStatusValues[0] = 'uncached';
 cacheStatusValues[1] = 'idle';
