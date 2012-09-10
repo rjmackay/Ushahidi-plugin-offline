@@ -189,6 +189,11 @@ var AppRouter = Backbone.Router.extend(
 		
 		this.model.reports.resetCallback.add(function() {
 			var model = this.model.reports.get(id);
+			if (model == undefined)
+			{
+				this.navigate('reports',{trigger: true});
+			}
+			
 			var reportPageView = new ReportPageView({
 				model : model
 			});
@@ -201,6 +206,11 @@ var AppRouter = Backbone.Router.extend(
 		
 		this.model.reports.resetCallback.add(function() {
 			var model = this.model.reports.get(id);
+			if (model == undefined)
+			{
+				this.navigate('reports',{trigger: true});
+			}
+			
 			var reportEditView = new ReportEditView({
 				model : model
 			});
