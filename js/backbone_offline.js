@@ -70,6 +70,7 @@
       this.sync = new Offline.Sync(this.collection, this);
       this.keys = options.keys || {};
       this.autoPush = options.autoPush || false;
+      this.updateOnPush = options.updateOnPush || false;
     }
 
     Storage.prototype.isLocalStorageSupport = function() {
@@ -416,6 +417,9 @@
             item.set({
               sid: response.id
             });
+          }
+          if (_this.storage.updateOnPush) {
+            _this.updateItem(response, item);
           }
           return item.save({
             dirty: false

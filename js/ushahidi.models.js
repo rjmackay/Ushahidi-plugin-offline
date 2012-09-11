@@ -105,7 +105,7 @@ var MessagesCollection = Backbone.Collection.extend(
 	initialize : function (models, options)
 	{
 		this.constructor.__super__.initialize.apply(this, arguments);
-		this.storage = new Offline.Storage('MessagesCollection', this, {autoPush: true});
+		this.storage = new Offline.Storage('MessagesCollection', this, {autoPush: true, updateOnPush: true});
 	},
 	comparator : new date_comparator('message_date', 'desc')
 });
@@ -222,7 +222,7 @@ var ReportCollection = Backbone.Collection.extend(
 	initialize : function (models, options)
 	{
 		this.constructor.__super__.initialize.apply(this, arguments);
-		this.storage = new Offline.Storage('ReportCollection', this, {autoPush: true});
+		this.storage = new Offline.Storage('ReportCollection', this, {autoPush: true, updateOnPush: true});
 	},
 	comparator : new date_comparator('incident_date', 'desc')
 });
