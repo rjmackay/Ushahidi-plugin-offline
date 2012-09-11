@@ -85,7 +85,8 @@ var CategoryTree = Backbone.Model.extend({
 		id: 1
 	},
 	url : '/api/rest/categories/tree',
-	initialize : function () {
+	initialize : function ()
+	{
 		// Always ID 1
 		this.set({id: 1});
 	},
@@ -101,6 +102,19 @@ var CategoryTree = Backbone.Model.extend({
 		{
 			return data;
 		}
+	},
+	// Update categoryTree from remote
+	// Switches sync to ajaxSync, syncs then restore localstorage.sync
+	fetchRemote : function(options)
+	{
+		this.sync = Backbone.ajaxSync;
+		var success = options.success;
+		options.success = function(model, resp) {
+			model.sync = Backbone.LocalStorage.sync;
+			model.save();
+			if (success) success(model, resp);
+		};
+		return this.fetch(options);
 	}
 });
 

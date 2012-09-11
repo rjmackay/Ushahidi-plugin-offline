@@ -4,24 +4,31 @@
 var AppModel = Backbone.Model.extend(
 {
 	initialize : function(params) {
-		_.bindAll(this, "poll", 'dirty', 'checkDirty');
+		_.bindAll(this, "poll", 'fetch', 'startPolling', 'dirty', 'checkDirty');
 		
 		this.authenticated = false;
 		
-		// Reports setup
+		// Initialize models
 		this.reports = new ReportCollection();
-		this.reports.fetch({local : true});
-		
-		// Messages
 		this.messages = new MessagesCollection();
-		this.messages.fetch({local : true});
-		
-		// Category Tree
 		this.categoryTree = new CategoryTree();
-		this.categoryTree.set({categories: params.categoryTree})
-		this.categoryTree.fetch();
+		this.categoryTree.set({categories: params.categoryTree});
 		
+		// Load everything locally
+		this.fetching = this.loaded = $.when(
+			this.reports.fetch({local : true}),
+			this.messages.fetch({local : true}),
+			this.categoryTree.fetch()
+		);
+		
+		// Initial fetch from remote
 		var context = this;
+		this.loaded.done(function () {
+			context.startPolling(0);
+		});
+		
+		// Bind "sync now" button and check for unsynced items
+		// Probably the wrong place to handle this, but it works for now
 		$('#dirty .sync').click(_.debounce(function() {
 			context.startPolling(0);
 			return false;
@@ -29,19 +36,43 @@ var AppModel = Backbone.Model.extend(
 		this.checkDirty();
 	},
 	delay : 10000,
-	poll : function() {
-		var context = this
+	// Fetch data from the server
+	fetch : function() {
+		// Check if fetch is already running
+		if (this.fetching.state() == 'pending') return this.fetching
 		
-		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success( function(xhr) {
-			// If we weren't authenticated already:
-			// Set authenticated flag and poll server again
-			if (!context.authenticated) 
-			{
-				context.authenticated = true;
-				context.startPolling(0);
-			}
+		// need to handle race conditions so
+		// 1. we're never running multiple syncs at once
+		//    handled in poll or fetch
+		// 2. we can trigger events when a sync finishes
+		//    this.fetching.done( somefunc )
+		// 3. we can tell if a sync is running now?
+		//    this.fetching.state == 'pending'
+		// 4. we can say 'sync now or ignore if already syncing'
+		//    this.startPolling(0) is pretty close
+		
+		// Deferred object for tracking fetch process 
+		dfd = $.Deferred();
+		// Overwrite fetch with new promise object for easier binding
+		this.fetching = dfd.promise();
+		
+		var context = this;
+		
+		// Hit api base to check authentication
+		jQuery.getJSON(window.baseURL+'api/rest?admin=1').success(function(xhr) {
+			context.authenticated = true;
+			// Fetch models from the server, and trigger deferred when done (pass or fail)
+			context.loaded.done(function () {
+				$.when(
+					context.reports.storage.sync.incremental({data : {limit : 200, admin : 1}}),
+					context.messages.storage.sync.incremental({data : {limit : 200, admin : 1}}),
+					context.categoryTree.fetchRemote({data: { admin : 1} })
+				).always(dfd.resolve);
+			});
 		}).error( function(xhr) {
-			// If auth fails, redirect (ignoring other error codes, in case we're just offline)
+			// Reject deferred if not authenticated
+			dfd.reject();
+			// If auth fails: redirect (ignoring other error codes, in case we're just offline)
 			if (xhr.status == 401)
 			{
 				context.authenticated = false;
@@ -49,30 +80,36 @@ var AppModel = Backbone.Model.extend(
 			}
 		});
 		
-		if (this.authenticated) {
-			// Bind via reset callback to make sure localstorage loads first
-			this.reports.resetCallback.add(function () { this.reports.storage.sync.incremental({data : {limit : 200, admin : 1}}) }, this);
-			this.messages.resetCallback.add(function () { this.messages.storage.sync.incremental({data : {limit : 200, admin : 1}}) }, this);
-		
-			// Hack to populate categoryTree
-			this.categoryTree.sync = Backbone.ajaxSync;
-			this.categoryTree.fetch({data : {admin : 1}, success : function(model, response) { model.sync = Backbone.LocalStorage.sync; model.save() } });
-		}
-		// @todo move reset delay to after fetch finishes
-		this.startPolling();
+		// Returning promise object when done 
+		return this.fetching;
 	},
+	// Fetch data from remotes then start timer again
+	poll : function() {
+		// Make sure sync isn't already running
+		// Undecided if this check should live here or in fetch() itself
+		if (this.fetching.state() != 'pending')
+		{
+			var context = this;
+			this.fetch().always(function() { context.startPolling() });
+		}
+		else
+		{
+			this.startPolling();
+		}
+	},
+	// Start timer for polling server
 	startPolling : function(delay) {
 		// Only reset polling if we're not polling already OR delay is passed
 		if (this.pollTimeout == null || typeof delay !== 'undefined')
 		{
-			// Trigger poll immediately if we're not polling already
-			if (this.pollTimeout == null && typeof delay === 'undefined') delay = 0;
 			delay = typeof delay !== 'undefined' ? delay : this.delay;
+			
 			// Clear existing timeout
 			this.stopPolling();
 			this.pollTimeout = _.delay(this.poll, delay);
 		}
 	},
+	// Clear timer for polling server
 	stopPolling : function() {
 		clearTimeout(this.pollTimeout);
 		this.pollTimeout = null;
@@ -138,7 +175,6 @@ var AppRouter = Backbone.Router.extend(
 		this.model = new AppModel({
 			categoryTree: params.categoryTree
 		});
-		this.model.startPolling(5);
 	},
 	routes :
 	{
@@ -158,14 +194,7 @@ var AppRouter = Backbone.Router.extend(
 		"reports/add/from_message/:id" : "message_to_report"
 	},
 	home : function() {
-		//if (this.model.settings.get('username') != '')
-		//{
-			this.navigate('reports',{trigger: true});
-		//}
-		//else
-		//{
-		//	this.navigate('settings/edit',{trigger: true});
-		//}
+		this.navigate('reports',{trigger: true});
 	},
 	reports : function(filter) {
 		this.model.startPolling();
