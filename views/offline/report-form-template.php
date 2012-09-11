@@ -20,15 +20,6 @@
 				<input type='text' name='incident_title' class='field-incident-title text title' value='<%- incident_title %>' />
 			</div>
 	
-			<h4><?php echo Kohana::lang('ui_main.information_evaluation'); ?></h4>
-	
-			<div class="row">
-				<label class="inline"><input type='checkbox' name='incident_verified' class='field-verified' value="1" <% (incident_verified == 1) ? print('checked="checked"') : '' %> /> <?php echo Kohana::lang('ui_main.verified'); ?></label>
-			</div>
-			<div  class="row">
-				<label class="inline"><input type='checkbox' name='incident_active' class='field-approved' value="1" <% (incident_active == 1) ? print('checked="checked"') : '' %> /> <?php echo Kohana::lang('ui_main.approved'); ?></label>
-			</div>
-	
 			<div class='row'>
 				<label for="incident_date"><?php echo Kohana::lang('ui_main.date');?></label>
 				<input type='text' name='incident_date' class='field-incident-date text' value='<%- moment(incident_date).format('YYYY-MM-DD') %>' />
@@ -111,6 +102,15 @@
 					<ul><% _.each( media.filter( function(item) { return item.media_type == 1; } ), function(item) { %>
 						<li><%- item.media_link %></li>
 					<% }); %></ul>
+			</div>
+	
+			<h4><?php echo Kohana::lang('ui_main.information_evaluation'); ?></h4>
+	
+			<div class="row">
+				<label class="inline"><input type='checkbox' name='incident_verified' class='field-verified' value="1" <% (incident_verified == 1) ? print('checked="checked"') : '' %> /> <?php echo Kohana::lang('ui_main.verified'); ?></label>
+			</div>
+			<div  class="row">
+				<label class="inline"><input type='checkbox' name='incident_active' class='field-approved' value="1" <% (incident_active == 1) ? print('checked="checked"') : '' %> /> <?php echo Kohana::lang('ui_main.approved'); ?></label>
 			</div>
 	</div>
 
