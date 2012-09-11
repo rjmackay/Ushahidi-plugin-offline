@@ -67,6 +67,7 @@
 				<div id="offline" class="error" style="display:none;"><?php echo Kohana::lang('offline.could_not_connect'); ?> <a class="reconnect" href="#"><?php echo Kohana::lang('offline.try_again'); ?></a></div>
 				
 				<div id="dirty" class="error" style="display:none;"><?php echo Kohana::lang('offline.unsynced_items'); ?> <a class="sync" href="#"><?php echo Kohana::lang('offline.sync_now'); ?></a></div>
+				<div id="sync-done" class="error" style="display:none;"><?php echo Kohana::lang('offline.synchronized'); ?></div>
 				
 				<div id="appcache" class="error" style="display:none;"><?php echo Kohana::lang('offline.app_updates'); ?> <a class="reload" href="#"><?php echo Kohana::lang('offline.reload_to_update'); ?></a></div>
 				

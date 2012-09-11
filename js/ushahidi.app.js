@@ -29,10 +29,16 @@ var AppModel = Backbone.Model.extend(
 		
 		// Bind "sync now" button and check for unsynced items
 		// Probably the wrong place to handle this, but it works for now
-		$('#dirty .sync').click(_.debounce(function() {
-			context.startPolling(0);
+		var sync_now = function() {
+			context.fetch().always(function () {
+				context.checkDirty();
+				$('#dirty .sync').unbind('click');
+				$('#dirty .sync').click(_.once(sync_now));
+			});
 			return false;
-		}, 1000, true));
+		}
+		$('#dirty .sync').click(_.once(sync_now));
+		$('#dirty').data('shown', false);
 		this.checkDirty();
 	},
 	delay : 10000,
@@ -126,10 +132,20 @@ var AppModel = Backbone.Model.extend(
 		{
 			$('#dirty').show();
 			$('#dirty span').text(count);
+			$('#dirty').data('shown', true);
 		}
 		else
 		{
-			$('#dirty').hide();
+			if ($('#dirty').data('shown'))
+			{
+				$('#dirty').fadeOut();
+				$('#sync-done').fadeIn(600, function() { $('#sync-done').fadeOut()} );
+				$('#dirty').data('shown', false);
+			}
+			else
+			{
+				$('#dirty').hide();
+			}
 		}
 		_.delay(this.checkDirty, 500);
 	}
