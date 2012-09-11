@@ -48,6 +48,8 @@ $(function() {
 	});
 	
 	setInterval(function() {
-		window.applicationCache.update()
+		loggingEnabled && console.log('Request cache update');
+		window.applicationCache.update();
 	}, 10000);
+	loggingEnabled && console.log('appcache monitoring started');
 });
