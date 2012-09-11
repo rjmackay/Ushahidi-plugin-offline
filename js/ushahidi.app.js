@@ -228,6 +228,7 @@ var AppRouter = Backbone.Router.extend(
 			if (model == undefined)
 			{
 				this.navigate('reports',{trigger: true});
+				return;
 			}
 			
 			var reportPageView = new ReportPageView({
@@ -245,6 +246,7 @@ var AppRouter = Backbone.Router.extend(
 			if (model == undefined)
 			{
 				this.navigate('reports',{trigger: true});
+				return;
 			}
 			
 			var reportEditView = new ReportEditView({
@@ -339,6 +341,7 @@ var AppRouter = Backbone.Router.extend(
 				message.get('incident_id') != 0)
 			{
 				this.navigate('messages',{trigger: true});
+				return;
 			}
 			
 			var model = new Report({
