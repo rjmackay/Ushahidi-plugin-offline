@@ -4,9 +4,9 @@
 		</h2>
 		<?php if (Kohana::config('offline.enable_editing')) { ?>
 		<div class="tab"><ul>
-			<li><a class="active">View</a></li>
-			<li><a href="#reports/edit/<%- id %>">Edit</a></li>
-			<li><a href="#reports/delete/<%- id %>">Delete</a></li>
+			<li><a class="active"><?php echo Kohana::lang('ui_main.view'); ?></a></li>
+			<li><a href="#reports/edit/<%- id %>"><?php echo Kohana::lang('ui_main.edit'); ?></a></li>
+			<li><a href="#reports/delete/<%- id %>"><?php echo Kohana::lang('ui_main.delete'); ?></a></li>
 		</ul></div>
 		<?php } ?>
 

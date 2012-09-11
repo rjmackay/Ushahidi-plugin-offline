@@ -5,9 +5,9 @@
 		</h2>
 		<% if(sid || id) { %>
 		<div class="tab"><ul>
-			<li><a href="#reports/view/<%- id %>">View</a></li>
-			<li><a class="active">Edit</a></li>
-			<li><a href="#reports/delete/<%- id %>">Delete</a></li>
+			<li><a href="#reports/view/<%- id %>"><?php echo Kohana::lang('ui_main.view'); ?></a></li>
+			<li><a class="active"><?php echo Kohana::lang('ui_main.edit'); ?></a></li>
+			<li><a href="#reports/delete/<%- id %>"><?php echo Kohana::lang('ui_main.delete'); ?></a></li>
 		</ul></div>
 		<% } %>
 		
@@ -67,7 +67,7 @@
 	
 			<div class="report-category-list">
 				<h4><?php echo Kohana::lang('ui_main.categories');?></h4>
-				Selected: <%- categories %>
+				<?php echo Kohana::lang('offline.selected');?>: <%- categories %>
 				<ul id="category-tree">
 				<% _.each(category_tree, function(cat) { %>
 					<li><label class="inline"><input type='checkbox' name='category[]' value='<%- cat.category_id %>' <% if(cat.children.length != 0) { print('disabled="disabled" ') } %><% if (cat.category_id == category_ids[cat.category_id]) { print('checked="checked"') } %>><%- cat.category_title %></label>

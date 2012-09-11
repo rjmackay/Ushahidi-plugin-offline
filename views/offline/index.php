@@ -64,11 +64,11 @@
 				<h1><?php echo $site_name
 				?></h1>
 				
-				<div id="offline" class="error" style="display:none;">Couldn't connect to server... <a class="reconnect" href="#">try again</a></div>
+				<div id="offline" class="error" style="display:none;"><?php echo Kohana::lang('offline.could_not_connect'); ?> <a class="reconnect" href="#"><?php echo Kohana::lang('offline.try_again'); ?></a></div>
 				
-				<div id="dirty" class="error" style="display:none;">There are <span></span> un-synced items... <a class="sync" href="#">sync now</a></div>
+				<div id="dirty" class="error" style="display:none;"><?php echo Kohana::lang('offline.unsynced_items'); ?> <a class="sync" href="#"><?php echo Kohana::lang('offline.sync_now'); ?></a></div>
 				
-				<div id="appcache" class="error" style="display:none;">Application updates ready. <a class="reload" href="#">Reload to update</a></div>
+				<div id="appcache" class="error" style="display:none;"><?php echo Kohana::lang('offline.app_updates'); ?> <a class="reload" href="#"><?php echo Kohana::lang('offline.reload_to_update'); ?></a></div>
 				
 				<!-- nav-holder -->
 				<div class="nav-holder">

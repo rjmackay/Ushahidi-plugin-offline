@@ -15,10 +15,10 @@
 		</div>
 
 		<div>
-			<input type='submit' value='Login' id='report-save' />
+			<input type='submit' value='<?php echo Kohana::lang('ui_main.login'); ?>' id='report-save' />
 		</div>
 	
 		<div style="clear:both;"></div>
-		<div id="auth-error" class="error" style="display:none;">Sorry, you could not be logged in. Check your username and password, and try again</div>
+		<div id="auth-error" class="error" style="display:none;"><?php echo Kohana::lang('offline.login_error'); ?></div>
 		</form>
 	</div>
