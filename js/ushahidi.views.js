@@ -281,6 +281,7 @@ var SettingsEditView = Backbone.View.extend(
 		return this;
 	},
 	save : function() {
+		$('#auth-error').fadeOut();
 		var username = this.$('.field-username').val();
 		var password = this.$('.field-password').val();
 		
@@ -296,8 +297,7 @@ var SettingsEditView = Backbone.View.extend(
 		};
 		options.error = function() {
 			window.app.model.authenticated = false;
-			console.log('auth failed')
-			//window.app.navigate('settings/edit', {trigger: true});
+			$('#auth-error').fadeIn();
 		};
 		
 		jQuery.ajax(options);
@@ -479,7 +479,8 @@ var MessageAppView = Backbone.View.extend(
 			id : 'message-' + message.cid
 		});
 		this.$('#loading').hide();
-		this.messageList.append(view.render().el);
+		
+		this.messageList.prepend(view.render().el);
 		message.view = view;
 	},
 	addAll : function() {
@@ -509,3 +510,5 @@ var MessageAppView = Backbone.View.extend(
 		$('form input.mass-select', this.$el).prop('checked', $('form input#checkall', this.$el).prop('checked'));
 	}
 });
+
+
