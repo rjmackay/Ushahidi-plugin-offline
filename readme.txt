@@ -1,15 +1,15 @@
 === About ===
-name: Offline
-website: http://www.ushahidi.com
+name: Offline web app
+website: github.com/rjmackay/Ushahidi-plugin-offline
 description: Offline web app
-version: 0.1
-requires: 2.1
-tested up to: 2.1
-author: Ushahidi Team
-author website: http://www.ushahidi.com
+version: 0.2.0
+requires: 2.5
+tested up to: 2.5
+author: Robbie Mackay <robbie@ushahidi.com>
 
 == Description ==
-Access / submit reports offline
+Ushahidi offline admin interface.
+Requires restapi plugin: https://github.com/rjmackay/Ushahidi-plugin-restapiv2
 
 == Installation ==
 1. Copy the entire /offline/ directory into your /plugins/ directory.

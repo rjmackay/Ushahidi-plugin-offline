@@ -96,7 +96,7 @@ class Offline_Controller extends Template_Controller {
 			$this->cache->set('offline_appcache_rev', $rev);
 		}
 		// Hardcoded revision ID - bump for each release
-		$rev = '0.2.1';
+		$rev = '0.2.0';
 
 		$content .= "# Rev: $rev\n";
 		$content .= "CACHE:\n";
