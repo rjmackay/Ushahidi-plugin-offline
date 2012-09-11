@@ -209,7 +209,8 @@ var AppRouter = Backbone.Router.extend(
 		else
 			reports = this.model.reports;
 		
-		this.model.reports.resetCallback.add(function () {
+		var context = this;
+		this.model.loaded.done(_.bind(function () {
 			var reportAppView = new ReportAppView(
 			{
 				model : reports,
@@ -217,12 +218,12 @@ var AppRouter = Backbone.Router.extend(
 			});
 			this.appView.showView(reportAppView);
 			this.appView.setTab('reports');
-		}, this);
+		}, this));
 	},
 	report_view : function(id) {
 		this.model.stopPolling();
 		
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.reports.get(id);
 			if (model == undefined)
 			{
@@ -234,12 +235,12 @@ var AppRouter = Backbone.Router.extend(
 			});
 			this.appView.showView(reportPageView);
 			this.appView.setTab('reports');
-		}, this);
+		}, this));
 	},
 	report_edit : function(id) {
 		this.model.stopPolling();
 		
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.reports.get(id);
 			if (model == undefined)
 			{
@@ -251,36 +252,36 @@ var AppRouter = Backbone.Router.extend(
 			});
 			this.appView.showView(reportEditView);
 			this.appView.setTab('reports');
-		}, this);
+		}, this));
 	},
 	report_add : function() {
 		this.model.stopPolling();
 		
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = new Report();
 			var reportEditView = new ReportEditView({
 				model : model
 			});
 			this.appView.showView(reportEditView);
 			this.appView.setTab('reports');
-		}, this);
+		}, this));
 	},
 	report_approve : function(id) {
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.reports.get(id);
 			model.toggleActive();
 			this.navigate('reports',{trigger: true});
-		}, this);
+		}, this));
 	},
 	report_verify : function(id) {
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.reports.get(id);
 			model.toggleVerified();
 			this.navigate('reports',{trigger: true});
-		}, this);
+		}, this));
 	},
 	report_delete : function(id) {
-		this.model.reports.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.reports.get(id);
 			
 			var answer = confirm('Are you sure you want to delete?');
@@ -288,7 +289,7 @@ var AppRouter = Backbone.Router.extend(
 				model.destroy({wait: true});
 			}
 			this.navigate('reports',{trigger: true});
-		}, this);
+		}, this));
 	},
 	settings_edit : function() {
 		this.model.stopPolling();
@@ -310,7 +311,7 @@ var AppRouter = Backbone.Router.extend(
 		else
 			messages = this.model.messages;
 		
-		this.model.messages.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var messageAppView = new MessageAppView(
 			{
 				model : messages,
@@ -318,10 +319,10 @@ var AppRouter = Backbone.Router.extend(
 			});
 			this.appView.showView(messageAppView);
 			this.appView.setTab('messages');
-		}, this);
+		}, this));
 	},
 	message_delete : function(id) {
-		this.model.messages.resetCallback.add(function() {
+		this.model.loaded.done(_.bind(function() {
 			var model = this.model.messages.get(id);
 			
 			var answer = confirm('Are you sure you want to delete?');
@@ -329,51 +330,49 @@ var AppRouter = Backbone.Router.extend(
 				model.destroy({wait: true});
 			}
 			this.navigate('messages',{trigger: true});
-		}, this);
+		}, this));
 	},
 	message_to_report : function(id) {
-		this.model.messages.resetCallback.add(function() {
-			this.model.reports.resetCallback.add(function() {
-				var message = this.model.messages.get(id);
-				if (message == undefined ||
-					message.get('incident_id') != 0)
-				{
-					this.navigate('messages',{trigger: true});
-				}
-				
-				var model = new Report({
-					'message_id' : message.get('sid'),
-					'incident_title' : message.get('message'),
-					'incident_description' : (message.get('message_detail') != null) ? message.get('message_detail') : message.get('message'),
-					'incident_date' : message.get('message_date'),
-				});
-				
-				// person
-				if (message.get('reporter') != undefined)
-				{
-					reporter = message.get('reporter');
-					person = model.get('incident_person');
-					person.person_first = reporter.reporter_first;
-					person.person_last = reporter.reporter_last;
-					person = model.set('incident_person', person);
-				}
-				
-				// location
-				if (message.get('latitude') != undefined && message.get('longitude') != undefined)
-				{
-					location = model.get('location');
-					location.latitude = message.get('latitude');
-					location.longitude = message.get('longitude');
-					location.location_name = (message.get('location_name') != undefined) ? message.get('location_name') : '';
-					location = model.set('location', location);
-				}
-				
-				var reportEditView = new ReportEditView({
-					model : model
-				});
-				this.appView.showView(reportEditView);
-				this.appView.setTab('reports');
-			}, this);
-		}, this);
+		this.model.loaded.done(_.bind(function() {
+			var message = this.model.messages.get(id);
+			if (message == undefined ||
+				message.get('incident_id') != 0)
+			{
+				this.navigate('messages',{trigger: true});
+			}
+			
+			var model = new Report({
+				'message_id' : message.get('sid'),
+				'incident_title' : message.get('message'),
+				'incident_description' : (message.get('message_detail') != null) ? message.get('message_detail') : message.get('message'),
+				'incident_date' : message.get('message_date'),
+			});
+			
+			// person
+			if (message.get('reporter') != undefined)
+			{
+				reporter = message.get('reporter');
+				person = model.get('incident_person');
+				person.person_first = reporter.reporter_first;
+				person.person_last = reporter.reporter_last;
+				person = model.set('incident_person', person);
+			}
+			
+			// location
+			if (message.get('latitude') != undefined && message.get('longitude') != undefined)
+			{
+				location = model.get('location');
+				location.latitude = message.get('latitude');
+				location.longitude = message.get('longitude');
+				location.location_name = (message.get('location_name') != undefined) ? message.get('location_name') : '';
+				location = model.set('location', location);
+			}
+			
+			var reportEditView = new ReportEditView({
+				model : model
+			});
+			this.appView.showView(reportEditView);
+			this.appView.setTab('reports');
+		}, this));
 	}
 });
