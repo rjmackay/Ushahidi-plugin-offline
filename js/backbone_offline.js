@@ -166,7 +166,7 @@
     };
 
     Storage.prototype.save = function(item, options) {
-      var _ref, _ref1;
+      var updated_at, _ref, _ref1;
       if (options == null) {
         options = {};
       }
@@ -176,9 +176,10 @@
           id: this.guid()
         });
       }
+      (updated_at = new Date()).setMilliseconds(0);
       if (!options.local) {
         item.set({
-          updated_at: (new Date()).toJSON(),
+          updated_at: updated_at.toJSON(),
           dirty: true
         });
       }
