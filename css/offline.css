@@ -1,4 +1,3 @@
-
 .report-form h4 {
 	clear: both;
 }
@@ -37,7 +36,6 @@
 	margin-right: 40px;
 }
 
-
 .required,
 .report-form label .required {
   color: #555;
@@ -45,6 +43,9 @@
   font-weight: normal;
 }
 
+.row {
+	overflow: visible;
+}
 
 .report-form input.text, .report-form input.file, .tab_form_item input.text
 {
