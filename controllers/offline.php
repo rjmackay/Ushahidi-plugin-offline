@@ -99,6 +99,7 @@ class Offline_Controller extends Template_Controller {
 		$rev = '0.2.0';
 
 		$content .= "# Rev: $rev\n";
+		$content .= "# editing enabled: ".Kohana::config('offline.enable_editing')."\n";
 		$content .= "CACHE:\n";
 
 		//$content .= "/offline\n";
